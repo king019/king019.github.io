@@ -6,7 +6,7 @@
 
 [代理类型](http://bbs.51cto.com/thread-967852-1-1.html)
 [代理类型2](http://blog.csdn.net/a19860903/article/details/47146715)
-
+[w3c header](https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html)
 
 You can use the [editor on GitHub](https://github.com/king019/king019.github.io/edit/master/index.md) to maintain and preview the content for your website in Markdown files.
 
