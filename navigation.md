@@ -4,6 +4,7 @@
 
 [linux命令大全](http://man.linuxde.net/)
 
+[代理类型](http://bbs.51cto.com/thread-967852-1-1.html)
 
 
 You can use the [editor on GitHub](https://github.com/king019/king019.github.io/edit/master/index.md) to maintain and preview the content for your website in Markdown files.
