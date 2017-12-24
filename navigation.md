@@ -10,3 +10,5 @@
 
 [w3c header](https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html)
 
+[httpry安装](http://blog.csdn.net/ufocode/article/details/43566517)
+
