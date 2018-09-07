@@ -1,8 +1,5 @@
-## Welcome to GitHub Pages
 
-[markdown]()
-[导航](navigation.md)
+[markdown 添加图片](https://www.jianshu.com/p/280c6a6f2594)
 
-[docker](docker.md)
-
-![avatar](/home/k/文档/132.jpeg)
+[markdown 语法](https://blog.csdn.net/tyyking/article/details/79682157)
+ 
