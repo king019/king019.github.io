@@ -12,5 +12,7 @@
 
 [软件](软件/index.md)
 
+[technology-talk](technology-talk/README.md)
+
 
  
