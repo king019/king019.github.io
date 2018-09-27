@@ -5,6 +5,7 @@ http1.1
 + [中文](https://www.cnblogs.com/cxd4321/p/3504632.html)
 + [mozilla](https://developer.mozilla.org/zh-CN/docs/Web/HTTP)
 
++ [http状态](https://www.cnblogs.com/DeasonGuan/articles/Hanami.html)
 http2
 
 + [txt](https://tools.ietf.org/html/rfc7540)
