@@ -266,6 +266,109 @@ netstat -nt | grep -e 127.0.0.1 -e 0.0.0.0 -e ::: -v | awk '/^tcp/ {++state[$NF]
 查看phpcgi进程数，如果接近预设值，说明不够用，需要增加：<br>
 <br>
 netstat -anpo | grep "php-cgi" | wc -l<br>
+
+<br>
+sh-4.2# netstat -a<br>
+Active Internet connections (servers and established)<br>
+Proto Recv-Q Send-Q Local Address           Foreign Address         State      <br>
+tcp        0      1 55a14df955d5:54350      ti-in-f139.1e100.:https SYN_SENT    <br>
+tcp        0      0 55a14df955d5:55322      123.125.114.32:http     ESTABLISHED<br>
+tcp6       0      0 [::]:squid              [::]:*                  LISTEN     <br>
+tcp6       1      0 55a14df955d5:squid      172.17.0.1:41604        CLOSE_WAIT <br>
+tcp6       0      0 55a14df955d5:squid      172.17.0.1:41596        ESTABLISHED<br>
+tcp6       1      0 55a14df955d5:squid      172.17.0.1:41626        CLOSE_WAIT <br>
+udp        0      0 0.0.0.0:55157           0.0.0.0:*                          <br>
+udp6       0      0 [::]:43257              [::]:*                             <br>
+Active UNIX domain sockets (servers and established)<br>
+Proto RefCnt Flags       Type       State         I-Node   Path<br>
+unix  3      [ ]         STREAM     CONNECTED     29565    <br>
+unix  3      [ ]         STREAM     CONNECTED     29564    <br>
+<br>
+<br>
+sh-4.2# netstat -n<br>
+Active Internet connections (w/o servers)<br>
+Proto Recv-Q Send-Q Local Address           Foreign Address         State      <br>
+tcp        0      1 172.17.0.3:46868        74.125.204.138:443      SYN_SENT   <br>
+tcp        0      1 172.17.0.3:46864        74.125.204.138:443      SYN_SENT   <br>
+tcp        0      1 172.17.0.3:52454        74.125.204.100:443      SYN_SENT   <br>
+tcp6       1      0 172.17.0.3:3128         172.17.0.1:41660        CLOSE_WAIT <br>
+tcp6       0      0 172.17.0.3:3128         172.17.0.1:41596        ESTABLISHED<br>
+tcp6       1      0 172.17.0.3:3128         172.17.0.1:41626        CLOSE_WAIT <br>
+tcp6       1      0 172.17.0.3:3128         172.17.0.1:41642        CLOSE_WAIT <br>
+Active UNIX domain sockets (w/o servers)<br>
+Proto RefCnt Flags       Type       State         I-Node   Path<br>
+unix  3      [ ]         STREAM     CONNECTED     29565    <br>
+unix  3      [ ]         STREAM     CONNECTED     29564    <br>
+<br>
+<br>
+<br>
+<br>
+sh-4.2# netstat -g<br>
+IPv6/IPv4 Group Memberships<br>
+Interface       RefCnt Group<br>
+--------------- ------ ---------------------<br>
+lo              1      all-systems.mcast.net<br>
+eth0            1      all-systems.mcast.net<br>
+lo              1      ip6-allnodes<br>
+lo              1      ff01::1<br>
+ip6tnl0         1      ip6-allnodes<br>
+ip6tnl0         1      ff01::1<br>
+eth0            1      ip6-allnodes<br>
+eth0            1      ff01::1<br>
+<br>
+<br>
+sh-4.2# netstat -i<br>
+Kernel Interface table<br>
+Iface      MTU    RX-OK RX-ERR RX-DRP RX-OVR    TX-OK TX-ERR TX-DRP TX-OVR Flg<br>
+eth0      1500    78029      0      0 0         67480      0      0      0 BMRU<br>
+lo       65536        0      0      0 0             0      0      0      0 LRU<br>
+<br>
+<br>
+<br>
+sh-4.2# netstat -l<br>
+Active Internet connections (only servers)<br>
+Proto Recv-Q Send-Q Local Address           Foreign Address         State      <br>
+tcp6       0      0 [::]:squid              [::]:*                  LISTEN     <br>
+udp        0      0 0.0.0.0:55157           0.0.0.0:*                          <br>
+udp6       0      0 [::]:43257              [::]:*                             <br>
+Active UNIX domain sockets (only servers)<br>
+Proto RefCnt Flags       Type       State         I-Node   Path<br>
+<br>
+<br>
+sh-4.2# netstat -p<br>
+Active Internet connections (w/o servers)<br>
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name    <br>
+tcp        0      1 55a14df955d5:41400      ti-in-f101.1e100.:https SYN_SENT    -                   <br>
+tcp6       0      0 55a14df955d5:squid      172.17.0.1:41596        ESTABLISHED -                   <br>
+tcp6       1      0 55a14df955d5:squid      172.17.0.1:41700        CLOSE_WAIT  -                   <br>
+Active UNIX domain sockets (w/o servers)<br>
+Proto RefCnt Flags       Type       State         I-Node   PID/Program name     Path<br>
+unix  3      [ ]         STREAM     CONNECTED     29565    -                    <br>
+unix  3      [ ]         STREAM     CONNECTED     29564    -    <br>
+<br>
+sh-4.2# netstat -r<br>
+Kernel IP routing table<br>
+Destination     Gateway         Genmask         Flags   MSS Window  irtt Iface<br>
+default         gateway         0.0.0.0         UG        0 0          0 eth0<br>
+172.17.0.0      0.0.0.0         255.255.0.0     U         0 0          0 eth0<br>
+<br>
+sh-4.2# netstat -s<br>
+Ip:<br>
+    78155 total packets received<br>
+    0 forwarded<br>
+    0 incoming packets discarded<br>
+    78155 incoming packets delivered<br>
+    67684 requests sent out<br>
+Icmp:<br>
+    0 ICMP messages received<br>
+    0 input ICMP message failed.<br>
+    ICMP input histogram:<br>
+    3 ICMP messages sent<br>
+    0 ICMP messages failed<br>
+    ICMP output histogram:<br>
+        destination unreachable: 3<br>
+<br>
+<br>
 ### iostat — 输入/输出统计
 
 
