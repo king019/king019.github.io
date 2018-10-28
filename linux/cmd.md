@@ -163,8 +163,110 @@ wa: IO等待时间百分比<br>
 wa的值高时，说明IO等待比较严重，这可能由于磁盘大量作随机访问造成，也有可能磁盘出现瓶颈（块操作）。<br>
 id: 空闲时间百分比<br>
 
-
-
+### lsof
+### tcpdump — 网络数据包分析器
+### netstat — 网络统计
+### 语法<br>
+netstat(选项)<br>
+### 选项<br>
+-a或--all：显示所有连线中的Socket；<br>
+-A<网络类型>或--<网络类型>：列出该网络类型连线中的相关地址；<br>
+-c或--continuous：持续列出网络状态；<br>
+-C或--cache：显示路由器配置的快取信息；<br>
+-e或--extend：显示网络其他相关信息；<br>
+-F或--fib：显示FIB；<br>
+-g或--groups：显示多重广播功能群组组员名单；<br>
+-h或--help：在线帮助；<br>
+-i或--interfaces：显示网络界面信息表单；<br>
+-l或--listening：显示监控中的服务器的Socket；<br>
+-M或--masquerade：显示伪装的网络连线；<br>
+-n或--numeric：直接使用ip地址，而不通过域名服务器；<br>
+-N或--netlink或--symbolic：显示网络硬件外围设备的符号连接名称；<br>
+-o或--timers：显示计时器；<br>
+-p或--programs：显示正在使用Socket的程序识别码和程序名称；<br>
+-r或--route：显示Routing Table；<br>
+-s或--statistice：显示网络工作信息统计表；<br>
+-t或--tcp：显示TCP传输协议的连线状况；<br>
+-u或--udp：显示UDP传输协议的连线状况；<br>
+-v或--verbose：显示指令执行过程；<br>
+-V或--version：显示版本信息；<br>
+-w或--raw：显示RAW传输协议的连线状况；<br>
+-x或--unix：此参数的效果和指定"-A unix"参数相同；<br>
+--ip或--inet：此参数的效果和指定"-A inet"参数相同。<br>
+实例<br>
+列出所有端口 (包括监听和未监听的)<br>
+<br>
+netstat -a     #列出所有端口<br>
+netstat -at    #列出所有tcp端口<br>
+netstat -au    #列出所有udp端口                             <br>
+列出所有处于监听状态的 Sockets<br>
+<br>
+netstat -l        #只显示监听端口<br>
+netstat -lt       #只列出所有监听 tcp 端口<br>
+netstat -lu       #只列出所有监听 udp 端口<br>
+netstat -lx       #只列出所有监听 UNIX 端口<br>
+显示每个协议的统计信息<br>
+<br>
+netstat -s   显示所有端口的统计信息<br>
+netstat -st   显示TCP端口的统计信息<br>
+netstat -su   显示UDP端口的统计信息<br>
+在netstat输出中显示 PID 和进程名称<br>
+<br>
+netstat -pt<br>
+netstat -p可以与其它开关一起使用，就可以添加“PID/进程名称”到netstat输出中，这样debugging的时候可以很方便的发现特定端口运行的程序。<br>
+<br>
+在netstat输出中不显示主机，端口和用户名(host, port or user)<br>
+<br>
+当你不想让主机，端口和用户名显示，使用netstat -n。将会使用数字代替那些名称。同样可以加速输出，因为不用进行比对查询。<br>
+<br>
+netstat -an<br>
+如果只是不想让这三个名称中的一个被显示，使用以下命令:<br>
+<br>
+netsat -a --numeric-ports<br>
+netsat -a --numeric-hosts<br>
+netsat -a --numeric-users<br>
+持续输出netstat信息<br>
+<br>
+netstat -c   #每隔一秒输出网络信息<br>
+显示系统不支持的地址族(Address Families)<br>
+<br>
+netstat --verbose<br>
+在输出的末尾，会有如下的信息：<br>
+<br>
+netstat: no support for `AF IPX' on this system.<br>
+netstat: no support for `AF AX25' on this system.<br>
+netstat: no support for `AF X25' on this system.<br>
+netstat: no support for `AF NETROM' on this system.<br>
+显示核心路由信息<br>
+<br>
+netstat -r<br>
+使用netstat -rn显示数字格式，不查询主机名称。<br>
+<br>
+找出程序运行的端口<br>
+<br>
+并不是所有的进程都能找到，没有权限的会不显示，使用 root 权限查看所有的信息。<br>
+<br>
+netstat -ap | grep ssh<br>
+找出运行在指定端口的进程：<br>
+<br>
+netstat -an | grep ':80'<br>
+显示网络接口列表<br>
+<br>
+netstat -i<br>
+显示详细信息，像是ifconfig使用netstat -ie。<br>
+<br>
+IP和TCP分析<br>
+<br>
+查看连接某服务端口最多的的IP地址：<br>
+<br>
+netstat -ntu | grep :80 | awk '{print $5}' | cut -d: -f1 | awk '{++ip[$1]} END {for(i in ip) print ip[i],"\t",i}' | sort -nr<br>
+TCP各种状态列表：<br>
+<br>
+netstat -nt | grep -e 127.0.0.1 -e 0.0.0.0 -e ::: -v | awk '/^tcp/ {++state[$NF]} END {for(i in state) print i,"\t",state[i]}'<br>
+查看phpcgi进程数，如果接近预设值，说明不够用，需要增加：<br>
+<br>
+netstat -anpo | grep "php-cgi" | wc -l<br>
+### iostat — 输入/输出统计
 
 
 
