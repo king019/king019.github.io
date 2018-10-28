@@ -14,7 +14,7 @@
 
 [technology-talk](technology-talk/README.md)
 
-[linux](linux/cmd.md)
+[linux](linux/index.md)
 
 
  
