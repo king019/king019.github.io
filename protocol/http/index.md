@@ -6,6 +6,7 @@ http1.1
 + [mozilla](https://developer.mozilla.org/zh-CN/docs/Web/HTTP)
 
 + [http状态](https://www.cnblogs.com/DeasonGuan/articles/Hanami.html)
++ [详解重定向（HTTP状态码301/302/303/307/408）](https://www.cnblogs.com/wuguanglin/p/redirect.html)
 
 http2
 
