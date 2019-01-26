@@ -6,3 +6,5 @@ jvm 调试
 [请问JVM远程调试的配置中为什么要配置-Djava.compiler=NONE](http://www.iteye.com/problems/89141)
 
 [oom](jvm/oom.md)
+
+[lock区别](jvm/lock.md)
