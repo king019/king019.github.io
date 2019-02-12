@@ -8,3 +8,4 @@ jvm 调试
 [oom](jvm/oom.md)
 
 [lock区别](jvm/lock.md)
+[cms_log](jvm/cms_log.md)
