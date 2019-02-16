@@ -10,3 +10,15 @@ jvm 调试
 [lock区别](jvm/lock.md)
 
 [cms_log](jvm/cms_log.md)
+
+[ThreadLocal深入理解与内存泄露分析](jvm/oom_threadlocal.md)
+
+[内存泄露产生的原因和避免方式](jvm/oom_over.md)
+
+
+
+
+
+
+
+
