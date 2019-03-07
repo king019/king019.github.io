@@ -17,3 +17,4 @@
 [linux](linux/index.md)
 
 [java](java)
+[ssh多机器](https://blog.csdn.net/qq_41068347/article/details/80410570)
