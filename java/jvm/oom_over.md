@@ -1,5 +1,9 @@
 https://blog.csdn.net/dakaniu/article/details/80751456
 
+https://blog.csdn.net/u012516166/article/details/77014910
+
+https://www.jianshu.com/p/90caf813682d
+
 内存泄露产生的原因和避免方式
 2018年06月20日 20:34:23 dakaniu 阅读数：291
 一、内存泄露如何产生？
