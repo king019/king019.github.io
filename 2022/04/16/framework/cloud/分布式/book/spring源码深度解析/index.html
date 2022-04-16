@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>
+    spring源码深度解析 | king019
+  </title>
+  <meta name="description" content>
+  
+  <meta name="keywords" content="
+  分布式,book,spring源码深度解析
+  ">
+  
+  <meta name="author" content="king019">
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="theme-color" content="#1e2327">
+  <link rel="apple-touch-icon" href="https://github.githubassets.com/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://github.githubassets.com/apple-touch-icon-180x180.png">
+
+  <link rel="icon" type="image/x-icon" href="https://github.githubassets.com/favicon.ico">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.25-csp/vue.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+</head>
+
+<body id="replica-app">
+
+<nav class="navbar-wrapper">
+  <div class="navbar">
+    <div class="container clearfix">
+      <a href="/" class="navbar-logo"><i class="fa fa-github"></i></a>
+
+      <div class="navbar-search float-left desktop-only">
+        <div class="navbar-search-form">
+          <label for="gsc-i-id1">This website</label>
+          <div id="google-search">
+            <gcse:search></gcse:search>
+          </div>
+        </div>
+      </div>
+
+      <ul class="navbar-nav float-left">
+        
+        <li><a href="/archives">Archives</a></li>
+        
+        
+        <li><a href="/categories">Categories</a></li>
+        
+        
+        <li><a href="/tags">Tags</a></li>
+        
+        
+        <li class="desktop-only"><a href="/atom.xml" target="_blank">RSS</a></li>
+        
+      </ul>
+
+      <ul class="navbar-nav user-nav float-right desktop-only">
+        <li class="user-nav-notification">
+          <a><span class="user-nav-unread"></span><i class="fa fa-bell"></i></a>
+        </li>
+        <li>
+          <a><i class="fa fa-plus"></i> <i class="fa fa-caret-down"></i></a>
+        </li>
+        <li class="user-nav-logo">
+          <a><img src="/assets/head.jpg"> <i class="fa fa-caret-down"></i></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="main-container">
+  <header class="header-wrapper desktop-only">
+  <div class="container header-site-detail">
+    <ul class="header-toolbar">
+      <li class="clearfix">
+        <a href="/archives" class="header-toolbar-left"><i
+                  class="fa fa-file-text"></i> Posts </a>
+        <a href="/archives"
+           class="header-toolbar-right"> 218 </a>
+      </li>
+      <li>
+        <a href="/tags" class="header-toolbar-left"><i
+                  class="fa fa-tags"></i> Tags </a>
+        <a href="/tags"
+           class="header-toolbar-right"> 213 </a>
+      </li>
+      <li>
+        <a href="/categories" class="header-toolbar-left"><i
+                  class="fa fa-folder-open"></i> Categories </a>
+        <a href="/categories"
+           class="header-toolbar-right"> 256 </a>
+      </li>
+    </ul>
+    <h2 class="header-title">
+      <i class="fa fa-book text-muted"></i>
+      <a href="/">king019</a>
+      
+      
+    </h2>
+  </div>
+
+  <div class="container">
+    <div class="header-tab-wrapper clearfix">
+      <span class="header-tab header-tab-selected"><i class="fa fa-thumbs-o-up"></i> Like</span>
+      <span class="header-tab"><i class="fa fa-share-alt"></i> Share</span>
+      <span class="header-tab"><i class="fa fa-comments-o"></i> Discussion</span>
+      <span class="header-tab"><i class="fa fa-bookmark-o"></i> Bookmark </span>
+      <span class="header-tab"><i class="fa fa-smile-o"></i> Smile <i class="fa fa-caret-down"></i></span>
+    </div>
+  </div>
+</header>
+
+
+<div class="post-container container">
+  <h3>
+    <i class="fa fa-user-o"></i>
+    king019
+
+    <span class="post-date float-right" title="{{moment(1650088475016).format('MMM DD, YYYY, h:mm:ss A')}}">
+      
+          <i class="fa fa-pencil-square-o"></i>
+      
+      {{moment(1650088475016).fromNow()}}
+    </span>
+  </h3>
+
+  <article class="post-content">
+    <h1>spring源码深度解析</h1>
+    <p>spring源码深度解析<br><img src="https://www.plantuml.com/plantuml/svg/bLNDKXj74Bxp53fAL6JAUG2L-N6gN1N_L9pArJLQjSGugvtDpAoGSiB4CJPWK3a630GPWWda036L10oAx9VP6OctI8zcToKiEQdiPNUwv-l--dTl24cuB5ElK2R-o6XAh_uPjdxIkqzqutGaDPeIFgTUIL_KspkFzDc9klYrSx2d6_MH52hpGBpsvcEriDDfjL228dMshvRdp3SUmkPoaJYIyTe4tkmidwcLDVNxUUTaDrK2UJV_41pPBurXhG_jbuV4zzqkxXuJyXvd3WWnNfJ0RtbKKkBIxucap8lSFbyDtoz6U9-3JpZS1ZdD2dShm3ajW4Xd8ZK7mTmAJ42HSRZbOG8yj1VRCZU6kMPS_7_49_WYeC0cEH091XCRSHA9zU60rIHfpUPqu_7bx8wQR-dLj_gFG_NZVZRNFfx5yDNJRNMmg9RMhb2w3Rm41MDo2ehK464VKOolOq5k4cw3-0gAm27nZnbbVk1UOTiLVboNWSGO6e5aCvJ3HEqEASCGyTSr7uRPn9SFNDQ-8Mu02KqQ9_Cg5-fLsBSmFfEKFG8OdG1fxlQvxmadNIB4bumKW0_elh2jswFyxrqnKEGUBwCSe4LCpg8WAOZx87iw2viCX6Jb7lY_c7ogsxezNw82jLDKO8f9thLjLhm31alweXn-iqUjhq8syYaGaWTENzYclOsGrOP7D6MLIL3OtiVdQkEmkqfUTtvewMU_gPDLEzccQyKqTYIExNGqF7gb7hxVScaHd9hZWbxULojxwUuc6qC7lhMIwPecpBU6sYTDrOXNX5eurBEFeiFbzWOUeej6qDdOr8klzSyNkDPmnDJHUcTXpYp0jVcmUQhNJosytPn7BH4-hZ7rTFvo-vTe6HrlXkVFucN4g2UTG4R7X-RObKK2KgXGB5w4N9d3mKxM6AlMiXWKZcRMCOsQpM6c8UsKN9eFctlj-fDufq4Lwm9P2ycbq-FtWLUe0vbnvayoJq9LNdC2ZaDjYbUjfJEPQ_cqpL1uiQWMTYq1-nt-lQDV7EdPWsHZVXVWh8v5xmSUp4GQ4VWCa-un-S1-Hd8FImo5R4xzjQJsrwtLR2xyiAsENhNdpZyBtpt72jb5hruiHOOBnd9xwvsgBqLsohXGS0R7FAW0xwUejXgwkHaNiFcgS_o61nvkdp90rG6_RzKcNf5EFqgllOs9zUIskIxU36AloFkmYNmqTVswVNq-_1GzDm1_jlQ7-my0"></p>
+
+  </article>
+</div>
+
+
+    
+
+
+
+
+</div>
+
+<div class="footer-wrapper container">
+  <footer class="footer clearfix">
+    <div class="clearfix">
+    <a href="https://king019.github.io" class="footer-logo">
+      <i class="fa fa-github"></i>
+    </a>
+    <ul class="footer-social-link">
+      <li>© 2019 king019</li>
+      <li><a href="https://king019.github.io">Home</a></li>
+      
+      <li><a href="https://github.com/king019">Github</a></li>
+      
+    </ul>
+    <div class="footer-theme-info">
+      Theme <a href="//github.com/sabrinaluo/hexo-theme-replica">Replica</a>
+      by <a href="//github.com/sabrinaluo">Hiitea</a> ❤ Powered by Hexo
+    </div>
+    </div>
+    
+  </footer>
+</div>
+
+
+
+
+<script src="/js/main.js"></script>
+
+</body>
+</html>

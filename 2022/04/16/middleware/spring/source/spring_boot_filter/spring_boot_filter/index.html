@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>
+    spring java web filter | king019
+  </title>
+  <meta name="description" content>
+  
+  <meta name="keywords" content="
+  filter
+  ">
+  
+  <meta name="author" content="king019">
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="theme-color" content="#1e2327">
+  <link rel="apple-touch-icon" href="https://github.githubassets.com/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://github.githubassets.com/apple-touch-icon-180x180.png">
+
+  <link rel="icon" type="image/x-icon" href="https://github.githubassets.com/favicon.ico">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.25-csp/vue.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+</head>
+
+<body id="replica-app">
+
+<nav class="navbar-wrapper">
+  <div class="navbar">
+    <div class="container clearfix">
+      <a href="/" class="navbar-logo"><i class="fa fa-github"></i></a>
+
+      <div class="navbar-search float-left desktop-only">
+        <div class="navbar-search-form">
+          <label for="gsc-i-id1">This website</label>
+          <div id="google-search">
+            <gcse:search></gcse:search>
+          </div>
+        </div>
+      </div>
+
+      <ul class="navbar-nav float-left">
+        
+        <li><a href="/archives">Archives</a></li>
+        
+        
+        <li><a href="/categories">Categories</a></li>
+        
+        
+        <li><a href="/tags">Tags</a></li>
+        
+        
+        <li class="desktop-only"><a href="/atom.xml" target="_blank">RSS</a></li>
+        
+      </ul>
+
+      <ul class="navbar-nav user-nav float-right desktop-only">
+        <li class="user-nav-notification">
+          <a><span class="user-nav-unread"></span><i class="fa fa-bell"></i></a>
+        </li>
+        <li>
+          <a><i class="fa fa-plus"></i> <i class="fa fa-caret-down"></i></a>
+        </li>
+        <li class="user-nav-logo">
+          <a><img src="/assets/head.jpg"> <i class="fa fa-caret-down"></i></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="main-container">
+  <header class="header-wrapper desktop-only">
+  <div class="container header-site-detail">
+    <ul class="header-toolbar">
+      <li class="clearfix">
+        <a href="/archives" class="header-toolbar-left"><i
+                  class="fa fa-file-text"></i> Posts </a>
+        <a href="/archives"
+           class="header-toolbar-right"> 218 </a>
+      </li>
+      <li>
+        <a href="/tags" class="header-toolbar-left"><i
+                  class="fa fa-tags"></i> Tags </a>
+        <a href="/tags"
+           class="header-toolbar-right"> 213 </a>
+      </li>
+      <li>
+        <a href="/categories" class="header-toolbar-left"><i
+                  class="fa fa-folder-open"></i> Categories </a>
+        <a href="/categories"
+           class="header-toolbar-right"> 256 </a>
+      </li>
+    </ul>
+    <h2 class="header-title">
+      <i class="fa fa-book text-muted"></i>
+      <a href="/">king019</a>
+      
+      
+    </h2>
+  </div>
+
+  <div class="container">
+    <div class="header-tab-wrapper clearfix">
+      <span class="header-tab header-tab-selected"><i class="fa fa-thumbs-o-up"></i> Like</span>
+      <span class="header-tab"><i class="fa fa-share-alt"></i> Share</span>
+      <span class="header-tab"><i class="fa fa-comments-o"></i> Discussion</span>
+      <span class="header-tab"><i class="fa fa-bookmark-o"></i> Bookmark </span>
+      <span class="header-tab"><i class="fa fa-smile-o"></i> Smile <i class="fa fa-caret-down"></i></span>
+    </div>
+  </div>
+</header>
+
+
+<div class="post-container container">
+  <h3>
+    <i class="fa fa-user-o"></i>
+    king019
+
+    <span class="post-date float-right" title="{{moment(1650088475022).format('MMM DD, YYYY, h:mm:ss A')}}">
+      
+          <i class="fa fa-pencil-square-o"></i>
+      
+      {{moment(1650088475022).fromNow()}}
+    </span>
+  </h3>
+
+  <article class="post-content">
+    <h1>spring java web filter</h1>
+    <p><a href="https://blog.csdn.net/ieen_csdn/article/details/86612492" target="_blank" rel="noopener">Spring Boot 之 Filter顺序配置 @Order无效原因解读（源码理解）</a></p>
+<iframe src="https://blog.csdn.net/ieen_csdn/article/details/86612492" width="700px" height="500px" frameborder="1" scrolling="yes"> </iframe>
+
+<h2 id="spring-boot-filter-listerner-interceptor-加载顺序"><a href="#spring-boot-filter-listerner-interceptor-加载顺序" class="headerlink" title="spring boot filter listerner interceptor   加载顺序"></a>spring boot filter listerner interceptor   加载顺序</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">1,filter listerner 进行排序</span><br><span class="line"></span><br><span class="line">org.springframework.boot.web.embedded.tomcat.TomcatStarter#onStartup</span><br><span class="line"></span><br><span class="line">org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext#selfInitialize</span><br><span class="line"></span><br><span class="line">org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext#getServletContextInitializerBeans</span><br><span class="line"></span><br><span class="line">2,filter listerner排序执行方法</span><br><span class="line"></span><br><span class="line">org.springframework.boot.web.servlet.ServletContextInitializerBeans#getOrderedBeansOfType(org.springframework.beans.factory.ListableBeanFactory, java.lang.Class&lt;T&gt;, java.util.Set&lt;?&gt;)</span><br><span class="line"></span><br><span class="line">3,添加到filter中,filters为数组,可排序</span><br><span class="line"></span><br><span class="line">org.apache.catalina.core.ApplicationFilterRegistration#addMappingForUrlPatterns</span><br><span class="line"></span><br><span class="line">/org/apache/tomcat/embed/tomcat-embed-core/9.0.17/tomcat-embed-core-9.0.17-sources.jar!/org/apache/catalina/core/ApplicationFilterRegistration.java:104</span><br><span class="line"></span><br><span class="line">4,listener顺序处理</span><br><span class="line"></span><br><span class="line">org.springframework.boot.web.servlet.ServletListenerRegistrationBean#register</span><br><span class="line"></span><br><span class="line">org.apache.catalina.core.ApplicationContext#addListener(T)</span><br><span class="line"></span><br><span class="line">org.apache.catalina.core.StandardContext#addApplicationEventListener</span><br><span class="line">5,Interceptor顺序添加</span><br><span class="line">@Configuration</span><br><span class="line">public class WebConfig implements WebMvcConfigurer &#123;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void addInterceptors(InterceptorRegistry registry) &#123;</span><br><span class="line">        registry.addInterceptor(new Intercepter1()).addPathPatterns(&quot;/**&quot;);</span><br><span class="line">        registry.addInterceptor(new Intercepter2()).addPathPatterns(&quot;/**&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="spring-boot-filter-listerner-Interceptor-执行所在类和执行顺序"><a href="#spring-boot-filter-listerner-Interceptor-执行所在类和执行顺序" class="headerlink" title="spring boot filter listerner Interceptor   执行所在类和执行顺序"></a>spring boot filter listerner Interceptor   执行所在类和执行顺序</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">request 源码入口</span><br><span class="line">&#123;</span><br><span class="line">    入口</span><br><span class="line">    org.apache.catalina.core.StandardHostValve#invoke</span><br><span class="line">    listerner处理过程</span><br><span class="line">    org.apache.catalina.Context#fireRequestInitEvent-&gt;requestInitialized --&gt;排序逐渐变大</span><br><span class="line">    &#123;</span><br><span class="line">        filter处理过程</span><br><span class="line">        org.apache.catalina.core.StandardWrapperValve#invoke</span><br><span class="line">        &#123;</span><br><span class="line">            org.apache.catalina.core.ApplicationFilterChain#doFilter&#123;</span><br><span class="line">            filter start--&gt;排序逐渐变大</span><br><span class="line">            &#123;</span><br><span class="line">                Interceptor处理过程</span><br><span class="line">                org.springframework.web.servlet.DispatcherServlet#doDispatch</span><br><span class="line">                &#123;</span><br><span class="line">                    org.springframework.web.servlet.HandlerExecutionChain#applyPreHandle--&gt;preHandle--&gt;排序逐渐变大</span><br><span class="line">                    org.springframework.web.servlet.HandlerAdapter#handle--&gt;control方法</span><br><span class="line">                    org.springframework.web.servlet.HandlerExecutionChain#applyPostHandle--&gt;postHandle(抛错不执行)--&gt;排序逐渐变小</span><br><span class="line">                    org.springframework.web.servlet.HandlerExecutionChain#triggerAfterCompletion--&gt;afterCompletion(肯定执行)--&gt;排序逐渐变小</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        filter end--&gt;排序逐渐变小</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">org.apache.catalina.Context#fireRequestDestroyEvent-&gt;requestDestroyed --&gt;排序逐渐变小</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="执行顺序"><a href="#执行顺序" class="headerlink" title="执行顺序"></a>执行顺序</h3><img src="https://www.plantuml.com/plantuml/svg/ZP9BJWCn38RtlSii9ikHCYfgXQW4gvuWJ5ngAKrInqN0ddMv0XAd6Ax3Gzm2joaCQekcYqYE_VctOsUOs12l5cwWDNfahGVdw1YeBEfigEhjzV5Z_VJvqduzj-_jUWTqyKtUdhFCpb_DAHjl3TbHy0ntNDINc1Zy1YHOhY3nH40q3X_0_a-hO_HPZ0uRmnXyBYvfCxpfMh4XMtsawiWnfcYucGDDWMuTI0yJwOKQY5l9I70XFJhe8TKVif7NK715VHq2Z_AbsZclWEV1zek5n2VLBKz7LMLcsr4ieeHaDBtI-_pFTexiQIo7mhriwH0g3o6jnINVPGZUof_y1W00">
+
+
+  </article>
+</div>
+
+
+    
+
+
+
+
+</div>
+
+<div class="footer-wrapper container">
+  <footer class="footer clearfix">
+    <div class="clearfix">
+    <a href="https://king019.github.io" class="footer-logo">
+      <i class="fa fa-github"></i>
+    </a>
+    <ul class="footer-social-link">
+      <li>© 2019 king019</li>
+      <li><a href="https://king019.github.io">Home</a></li>
+      
+      <li><a href="https://github.com/king019">Github</a></li>
+      
+    </ul>
+    <div class="footer-theme-info">
+      Theme <a href="//github.com/sabrinaluo/hexo-theme-replica">Replica</a>
+      by <a href="//github.com/sabrinaluo">Hiitea</a> ❤ Powered by Hexo
+    </div>
+    </div>
+    
+  </footer>
+</div>
+
+
+
+
+<script src="/js/main.js"></script>
+
+</body>
+</html>

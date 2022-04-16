@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>
+    ExternalizedConfiguration | king019
+  </title>
+  <meta name="description" content>
+  
+  <meta name="keywords" content="
+  spring,config,boot,ExternalizedConfiguration
+  ">
+  
+  <meta name="author" content="king019">
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="theme-color" content="#1e2327">
+  <link rel="apple-touch-icon" href="https://github.githubassets.com/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://github.githubassets.com/apple-touch-icon-180x180.png">
+
+  <link rel="icon" type="image/x-icon" href="https://github.githubassets.com/favicon.ico">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.25-csp/vue.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+</head>
+
+<body id="replica-app">
+
+<nav class="navbar-wrapper">
+  <div class="navbar">
+    <div class="container clearfix">
+      <a href="/" class="navbar-logo"><i class="fa fa-github"></i></a>
+
+      <div class="navbar-search float-left desktop-only">
+        <div class="navbar-search-form">
+          <label for="gsc-i-id1">This website</label>
+          <div id="google-search">
+            <gcse:search></gcse:search>
+          </div>
+        </div>
+      </div>
+
+      <ul class="navbar-nav float-left">
+        
+        <li><a href="/archives">Archives</a></li>
+        
+        
+        <li><a href="/categories">Categories</a></li>
+        
+        
+        <li><a href="/tags">Tags</a></li>
+        
+        
+        <li class="desktop-only"><a href="/atom.xml" target="_blank">RSS</a></li>
+        
+      </ul>
+
+      <ul class="navbar-nav user-nav float-right desktop-only">
+        <li class="user-nav-notification">
+          <a><span class="user-nav-unread"></span><i class="fa fa-bell"></i></a>
+        </li>
+        <li>
+          <a><i class="fa fa-plus"></i> <i class="fa fa-caret-down"></i></a>
+        </li>
+        <li class="user-nav-logo">
+          <a><img src="/assets/head.jpg"> <i class="fa fa-caret-down"></i></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="main-container">
+  <header class="header-wrapper desktop-only">
+  <div class="container header-site-detail">
+    <ul class="header-toolbar">
+      <li class="clearfix">
+        <a href="/archives" class="header-toolbar-left"><i
+                  class="fa fa-file-text"></i> Posts </a>
+        <a href="/archives"
+           class="header-toolbar-right"> 218 </a>
+      </li>
+      <li>
+        <a href="/tags" class="header-toolbar-left"><i
+                  class="fa fa-tags"></i> Tags </a>
+        <a href="/tags"
+           class="header-toolbar-right"> 213 </a>
+      </li>
+      <li>
+        <a href="/categories" class="header-toolbar-left"><i
+                  class="fa fa-folder-open"></i> Categories </a>
+        <a href="/categories"
+           class="header-toolbar-right"> 256 </a>
+      </li>
+    </ul>
+    <h2 class="header-title">
+      <i class="fa fa-book text-muted"></i>
+      <a href="/">king019</a>
+      
+      
+    </h2>
+  </div>
+
+  <div class="container">
+    <div class="header-tab-wrapper clearfix">
+      <span class="header-tab header-tab-selected"><i class="fa fa-thumbs-o-up"></i> Like</span>
+      <span class="header-tab"><i class="fa fa-share-alt"></i> Share</span>
+      <span class="header-tab"><i class="fa fa-comments-o"></i> Discussion</span>
+      <span class="header-tab"><i class="fa fa-bookmark-o"></i> Bookmark </span>
+      <span class="header-tab"><i class="fa fa-smile-o"></i> Smile <i class="fa fa-caret-down"></i></span>
+    </div>
+  </div>
+</header>
+
+
+<div class="post-container container">
+  <h3>
+    <i class="fa fa-user-o"></i>
+    king019
+
+    <span class="post-date float-right" title="{{moment(1650088475015).format('MMM DD, YYYY, h:mm:ss A')}}">
+      
+          <i class="fa fa-pencil-square-o"></i>
+      
+      {{moment(1650088475015).fromNow()}}
+    </span>
+  </h3>
+
+  <article class="post-content">
+    <h1>ExternalizedConfiguration</h1>
+    <p>ExternalizedConfiguration<br><img src="https://www.plantuml.com/plantuml/svg/nLRVJzDG57xlNy6Z9XB3QviH9ene0c7PZA_aRhtCIdjllRqTsHk9H124ON34n8X2Z11Y-F4WwCR-6sut_WjFs_tekgsRYF6fxJdd-xvpJyyvxOJ54UEseKkns8XJEdCsJyJQHr4fZuYhPN6uCHABIMcJQIGNDqrTooAkKJ8wtcMI7p2RA1bAkTW-5Uj7mu5CXat4S8BaDKQ9WGbNQbkduk2LdyDG96Do3lCvDiamud_0D0PK714LCJMDMLx7F82L2LvIVAJFKgzMhwixlLd2jfHDPZIBOuAP9UCsQT8_hDfChFZXPhKerhy0jnH9ylyrxa8253J3r770cyW3twojStY682ORpNlF8ujV5wBupkVsTQI17CF8Q2HF5t7hS6ApTFtp-EvbLFgaKyXvSrZVVtixkO2pnKT96DAGyEwb7f3HyKbA5hJSjDOX5y6e-8awkwlNbGif4ZqwFaEH2YmwN3fnlcFu0AIgtfsQPDJ4Z1VIr6PPR2drapDHBTL_h3ZbRHzgUPuMmQpDKKR78Pn729LKp0wxcxbpMO5CnFcUitpOu0glmbfbn_dqsLs5uCaZtSOFaStfaiRmFOkxBN-_ldKfYhk1fHbl1AXnGYZtwlG88vAa5amGXPGiwhxL8QAWNL_WB5USZM_Esl6Gn5Du0K7xk0Tqo-56JACifwmWCsnHFO-di8c9Yacse8YlAxNjr-AgL7j_9FL7HhAgD7LxtdW6oWWFFT9C61ciGYCySyj-9vd-7N7QUzyUg75WrcGCkEJQUKNiRVYiKWzCSn1j5kpM5gCKvMtNgmlNo2I5NzfkYoHrbCNFgGwJOKdzG15q4PYc9I3n6EjWak7hO7NKOX4NwjNlpkQ1r1VKvciCR5Sgy95lsXH_s0OEOyVO-WFjUsxsow9S30nhgzhkDFN9n7_qD_KaDGpuTvZHI6ZH15xhtrB9OrAdOJxDxKnORc08qCmYCmphCa5OkW1ht4W4l_J1YA0Zk6lcvvYMqqXy2NuA1b30zFnp3JX82kf93Q_tmlfzNG3pDPv2kozYjKVDelt3rxbtCxQRLPg0_Gb_vBy1"></p>
+
+  </article>
+</div>
+
+
+    
+
+
+
+
+</div>
+
+<div class="footer-wrapper container">
+  <footer class="footer clearfix">
+    <div class="clearfix">
+    <a href="https://king019.github.io" class="footer-logo">
+      <i class="fa fa-github"></i>
+    </a>
+    <ul class="footer-social-link">
+      <li>© 2019 king019</li>
+      <li><a href="https://king019.github.io">Home</a></li>
+      
+      <li><a href="https://github.com/king019">Github</a></li>
+      
+    </ul>
+    <div class="footer-theme-info">
+      Theme <a href="//github.com/sabrinaluo/hexo-theme-replica">Replica</a>
+      by <a href="//github.com/sabrinaluo">Hiitea</a> ❤ Powered by Hexo
+    </div>
+    </div>
+    
+  </footer>
+</div>
+
+
+
+
+<script src="/js/main.js"></script>
+
+</body>
+</html>

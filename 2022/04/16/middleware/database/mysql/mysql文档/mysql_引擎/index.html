@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>
+    mysql 引擎 | king019
+  </title>
+  <meta name="description" content>
+  
+  <meta name="keywords" content="
+  mysql
+  ">
+  
+  <meta name="author" content="king019">
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="theme-color" content="#1e2327">
+  <link rel="apple-touch-icon" href="https://github.githubassets.com/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://github.githubassets.com/apple-touch-icon-180x180.png">
+
+  <link rel="icon" type="image/x-icon" href="https://github.githubassets.com/favicon.ico">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.25-csp/vue.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+</head>
+
+<body id="replica-app">
+
+<nav class="navbar-wrapper">
+  <div class="navbar">
+    <div class="container clearfix">
+      <a href="/" class="navbar-logo"><i class="fa fa-github"></i></a>
+
+      <div class="navbar-search float-left desktop-only">
+        <div class="navbar-search-form">
+          <label for="gsc-i-id1">This website</label>
+          <div id="google-search">
+            <gcse:search></gcse:search>
+          </div>
+        </div>
+      </div>
+
+      <ul class="navbar-nav float-left">
+        
+        <li><a href="/archives">Archives</a></li>
+        
+        
+        <li><a href="/categories">Categories</a></li>
+        
+        
+        <li><a href="/tags">Tags</a></li>
+        
+        
+        <li class="desktop-only"><a href="/atom.xml" target="_blank">RSS</a></li>
+        
+      </ul>
+
+      <ul class="navbar-nav user-nav float-right desktop-only">
+        <li class="user-nav-notification">
+          <a><span class="user-nav-unread"></span><i class="fa fa-bell"></i></a>
+        </li>
+        <li>
+          <a><i class="fa fa-plus"></i> <i class="fa fa-caret-down"></i></a>
+        </li>
+        <li class="user-nav-logo">
+          <a><img src="/assets/head.jpg"> <i class="fa fa-caret-down"></i></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="main-container">
+  <header class="header-wrapper desktop-only">
+  <div class="container header-site-detail">
+    <ul class="header-toolbar">
+      <li class="clearfix">
+        <a href="/archives" class="header-toolbar-left"><i
+                  class="fa fa-file-text"></i> Posts </a>
+        <a href="/archives"
+           class="header-toolbar-right"> 218 </a>
+      </li>
+      <li>
+        <a href="/tags" class="header-toolbar-left"><i
+                  class="fa fa-tags"></i> Tags </a>
+        <a href="/tags"
+           class="header-toolbar-right"> 213 </a>
+      </li>
+      <li>
+        <a href="/categories" class="header-toolbar-left"><i
+                  class="fa fa-folder-open"></i> Categories </a>
+        <a href="/categories"
+           class="header-toolbar-right"> 256 </a>
+      </li>
+    </ul>
+    <h2 class="header-title">
+      <i class="fa fa-book text-muted"></i>
+      <a href="/">king019</a>
+      
+      
+    </h2>
+  </div>
+
+  <div class="container">
+    <div class="header-tab-wrapper clearfix">
+      <span class="header-tab header-tab-selected"><i class="fa fa-thumbs-o-up"></i> Like</span>
+      <span class="header-tab"><i class="fa fa-share-alt"></i> Share</span>
+      <span class="header-tab"><i class="fa fa-comments-o"></i> Discussion</span>
+      <span class="header-tab"><i class="fa fa-bookmark-o"></i> Bookmark </span>
+      <span class="header-tab"><i class="fa fa-smile-o"></i> Smile <i class="fa fa-caret-down"></i></span>
+    </div>
+  </div>
+</header>
+
+
+<div class="post-container container">
+  <h3>
+    <i class="fa fa-user-o"></i>
+    king019
+
+    <span class="post-date float-right" title="{{moment(1650088475021).format('MMM DD, YYYY, h:mm:ss A')}}">
+      
+          <i class="fa fa-pencil-square-o"></i>
+      
+      {{moment(1650088475021).fromNow()}}
+    </span>
+  </h3>
+
+  <article class="post-content">
+    <h1>mysql 引擎</h1>
+    <h2 id="innodb引擎"><a href="#innodb引擎" class="headerlink" title="innodb引擎"></a>innodb引擎</h2><h3 id="acid"><a href="#acid" class="headerlink" title="acid"></a>acid</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">a 原子性</span><br><span class="line">c 一致性</span><br><span class="line">     https://www.jianshu.com/p/20e10ed721d0</span><br><span class="line">     https://blog.csdn.net/aaa821/article/details/80645242</span><br><span class="line">     undo-&gt;update-&gt;redo</span><br><span class="line">i 隔离性</span><br><span class="line">d 持久性</span><br></pre></td></tr></table></figure>
+
+<h3 id="mvcc"><a href="#mvcc" class="headerlink" title="mvcc"></a>mvcc</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">读已提交:提交后即可看到</span><br><span class="line">可重复读:读取从事务开始的数据,新增修改看不到</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">如果insert和delete在小量且固定速度,清除线程延迟和表变大,因为这些死的行数据,导致变慢.增加资源(14.3)</span><br></pre></td></tr></table></figure>
+
+<h4 id="mvcc非聚集索引"><a href="#mvcc非聚集索引" class="headerlink" title="mvcc非聚集索引"></a>mvcc非聚集索引</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">clustered index</span><br><span class="line">    updated in-place,and their hidden system columns point undo log entries from which earlier versions of records can be reconstructed.</span><br><span class="line">secondary index</span><br><span class="line">    records do not contain hidden system columns nor are they updated in-place.</span><br><span class="line">    when a secondary index column is updated,old secondary index records are delete-marked,new records are inserted,and delete-marked</span><br></pre></td></tr></table></figure>
+
+<h2 id="innodb-结构"><a href="#innodb-结构" class="headerlink" title="innodb 结构"></a>innodb 结构</h2><h3 id="in-memory"><a href="#in-memory" class="headerlink" title="in memory"></a>in memory</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">buffer pool</span><br><span class="line">change buffer</span><br><span class="line"></span><br><span class="line">log buffer</span><br></pre></td></tr></table></figure>
+
+<h4 id="buffer-pool"><a href="#buffer-pool" class="headerlink" title="buffer pool"></a>buffer pool</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">caches tableand indexdata as it is accessed.</span><br><span class="line">frequently used data to be processed direct from memeory.</span><br><span class="line">80% of physical memory often assigned to buffer pool.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">divided in pages that can potentially hold multiple rows.</span><br><span class="line">used out of cache using a variation of the lru algorithm.</span><br></pre></td></tr></table></figure>
+
+<h4 id="buffer-pool-lru-algorithm"><a href="#buffer-pool-lru-algorithm" class="headerlink" title="buffer pool lru algorithm"></a>buffer pool lru algorithm</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">head(new   5/8)  age</span><br><span class="line">tail(old   3/8)</span><br></pre></td></tr></table></figure>
+
+<h4 id="change-buffer"><a href="#change-buffer" class="headerlink" title="change buffer"></a>change buffer</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">caches changes to secondary index pages when those pages are not in the buffer pool.</span><br><span class="line">the buffered changes,which may result from insert,update or delete,are merged later when the pages are loaded into the buffer pool by other read operations.</span><br><span class="line"></span><br><span class="line">secondary index are usually nonunique,and insert secondary inidex happen in a relativelay rando order.</span><br><span class="line">similarly,deletes and updates may affect secondary index pages that are not adjacently located in an index tree.</span><br><span class="line">merging cached changes at a later time,when affected pages are read into thr beffer pool by other operations,avoids substantial random access i/o that,would be required to read secondary index pages into the buffer pool from disk.</span><br></pre></td></tr></table></figure>
+
+<h4 id="apaptive-hash-index"><a href="#apaptive-hash-index" class="headerlink" title="apaptive hash index"></a>apaptive hash index</h4><h4 id="log-buffer"><a href="#log-buffer" class="headerlink" title="log buffer"></a>log buffer</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">the memory area that holds data to be written to the log files on disk.</span><br></pre></td></tr></table></figure>
+
+<h3 id="on-disk"><a href="#on-disk" class="headerlink" title="on disk"></a>on disk</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">system tablespace(ibdata1)      file-per-table</span><br><span class="line">  [innodb data,                         innodb_file_per_table=on</span><br><span class="line">  doublewrite buffer,                   t1.ibd   t2.ibd</span><br><span class="line">  change buffer,                general tablespace</span><br><span class="line">  undo logs]                            ts1.ibd  t2.ibd</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">undo tablespace                 temporary tablespace</span><br><span class="line">    undo_001                    ibtmp1</span><br><span class="line">    undo_002</span><br><span class="line">redo log</span><br><span class="line">    ib_logfile0</span><br><span class="line">    ib_logile2</span><br></pre></td></tr></table></figure>
+
+<h4 id="tables"><a href="#tables" class="headerlink" title="tables"></a>tables</h4><h5 id="auto-increment-handling-in-innodb"><a href="#auto-increment-handling-in-innodb" class="headerlink" title="auto_increment handling in innodb"></a>auto_increment handling in innodb</h5><h6 id="lock-modes"><a href="#lock-modes" class="headerlink" title="lock modes"></a>lock modes</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">insert-like</span><br><span class="line">simple inserts</span><br><span class="line">bulk inserts</span><br><span class="line">mixed-mode inserts</span><br></pre></td></tr></table></figure>
+
+<h5 id="lock-mode-usage-implications"><a href="#lock-mode-usage-implications" class="headerlink" title="lock mode usage implications"></a>lock mode usage implications</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">using auto-increment with replication</span><br><span class="line">&quot;lost&quot; auto-increment values and sequence gaps</span><br><span class="line">      roll back will lost</span><br><span class="line">specifying null or 0 for the auto_increment column</span><br><span class="line">      if a user specifier null or 0 for auto_increment column in an insert.</span><br><span class="line">assigning a negative value to the auto_increment column</span><br><span class="line">      负数是可分配,但是不会增加</span><br><span class="line">if the auto_increment value becomes larger than the maximum integer for the specified integer type</span><br><span class="line">     the behavior of the auto-increment mechanism is not defined if the value becomes larger than the maximum integer that can be stored in the specified integer type;</span><br><span class="line">gaps in auto-increment values for bulk inserts</span><br><span class="line">     lock mode(0,1(defualt)) bulk insert without gaps</span><br><span class="line">     lock mode(2)</span><br><span class="line">auto-increment values assigned by &quot;mixed-mode inserts&quot;</span><br><span class="line">modifyint auto_increment column values in the middle of a sequence of insert statemens.</span><br></pre></td></tr></table></figure>
+
+<h5 id="innodb-auto-increment-counter-initialization"><a href="#innodb-auto-increment-counter-initialization" class="headerlink" title="innodb auto_increment counter initialization"></a>innodb auto_increment counter initialization</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">this counter is stored only in main memory,not on disk.</span><br><span class="line">select max(ai_col) from table_name fro update;</span><br><span class="line">超多数字最大值后,会返回最后的最大值,这个是mysql的行为</span><br><span class="line">重启后会使用原来没有保存的值,重新获取ai_col</span><br><span class="line">```` </span><br><span class="line">#### indexs</span><br></pre></td></tr></table></figure>
+
+<p>clustered and secondary idexs<br>每个表都有一个聚簇索引<br>其他的是非聚簇索引</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">##### physical structure of an inodb index</span><br></pre></td></tr></table></figure>
+
+<p>b+ tree<br>待续</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">##### tablespaces</span><br><span class="line">###### system tablespace</span><br></pre></td></tr></table></figure>
+
+<p>storage area for the innodb data dictionary,the doublewrite buffer,the change buffer,and undo logs.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">###### file-per-table tablespace</span><br></pre></td></tr></table></figure>
+
+<pre><code>contains data and indexs for a single innodb table,and is stored on the file system in its own data file.</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">###### general tablespace</span><br></pre></td></tr></table></figure>
+
+<pre><code>is a shared innodb tablespace that is created using create tablespace syntax.</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">###### undo tablespace</span><br></pre></td></tr></table></figure>
+
+<pre><code>collections of undo log records that contain infomation about how to undo the latest change by a transation to a clustered index record.</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">###### temporary tablespace</span><br><span class="line">##### innodb data dictionary</span><br></pre></td></tr></table></figure>
+
+<p>.frm</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">##### doublewrite buffer</span><br></pre></td></tr></table></figure>
+
+<pre><code>is a storage area where innodb writes apges flushed from the buffer pool before writing the pages to their proper positions in th innodb data files.</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">##### redo log</span><br></pre></td></tr></table></figure>
+
+<pre><code>is a disk-based data structuew used during crash recovery to correct data written by incomplete transactions.</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">##### undo log</span><br></pre></td></tr></table></figure>
+
+<pre><code>is a collection of undo log records associated with a single redo-write transaction.</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#### locking and transaction model</span><br><span class="line">##### isolation level</span><br></pre></td></tr></table></figure>
+
+<p>uncommitted<br>read commited<br>repeatable read<br>serializable</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">##### autocommit,commit,rollback</span><br><span class="line">##### consistent nonlocking read</span><br></pre></td></tr></table></figure>
+
+<pre><code>a consistent read means that innodb uses multi-versioning to present to a query a snapshot of the database at a point in time.</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">````</span><br><span class="line">read committed</span><br><span class="line">    最新的提交数据</span><br><span class="line">repeatable read</span><br><span class="line">    事务开始时的数据</span><br><span class="line">待续</span><br></pre></td></tr></table></figure>
+
+<h5 id="locking-reads"><a href="#locking-reads" class="headerlink" title="locking reads"></a>locking reads</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select ... lock in share mode</span><br><span class="line">select ... for update</span><br></pre></td></tr></table></figure>
+
+<h4 id="locks-set-by-different-sql-statements-in-innodb"><a href="#locks-set-by-different-sql-statements-in-innodb" class="headerlink" title="locks set by different sql statements in innodb"></a>locks set by different sql statements in innodb</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a locking read,an update,or a delete generally set record locks on every index record that is scanned in the processing of the sql statement.</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">select ... from    is a consistent read,not locks.</span><br><span class="line">select ... for update/select ... lock in share mode,locks are acquired for scanned rows,and expected to be released for rows that do not qualify for inclusion in the result set.</span><br><span class="line">select ... lock in share mode,set shared next-key lock on all index records the search encouters</span><br><span class="line">select ... for update sets an execlusive next-lock on every record the search encounters.however,only an index record lock is required for statements that lock rows using a unique index to search for a unique row.</span><br><span class="line">update ... where  同上,</span><br><span class="line">    待续</span><br></pre></td></tr></table></figure>
+
+<p>待续</p>
+<h4 id="phantom-rows"><a href="#phantom-rows" class="headerlink" title="phantom rows"></a>phantom rows</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">幻读</span><br><span class="line">mvcc</span><br></pre></td></tr></table></figure>
+
+<h4 id="dead-locks"><a href="#dead-locks" class="headerlink" title="dead locks"></a>dead locks</h4><h4 id="disk-i-o-and-file-space-management"><a href="#disk-i-o-and-file-space-management" class="headerlink" title="disk i/o and file space management"></a>disk i/o and file space management</h4><h5 id="disk-i-0"><a href="#disk-i-0" class="headerlink" title="disk i/0"></a>disk i/0</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">read-ahead</span><br><span class="line">    顺序读</span><br><span class="line">    随即读  理解下待续</span><br></pre></td></tr></table></figure>
+
+<h4 id="online-ddl"><a href="#online-ddl" class="headerlink" title="online ddl"></a>online ddl</h4><h4 id="online-ddl-limitations"><a href="#online-ddl-limitations" class="headerlink" title="online ddl limitations"></a>online ddl limitations</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">在线ddl实现原理 待续</span><br></pre></td></tr></table></figure>
+
+
+  </article>
+</div>
+
+
+    
+
+
+
+
+</div>
+
+<div class="footer-wrapper container">
+  <footer class="footer clearfix">
+    <div class="clearfix">
+    <a href="https://king019.github.io" class="footer-logo">
+      <i class="fa fa-github"></i>
+    </a>
+    <ul class="footer-social-link">
+      <li>© 2019 king019</li>
+      <li><a href="https://king019.github.io">Home</a></li>
+      
+      <li><a href="https://github.com/king019">Github</a></li>
+      
+    </ul>
+    <div class="footer-theme-info">
+      Theme <a href="//github.com/sabrinaluo/hexo-theme-replica">Replica</a>
+      by <a href="//github.com/sabrinaluo">Hiitea</a> ❤ Powered by Hexo
+    </div>
+    </div>
+    
+  </footer>
+</div>
+
+
+
+
+<script src="/js/main.js"></script>
+
+</body>
+</html>

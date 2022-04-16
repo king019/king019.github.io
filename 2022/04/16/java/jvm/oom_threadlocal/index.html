@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>
+    ThreadLocal深入理解与内存泄露分析 | king019
+  </title>
+  <meta name="description" content>
+  
+  <meta name="keywords" content="
+  jvm,oom
+  ">
+  
+  <meta name="author" content="king019">
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="theme-color" content="#1e2327">
+  <link rel="apple-touch-icon" href="https://github.githubassets.com/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://github.githubassets.com/apple-touch-icon-180x180.png">
+
+  <link rel="icon" type="image/x-icon" href="https://github.githubassets.com/favicon.ico">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.25-csp/vue.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+</head>
+
+<body id="replica-app">
+
+<nav class="navbar-wrapper">
+  <div class="navbar">
+    <div class="container clearfix">
+      <a href="/" class="navbar-logo"><i class="fa fa-github"></i></a>
+
+      <div class="navbar-search float-left desktop-only">
+        <div class="navbar-search-form">
+          <label for="gsc-i-id1">This website</label>
+          <div id="google-search">
+            <gcse:search></gcse:search>
+          </div>
+        </div>
+      </div>
+
+      <ul class="navbar-nav float-left">
+        
+        <li><a href="/archives">Archives</a></li>
+        
+        
+        <li><a href="/categories">Categories</a></li>
+        
+        
+        <li><a href="/tags">Tags</a></li>
+        
+        
+        <li class="desktop-only"><a href="/atom.xml" target="_blank">RSS</a></li>
+        
+      </ul>
+
+      <ul class="navbar-nav user-nav float-right desktop-only">
+        <li class="user-nav-notification">
+          <a><span class="user-nav-unread"></span><i class="fa fa-bell"></i></a>
+        </li>
+        <li>
+          <a><i class="fa fa-plus"></i> <i class="fa fa-caret-down"></i></a>
+        </li>
+        <li class="user-nav-logo">
+          <a><img src="/assets/head.jpg"> <i class="fa fa-caret-down"></i></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="main-container">
+  <header class="header-wrapper desktop-only">
+  <div class="container header-site-detail">
+    <ul class="header-toolbar">
+      <li class="clearfix">
+        <a href="/archives" class="header-toolbar-left"><i
+                  class="fa fa-file-text"></i> Posts </a>
+        <a href="/archives"
+           class="header-toolbar-right"> 218 </a>
+      </li>
+      <li>
+        <a href="/tags" class="header-toolbar-left"><i
+                  class="fa fa-tags"></i> Tags </a>
+        <a href="/tags"
+           class="header-toolbar-right"> 213 </a>
+      </li>
+      <li>
+        <a href="/categories" class="header-toolbar-left"><i
+                  class="fa fa-folder-open"></i> Categories </a>
+        <a href="/categories"
+           class="header-toolbar-right"> 256 </a>
+      </li>
+    </ul>
+    <h2 class="header-title">
+      <i class="fa fa-book text-muted"></i>
+      <a href="/">king019</a>
+      
+      
+    </h2>
+  </div>
+
+  <div class="container">
+    <div class="header-tab-wrapper clearfix">
+      <span class="header-tab header-tab-selected"><i class="fa fa-thumbs-o-up"></i> Like</span>
+      <span class="header-tab"><i class="fa fa-share-alt"></i> Share</span>
+      <span class="header-tab"><i class="fa fa-comments-o"></i> Discussion</span>
+      <span class="header-tab"><i class="fa fa-bookmark-o"></i> Bookmark </span>
+      <span class="header-tab"><i class="fa fa-smile-o"></i> Smile <i class="fa fa-caret-down"></i></span>
+    </div>
+  </div>
+</header>
+
+
+<div class="post-container container">
+  <h3>
+    <i class="fa fa-user-o"></i>
+    king019
+
+    <span class="post-date float-right" title="{{moment(1650088475020).format('MMM DD, YYYY, h:mm:ss A')}}">
+      
+          <i class="fa fa-pencil-square-o"></i>
+      
+      {{moment(1650088475020).fromNow()}}
+    </span>
+  </h3>
+
+  <article class="post-content">
+    <h1>ThreadLocal深入理解与内存泄露分析</h1>
+    <p><a href="https://blog.csdn.net/sunxianghuang/article/details/51965621" target="_blank" rel="noopener">https://blog.csdn.net/sunxianghuang/article/details/51965621</a></p>
+<p>ThreadLocal<br>当使用ThreadLocal维护变量时，ThreadLocal为每个使用该变量的线程提供独立的变量副本，所以每一个线程都可以独立地改变自己的副本，而不会影响其它线程所对应的副本。从线程的角度看，目标变量就象是线程的本地变量，这也是类名中“Local”所要表达的意思。可以理解为如下三点：<br>1、每个线程都有自己的局部变量<br>每个线程都有一个独立于其他线程的上下文来保存这个变量，一个线程的本地变量对其他线程是不可见的。<br>2、独立于变量的初始化副本<br>ThreadLocal可以给一个初始值，而每个线程都会获得这个初始化值的一个副本，这样才能保证不同的线程都有一份拷贝。<br>3、状态与某一个线程相关联<br>ThreadLocal 不是用于解决共享变量的问题的，不是为了协调线程同步而存在，而是为了方便每个线程处理自己的私有状态而引入的一个机制，理解这点对正确使用ThreadLocal至关重要。<br>ThreadLocal的接口方法</p>
+<pre><code>public T get() { }  
+public void set(T value) { }  
+public void remove() { }  
+protected T initialValue() { }  </code></pre><p>get()用来获取当前线程中变量的副本（保存在ThreadLocal中）。<br>set()用来设置当前线程中变量的副本。</p>
+<p>remove()用来移除当前线程中变量的副本。</p>
+<p>initialValue()是一个protected方法，用来给ThreadLocal变量提供初始值，每个线程都会获取这个初始值的一个副本。</p>
+<p>使用示例</p>
+<p>public class ThreadLocalTest {<br>        //创建一个Integer型的线程本地变量<br>        public static final ThreadLocal<integer> local = new ThreadLocal<integer>() {<br>            @Override<br>            protected Integer initialValue() {<br>                return 0;<br>            }<br>        };<br>        //计数<br>        static class Counter implements Runnable{<br>            @Override<br>            public void run() {<br>                //获取当前线程的本地变量，然后累加100次<br>                int num = local.get();<br>                for (int i = 0; i &lt; 100; i++) {<br>                    num++;<br>                }<br>                //重新设置累加后的本地变量<br>                local.set(num);<br>                System.out.println(Thread.currentThread().getName() + “ : “+ local.get());<br>            }<br>        }<br>        public static void main(String[] args) throws InterruptedException {<br>            Thread[] threads = new Thread[5];<br>            for (int i = 0; i &lt; 5; i++) {<br>                threads[i] = new Thread(new Counter() ,”CounterThread-[“ + i+”]”);<br>                threads[i].start();<br>            }<br>        }<br>    }<br>输出：<br>CounterThread-[2] : 100<br>CounterThread-[0] : 100<br>CounterThread-[3] : 100<br>CounterThread-[1] : 100<br>CounterThread-[4] : 100</integer></integer></p>
+<p>对initialValue函数的正确理解</p>
+<p>public class ThreadLocalMisunderstand {  </p>
+<pre><code>static class Index {  
+    private int num;   
+    public void increase() {  
+        num++;  
+    }  
+    public int getValue() {  
+        return num;  
+    }  
+}  
+private static Index num=new Index();  
+//创建一个Index型的线程本地变量  
+public static final ThreadLocal&lt;Index&gt; local = new ThreadLocal&lt;Index&gt;() {  
+    @Override  
+    protected Index initialValue() {  
+        return num;  
+    }  
+};  
+//计数  
+static class Counter implements Runnable{  
+    @Override  
+    public void run() {  
+        //获取当前线程的本地变量，然后累加10000次  
+        Index num = local.get();  
+        for (int i = 0; i &lt; 10000; i++) {  
+            num.increase();  
+        }  
+        //重新设置累加后的本地变量  
+        local.set(num);  
+        System.out.println(Thread.currentThread().getName() + &quot; : &quot;+ local.get().getValue());  
+    }  
+}  
+public static void main(String[] args) throws InterruptedException {  
+    Thread[] threads = new Thread[5];  
+    for (int i = 0; i &lt; 5; i++) {          
+        threads[i] = new Thread(new Counter() ,&quot;CounterThread-[&quot; + i+&quot;]&quot;);  
+    }   
+    for (int i = 0; i &lt; 5; i++) {      
+        threads[i].start();  
+    }  
+}  </code></pre><p>}<br>输出：<br>CounterThread-[0] : 12019<br>CounterThread-[2] : 14548<br>CounterThread-[1] : 13271<br>CounterThread-[3] : 34069<br>CounterThread-[4] : 34069</p>
+<p>现在得到的计数不一样了，并且每次运行的结果也不一样，说好的线程本地变量呢？</p>
+<p>之前提到，我们通过覆盖initialValue函数来给我们的ThreadLocal提供初始值，每个线程都会获取这个初始值的一个副本。而现在我们的初始值是一个定义好的一个对象，num是这个对象的引用。换句话说我们的初始值是一个引用。引用的副本和引用指向的不就是同一个对象吗？</p>
+<p>如果我们想给每一个线程都保存一个Index对象应该怎么办呢？那就是创建对象的副本而不是对象引用的副本。</p>
+<pre><code>private static ThreadLocal&lt;Index&gt; local = new ThreadLocal&lt;Index&gt;() {  
+    @Override  
+    protected Index initialValue() {  
+        return new Index(); //注意这里，新建一个对象  
+    }  
+};  </code></pre><p>ThreadLocal源码分析<br>存储结构</p>
+<p>public class Thread implements Runnable {<br>……<br>    ThreadLocal.ThreadLocalMap threadLocals = null;//一个线程对应一个ThreadLocalMap<br>……<br>}<br>public class ThreadLocal<t> {<br>……<br>    static class ThreadLocalMap {//静态内部类<br>        static class Entry extends WeakReference<threadlocal> {//键值对<br>            //Entry是ThreadLocal对象的弱引用，this作为键（key）<br>            /** The value associated with this ThreadLocal. */<br>            Object value;//ThreadLocal关联的对象，作为值（value），也就是所谓的线程本地变量</threadlocal></t></p>
+<pre><code>        Entry(ThreadLocal k, Object v) {
+            super(k);
+            value = v;
+        }
+    }
+    ......
+    private Entry[] table;//用数组保存所有Entry，采用线性探测避免冲突
+}</code></pre><p>……<br>}<br>ThreadLocal源码</p>
+<p>public class ThreadLocal<t> {<br>    /**ThreadLocals rely on per-thread linear-probe hash maps attached to each thread<br>       (Thread.threadLocals and inheritableThreadLocals).<br>       The ThreadLocal objects act as keys, searched via threadLocalHashCode.  */<br>    //每个线程对应一个基于线性探测的哈希表（ThreadLocalMap类型），通过Thread类的threadLocals属性关联。<br>    //在该哈希表中，逻辑上key为ThreadLocal，实质上通过threadLocalHashCode属性作为哈希值查找。<br>    private final int threadLocalHashCode = nextHashCode();</t></p>
+<pre><code>/**  The next hash code to be given out. Updated atomically. Starts at zero.*/
+private static AtomicInteger nextHashCode = new AtomicInteger();
+
+private static final int HASH_INCREMENT = 0x61c88647;
+
+/**Returns the next hash code.*/
+private static int nextHashCode() {
+    return nextHashCode.getAndAdd(HASH_INCREMENT);
+}
+
+/**Returns the current thread&apos;s &quot;initial value&quot; for this thread-local variable.  
+   This method will be invoked the first time a thread accesses the variable with the {@link #get} method, 
+   unless the thread previously invoked the {@link #set} method, in which case the &lt;tt&gt;initialValue&lt;/tt&gt; 
+   method will not be invoked for the thread.  Normally, this method is invoked at most once per thread,
+   but it may be invoked again in case of subsequent invocations of {@link #remove} followed by {@link #get}.
+   &lt;p&gt;This implementation simply returns &lt;tt&gt;null&lt;/tt&gt;; if the programmer desires thread-local variables 
+   to have an initial value other than &lt;tt&gt;null&lt;/tt&gt;, &lt;tt&gt;ThreadLocal&lt;/tt&gt; must be subclassed, 
+   and this method overridden.  Typically, an anonymous inner class will be used.
+ * @return the initial value for this thread-local
+ */
+//初始化线程本地变量，注意上面讲到的关于该方法的正确理解
+protected T initialValue() {
+    return null;
+}
+
+/**  Creates a thread local variable.*/
+public ThreadLocal() {
+}
+
+/**Returns the value in the current thread&apos;s copy of this thread-local variable. 
+   If the variable has no value for the current thread, it is first initialized to the value returned
+   by an invocation of the {@link #initialValue} method.
+ * @return the current thread&apos;s value of this thread-local
+ */
+public T get() {
+    Thread t = Thread.currentThread();//获取当前线程对象
+    ThreadLocalMap map = getMap(t);//获取当前线程对象关联的ThreadLocalMap
+    if (map != null) {
+        ThreadLocalMap.Entry e = map.getEntry(this);//以this作为key，查找线程本地变量
+        if (e != null)//如果该线程本地变量已经存在，返回即可
+            return (T)e.value;
+    }
+    return setInitialValue();//如果该线程本地变量不存在，设置初始值并返回
+}
+
+/**Variant of set() to establish initialValue. 
+   Used instead of set() in case user has overridden the set() method.  
+ * @return the initial value
+ */
+private T setInitialValue() {
+    T value = initialValue();//获取线程本地变量的初始值
+    Thread t = Thread.currentThread();
+    ThreadLocalMap map = getMap(t);
+    if (map != null)//如果当前线程关联的ThreadLocalMap已经存在，将线程本地变量插入哈希表
+        map.set(this, value);
+    else
+        createMap(t, value);//否则，创建新的ThreadLocalMap并将&lt;this,value&gt;组成的键值对加入到ThreadLocalMap中
+    return value;
+}
+
+/**Sets the current thread&apos;s copy of this thread-local variableto the specified value.  
+   Most subclasses will have no need to override this method, relying solely on the {@link #initialValue}
+ * method to set the values of thread-locals.
+ *
+ * @param value the value to be stored in the current thread&apos;s copy of this thread-local.
+ */
+public void set(T value) {
+    Thread t = Thread.currentThread();
+    ThreadLocalMap map = getMap(t);//获取当前线程的ThreadLocalMap
+    if (map != null)
+        map.set(this, value);
+    else
+        createMap(t, value);
+}
+
+/**Removes the current thread&apos;s value for this thread-local variable.  
+   If this thread-local variable is subsequently {@linkplain #get read} by the current thread, 
+   its value will be reinitialized by invoking its {@link #initialValue} method,
+   unless its value is {@linkplain #set set} by the current thread in the interim.  
+   This may result in multiple invocations of the &lt;tt&gt;initialValue&lt;/tt&gt; method in the current thread.
+ *
+ * @since 1.5
+ */
+ public void remove() {//从当前线程的ThreadLocalMap中移除线程本地变量
+     ThreadLocalMap m = getMap(Thread.currentThread());
+     if (m != null)
+         m.remove(this);
+ }
+
+/** Get the map associated with a ThreadLocal. Overridden in InheritableThreadLocal.*/
+ThreadLocalMap getMap(Thread t) {
+    return t.threadLocals;
+}
+
+/**Create the map associated with a ThreadLocal. Overridden in InheritableThreadLocal.*/
+//创建ThreadLocalMap后与当前线程关联，并将线程本地变量插入ThreadLocalMap
+void createMap(Thread t, T firstValue) {
+    t.threadLocals = new ThreadLocalMap(this, firstValue);
+}
+//其他
+static ThreadLocalMap createInheritedMap(ThreadLocalMap parentMap) {
+    return new ThreadLocalMap(parentMap);
+}
+
+T childValue(T parentValue) {
+    throw new UnsupportedOperationException();
+}
+
+static class ThreadLocalMap {//基于线性探测解决冲突的哈希映射表
+......
+}</code></pre><p>……<br>}<br>内存泄露与WeakReference<br>        static class Entry extends WeakReference<threadlocal> {<br>            /** The value associated with this ThreadLocal. */<br>            Object value;</threadlocal></p>
+<pre><code>    Entry(ThreadLocal k, Object v) {
+        super(k);
+        value = v;
+    }
+}</code></pre><p>对于键值对Entry，key为ThreadLocal实例，value为线程本地变量。不难发现，Entry继承自WeakReference<threadlocal>。WeakReference就是所谓的弱引用，也就是说Key是一个弱引用（引用ThreadLocal实例）。<br>关于强引用、弱引用，参看：<a href="http://blog.csdn.net/sunxianghuang/article/details/52267282" target="_blank" rel="noopener">http://blog.csdn.net/sunxianghuang/article/details/52267282</a></threadlocal></p>
+<p>public class Test {<br>    public static class MyThreadLocal extends ThreadLocal {<br>        private byte[] a = new byte[1024<em>1024</em>1];</p>
+<pre><code>    @Override
+    public void finalize() {
+        System.out.println(&quot;My threadlocal 1 MB finalized.&quot;);
+    }
+}
+
+public static class My50MB {//占用内存的大对象
+    private byte[] a = new byte[1024*1024*50];
+
+    @Override
+    public void finalize() {
+        System.out.println(&quot;My 50 MB finalized.&quot;);
+    }
+}
+public static void main(String[] args) throws InterruptedException {
+    new Thread(new Runnable() {
+        @Override
+        public void run() {
+            ThreadLocal tl = new MyThreadLocal();
+            tl.set(new My50MB());
+
+            tl=null;//断开ThreadLocal的强引用
+            System.out.println(&quot;Full GC 1&quot;);
+            System.gc();
+
+        }
+
+    }).start();
+    System.out.println(&quot;Full GC 2&quot;);
+    System.gc();
+    Thread.sleep(1000);
+    System.out.println(&quot;Full GC 3&quot;);
+    System.gc();
+    Thread.sleep(1000);
+    System.out.println(&quot;Full GC 4&quot;);
+    System.gc();
+    Thread.sleep(1000);
+
+}</code></pre><p>}<br>输出：<br>Full GC 2<br>Full GC 1<br>My threadlocal 1 MB finalized.<br>Full GC 3<br>My 50 MB finalized.<br>Full GC 4</p>
+<p>从输出可以看出，一旦threadLocal的强引用断开，key的内存就可以得到释放。只有当线程结束后，value的内存才释放。</p>
+<p>每个thread中都存在一个map， map的类型是ThreadLocal.ThreadLocalMap。Map中的key为一个threadlocal实例。这个Map的确使用了弱引用，不过弱引用只是针对key。每个key都弱引用指向threadlocal。当把threadlocal实例置为null以后，没有任何强引用指threadlocal实例，所以threadlocal将会被gc回收。但是，我们的value却不能回收，因为存在一条从current thread连接过来的强引用。</p>
+<p>只有当前thread结束以后, current thread就不会存在栈中,强引用断开, Current Thread, Map, value将全部被GC回收.</p>
+<p>注: 实线代表强引用,虚线代表弱引用.</p>
+<p>所以得出一个结论就是只要这个线程对象被gc回收，就不会出现内存泄露。但是value在threadLocal设为null和线程结束这段时间不会被回收，就发生了我们认为的“内存泄露”。</p>
+<p>因此，最要命的是线程对象不被回收的情况，这就发生了真正意义上的内存泄露。比如使用线程池的时候，线程结束是不会销毁的，会再次使用的，就可能出现内存泄露。　　<br>为了最小化内存泄露的可能性和影响，在ThreadLocal的get,set的时候，遇到key为null的entry就会清除对应的value。</p>
+<p>所以最怕的情况就是，threadLocal对象设null了，开始发生“内存泄露”，然后使用线程池，这个线程结束，线程放回线程池中不销毁，这个线程一直不被使用，或者分配使用了又不再调用get,set方法，或者get,set方法调用时依然没有遇到key为null的entry，那么这个期间就会发生真正的内存泄露。</p>
+<p>使用ThreadLocal需要注意，每次执行完毕后，要使用remove()方法来清空对象,否则 ThreadLocal 存放大对象后，可能会OMM。</p>
+<p>为什么使用弱引用<br>To help deal with very large and long-lived usages, the hash table entries use  WeakReferences for keys.</p>
+<p>应用实例<br>Hibernate中使用Threadlocal实现线程相关的Session</p>
+
+  </article>
+</div>
+
+
+    
+
+
+
+
+</div>
+
+<div class="footer-wrapper container">
+  <footer class="footer clearfix">
+    <div class="clearfix">
+    <a href="https://king019.github.io" class="footer-logo">
+      <i class="fa fa-github"></i>
+    </a>
+    <ul class="footer-social-link">
+      <li>© 2019 king019</li>
+      <li><a href="https://king019.github.io">Home</a></li>
+      
+      <li><a href="https://github.com/king019">Github</a></li>
+      
+    </ul>
+    <div class="footer-theme-info">
+      Theme <a href="//github.com/sabrinaluo/hexo-theme-replica">Replica</a>
+      by <a href="//github.com/sabrinaluo">Hiitea</a> ❤ Powered by Hexo
+    </div>
+    </div>
+    
+  </footer>
+</div>
+
+
+
+
+<script src="/js/main.js"></script>
+
+</body>
+</html>

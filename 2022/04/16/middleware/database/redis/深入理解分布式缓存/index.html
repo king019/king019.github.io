@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>
+    深入式理解分布式缓存 | king019
+  </title>
+  <meta name="description" content>
+  
+  <meta name="keywords" content="
+  缓存
+  ">
+  
+  <meta name="author" content="king019">
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="theme-color" content="#1e2327">
+  <link rel="apple-touch-icon" href="https://github.githubassets.com/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://github.githubassets.com/apple-touch-icon-180x180.png">
+
+  <link rel="icon" type="image/x-icon" href="https://github.githubassets.com/favicon.ico">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.25-csp/vue.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+</head>
+
+<body id="replica-app">
+
+<nav class="navbar-wrapper">
+  <div class="navbar">
+    <div class="container clearfix">
+      <a href="/" class="navbar-logo"><i class="fa fa-github"></i></a>
+
+      <div class="navbar-search float-left desktop-only">
+        <div class="navbar-search-form">
+          <label for="gsc-i-id1">This website</label>
+          <div id="google-search">
+            <gcse:search></gcse:search>
+          </div>
+        </div>
+      </div>
+
+      <ul class="navbar-nav float-left">
+        
+        <li><a href="/archives">Archives</a></li>
+        
+        
+        <li><a href="/categories">Categories</a></li>
+        
+        
+        <li><a href="/tags">Tags</a></li>
+        
+        
+        <li class="desktop-only"><a href="/atom.xml" target="_blank">RSS</a></li>
+        
+      </ul>
+
+      <ul class="navbar-nav user-nav float-right desktop-only">
+        <li class="user-nav-notification">
+          <a><span class="user-nav-unread"></span><i class="fa fa-bell"></i></a>
+        </li>
+        <li>
+          <a><i class="fa fa-plus"></i> <i class="fa fa-caret-down"></i></a>
+        </li>
+        <li class="user-nav-logo">
+          <a><img src="/assets/head.jpg"> <i class="fa fa-caret-down"></i></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="main-container">
+  <header class="header-wrapper desktop-only">
+  <div class="container header-site-detail">
+    <ul class="header-toolbar">
+      <li class="clearfix">
+        <a href="/archives" class="header-toolbar-left"><i
+                  class="fa fa-file-text"></i> Posts </a>
+        <a href="/archives"
+           class="header-toolbar-right"> 218 </a>
+      </li>
+      <li>
+        <a href="/tags" class="header-toolbar-left"><i
+                  class="fa fa-tags"></i> Tags </a>
+        <a href="/tags"
+           class="header-toolbar-right"> 213 </a>
+      </li>
+      <li>
+        <a href="/categories" class="header-toolbar-left"><i
+                  class="fa fa-folder-open"></i> Categories </a>
+        <a href="/categories"
+           class="header-toolbar-right"> 256 </a>
+      </li>
+    </ul>
+    <h2 class="header-title">
+      <i class="fa fa-book text-muted"></i>
+      <a href="/">king019</a>
+      
+      
+    </h2>
+  </div>
+
+  <div class="container">
+    <div class="header-tab-wrapper clearfix">
+      <span class="header-tab header-tab-selected"><i class="fa fa-thumbs-o-up"></i> Like</span>
+      <span class="header-tab"><i class="fa fa-share-alt"></i> Share</span>
+      <span class="header-tab"><i class="fa fa-comments-o"></i> Discussion</span>
+      <span class="header-tab"><i class="fa fa-bookmark-o"></i> Bookmark </span>
+      <span class="header-tab"><i class="fa fa-smile-o"></i> Smile <i class="fa fa-caret-down"></i></span>
+    </div>
+  </div>
+</header>
+
+
+<div class="post-container container">
+  <h3>
+    <i class="fa fa-user-o"></i>
+    king019
+
+    <span class="post-date float-right" title="{{moment(1650088475022).format('MMM DD, YYYY, h:mm:ss A')}}">
+      
+          <i class="fa fa-pencil-square-o"></i>
+      
+      {{moment(1650088475022).fromNow()}}
+    </span>
+  </h3>
+
+  <article class="post-content">
+    <h1>深入式理解分布式缓存</h1>
+    <h2 id="分布式系统理论"><a href="#分布式系统理论" class="headerlink" title="分布式系统理论"></a>分布式系统理论</h2><h3 id="cap理论"><a href="#cap理论" class="headerlink" title="cap理论"></a>cap理论</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">c</span><br><span class="line">    在同一时刻是否有同样的值</span><br><span class="line">    任何的读写都应该看起来是&quot;原子的&quot;,串行的,后边的读一定能读到前面写的内容</span><br><span class="line">a</span><br><span class="line">    一部分故障后,集群整体是否还能响应客户端的读写请求</span><br><span class="line">    任何非失败节点都应该有限时间内给出请求的回应</span><br><span class="line">p</span><br><span class="line">    系统在一定时限内达到一致,就以为发生来分区,必须在ca之间做出选择</span><br><span class="line">    允许节点之间丢失任意多的消息,当忘了分区发生时,节点之间的消息可能会发生丢失</span><br><span class="line">ca no p</span><br><span class="line">    数据独立的</span><br><span class="line">    关系型数据库,ldap</span><br><span class="line"></span><br><span class="line">cp no a</span><br><span class="line">    每个请求都需要在server之间强一致,而p会导致同步时间无线延长</span><br><span class="line">    分布式数据库,分布式锁</span><br><span class="line">ap no c</span><br><span class="line">一旦分区发生,节点间可能失去联系,可能导致数据不一致</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">acid,base,cap</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">base</span><br><span class="line">基本可用,软状态,最终一致性</span><br></pre></td></tr></table></figure>
+
+<h3 id="paxos"><a href="#paxos" class="headerlink" title="paxos"></a>paxos</h3><h3 id="2pc"><a href="#2pc" class="headerlink" title="2pc"></a>2pc</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1,提交请求</span><br><span class="line">    确定参与者对于事务是否准备就绪(commit,no)</span><br><span class="line">2,提交</span><br><span class="line">    协调器决定提交还是退出事务</span><br><span class="line"></span><br><span class="line">协调器分别和多个事务参与者应答复杂度高,性能也受到挑战</span><br><span class="line">强一致也要性能一致上做这种,比如超时,阶段性补偿</span><br></pre></td></tr></table></figure>
+
+<h3 id="3pc"><a href="#3pc" class="headerlink" title="3pc"></a>3pc</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1,投票,询问是否可提交</span><br><span class="line">2,预提交</span><br><span class="line">3,真实提交,commit或失败重试</span><br></pre></td></tr></table></figure>
+
+<h3 id="raft"><a href="#raft" class="headerlink" title="raft"></a>raft</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">领导者</span><br><span class="line">选民</span><br><span class="line">候选人</span><br></pre></td></tr></table></figure>
+
+<h3 id="lease机制"><a href="#lease机制" class="headerlink" title="lease机制"></a>lease机制</h3><h3 id="解决脑裂问题"><a href="#解决脑裂问题" class="headerlink" title="解决脑裂问题"></a>解决脑裂问题</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">设置仲裁机制</span><br><span class="line">如第三方检测服务器,检查主从</span><br><span class="line">检测到高可用,设置lease机制,获取新lease后,老的失效,还可以人工让老master转为slave</span><br></pre></td></tr></table></figure>
+
+<h3 id="quorum-nwr"><a href="#quorum-nwr" class="headerlink" title="quorum nwr"></a>quorum nwr</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">n</span><br><span class="line">    同一份复制到份数</span><br><span class="line">w</span><br><span class="line">    更新一个数据确保成功的份数</span><br><span class="line">r</span><br><span class="line">    读取一个数据需要读取拷贝的份数</span><br><span class="line"></span><br><span class="line">w&gt;n/2</span><br><span class="line">w+R&gt;n</span><br></pre></td></tr></table></figure>
+
+<h3 id="mvcc"><a href="#mvcc" class="headerlink" title="mvcc"></a>mvcc</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">多版本控制</span><br></pre></td></tr></table></figure>
+
+<h2 id="分布式系统设计策略"><a href="#分布式系统设计策略" class="headerlink" title="分布式系统设计策略"></a>分布式系统设计策略</h2><h3 id="心跳检测"><a href="#心跳检测" class="headerlink" title="心跳检测"></a>心跳检测</h3><h3 id="高可用设计"><a href="#高可用设计" class="headerlink" title="高可用设计"></a>高可用设计</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">主备</span><br><span class="line">互备</span><br><span class="line">集群</span><br></pre></td></tr></table></figure>
+
+<h3 id="容错性"><a href="#容错性" class="headerlink" title="容错性"></a>容错性</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">容故障</span><br></pre></td></tr></table></figure>
+
+<h3 id="负责均衡"><a href="#负责均衡" class="headerlink" title="负责均衡"></a>负责均衡</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">轮询</span><br><span class="line">最少连接数</span><br><span class="line">ip地址hash</span><br><span class="line">权重</span><br></pre></td></tr></table></figure>
+
+<h2 id="分布式系统设计实践"><a href="#分布式系统设计实践" class="headerlink" title="分布式系统设计实践"></a>分布式系统设计实践</h2><h3 id="全局id"><a href="#全局id" class="headerlink" title="全局id"></a>全局id</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">uuid    </span><br><span class="line">id生成表模式</span><br><span class="line">snowflake</span><br><span class="line">    41  10  12  </span><br><span class="line">    时间  机器  序号</span><br><span class="line">    高性能,低延迟,独立应用,时间有序</span><br><span class="line">结合缓存</span><br><span class="line">    高性能,低延迟,id不连贯</span><br></pre></td></tr></table></figure>
+
+<h3 id="hash取模"><a href="#hash取模" class="headerlink" title="hash取模"></a>hash取模</h3><h3 id="一致性hash"><a href="#一致性hash" class="headerlink" title="一致性hash"></a>一致性hash</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">引入虚拟节点,解决平衡问题,指沙溪的结果能够分布导所有的缓冲中去,这样可以是的所有的缓存空间都得到利用</span><br></pre></td></tr></table></figure>
+
+<h3 id="路由表"><a href="#路由表" class="headerlink" title="路由表"></a>路由表</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">全局计算的节点</span><br><span class="line">数据集中式管理,存在单点故障</span><br><span class="line">    数据规模小,数据库本省有备份机制或者failover能力才可行</span><br></pre></td></tr></table></figure>
+
+<h3 id="数据拆分"><a href="#数据拆分" class="headerlink" title="数据拆分"></a>数据拆分</h3><h2 id="动手写缓存"><a href="#动手写缓存" class="headerlink" title="动手写缓存"></a>动手写缓存</h2><h3 id="lru"><a href="#lru" class="headerlink" title="lru"></a>lru</h3><h3 id="weak"><a href="#weak" class="headerlink" title="weak"></a>weak</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">strong</span><br><span class="line">soft</span><br><span class="line">weak</span><br><span class="line">phantom</span><br></pre></td></tr></table></figure>
+
+<h3 id="base"><a href="#base" class="headerlink" title="base"></a>base</h3><h3 id="guava-cache"><a href="#guava-cache" class="headerlink" title="guava cache"></a>guava cache</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">使用内存提升速度</span><br><span class="line">更新锁定</span><br><span class="line">查询volatite非锁定</span><br><span class="line"></span><br><span class="line">被动删除</span><br><span class="line">    被动删除</span><br><span class="line">    过期删除</span><br><span class="line">    引用删除</span><br><span class="line">主动删除</span><br><span class="line">    单独删除</span><br><span class="line">    批量删除</span><br><span class="line">    删除所有数据</span><br></pre></td></tr></table></figure>
+
+<p>待续</p>
+
+  </article>
+</div>
+
+
+    
+
+
+
+
+</div>
+
+<div class="footer-wrapper container">
+  <footer class="footer clearfix">
+    <div class="clearfix">
+    <a href="https://king019.github.io" class="footer-logo">
+      <i class="fa fa-github"></i>
+    </a>
+    <ul class="footer-social-link">
+      <li>© 2019 king019</li>
+      <li><a href="https://king019.github.io">Home</a></li>
+      
+      <li><a href="https://github.com/king019">Github</a></li>
+      
+    </ul>
+    <div class="footer-theme-info">
+      Theme <a href="//github.com/sabrinaluo/hexo-theme-replica">Replica</a>
+      by <a href="//github.com/sabrinaluo">Hiitea</a> ❤ Powered by Hexo
+    </div>
+    </div>
+    
+  </footer>
+</div>
+
+
+
+
+<script src="/js/main.js"></script>
+
+</body>
+</html>

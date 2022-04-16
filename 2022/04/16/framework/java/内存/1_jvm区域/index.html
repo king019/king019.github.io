@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>
+    jvm区域 | king019
+  </title>
+  <meta name="description" content>
+  
+  <meta name="keywords" content="
+  jvm区域
+  ">
+  
+  <meta name="author" content="king019">
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="theme-color" content="#1e2327">
+  <link rel="apple-touch-icon" href="https://github.githubassets.com/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://github.githubassets.com/apple-touch-icon-180x180.png">
+
+  <link rel="icon" type="image/x-icon" href="https://github.githubassets.com/favicon.ico">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.25-csp/vue.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+</head>
+
+<body id="replica-app">
+
+<nav class="navbar-wrapper">
+  <div class="navbar">
+    <div class="container clearfix">
+      <a href="/" class="navbar-logo"><i class="fa fa-github"></i></a>
+
+      <div class="navbar-search float-left desktop-only">
+        <div class="navbar-search-form">
+          <label for="gsc-i-id1">This website</label>
+          <div id="google-search">
+            <gcse:search></gcse:search>
+          </div>
+        </div>
+      </div>
+
+      <ul class="navbar-nav float-left">
+        
+        <li><a href="/archives">Archives</a></li>
+        
+        
+        <li><a href="/categories">Categories</a></li>
+        
+        
+        <li><a href="/tags">Tags</a></li>
+        
+        
+        <li class="desktop-only"><a href="/atom.xml" target="_blank">RSS</a></li>
+        
+      </ul>
+
+      <ul class="navbar-nav user-nav float-right desktop-only">
+        <li class="user-nav-notification">
+          <a><span class="user-nav-unread"></span><i class="fa fa-bell"></i></a>
+        </li>
+        <li>
+          <a><i class="fa fa-plus"></i> <i class="fa fa-caret-down"></i></a>
+        </li>
+        <li class="user-nav-logo">
+          <a><img src="/assets/head.jpg"> <i class="fa fa-caret-down"></i></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="main-container">
+  <header class="header-wrapper desktop-only">
+  <div class="container header-site-detail">
+    <ul class="header-toolbar">
+      <li class="clearfix">
+        <a href="/archives" class="header-toolbar-left"><i
+                  class="fa fa-file-text"></i> Posts </a>
+        <a href="/archives"
+           class="header-toolbar-right"> 218 </a>
+      </li>
+      <li>
+        <a href="/tags" class="header-toolbar-left"><i
+                  class="fa fa-tags"></i> Tags </a>
+        <a href="/tags"
+           class="header-toolbar-right"> 213 </a>
+      </li>
+      <li>
+        <a href="/categories" class="header-toolbar-left"><i
+                  class="fa fa-folder-open"></i> Categories </a>
+        <a href="/categories"
+           class="header-toolbar-right"> 256 </a>
+      </li>
+    </ul>
+    <h2 class="header-title">
+      <i class="fa fa-book text-muted"></i>
+      <a href="/">king019</a>
+      
+      
+    </h2>
+  </div>
+
+  <div class="container">
+    <div class="header-tab-wrapper clearfix">
+      <span class="header-tab header-tab-selected"><i class="fa fa-thumbs-o-up"></i> Like</span>
+      <span class="header-tab"><i class="fa fa-share-alt"></i> Share</span>
+      <span class="header-tab"><i class="fa fa-comments-o"></i> Discussion</span>
+      <span class="header-tab"><i class="fa fa-bookmark-o"></i> Bookmark </span>
+      <span class="header-tab"><i class="fa fa-smile-o"></i> Smile <i class="fa fa-caret-down"></i></span>
+    </div>
+  </div>
+</header>
+
+
+<div class="post-container container">
+  <h3>
+    <i class="fa fa-user-o"></i>
+    king019
+
+    <span class="post-date float-right" title="{{moment(1650088475018).format('MMM DD, YYYY, h:mm:ss A')}}">
+      
+          <i class="fa fa-pencil-square-o"></i>
+      
+      {{moment(1650088475018).fromNow()}}
+    </span>
+  </h3>
+
+  <article class="post-content">
+    <h1>jvm区域</h1>
+    <p>内存分布</p>
+<p>方法区</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">线程共享</span><br><span class="line">已被虚拟机加载的类型信息,常量,静态变量,即时编译器编译后的代码缓存等数据.</span><br></pre></td></tr></table></figure>
+
+<p>运行时常量池</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">方法区的一部分,class文件中除了有类的版本,字段,方法,接口等描述信息外,</span><br><span class="line">还有一项是常量池表(constant pool table),</span><br><span class="line">用于存放编译期生成的各种字面量和符合引用这部分内容在类加载后存放到方法区的运行时常量池中.</span><br><span class="line">常量池具有动态性:比如string的intern()方法</span><br><span class="line">抛错: outofmemoryerror</span><br></pre></td></tr></table></figure>
+
+<p>虚拟机栈</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">线程私有</span><br><span class="line">虚拟机会创建一个栈帧,用来存储局部变量表,操作数栈,动态链接库,方法出口等信息</span><br><span class="line"></span><br><span class="line">局部变量表:编译期可知的各种基本数据类型(boolean,byte,char,short,int,float,long,double)</span><br><span class="line">         对象引用(reference类型,不一定是对象本身,可能是一个执行对象起始地质队引用指针,也可能是一个代表对象的句柄或其他与对象相关的位置)</span><br><span class="line">         和returnAddress类型(执行一条字节码指令单地址)</span><br><span class="line">         存储空间使用变量槽(slot)来表示,64位的long和double占用2个slot,其他使用一个</span><br><span class="line">         局部变量表的内存空间在编译期间完成分配,后边就不会改变</span><br><span class="line">抛错:请求栈深度大于虚拟机允许的深度-&gt;stackoverflowerror</span><br><span class="line">     jvm容量可扩展,当扩展无法申请到足够内存时&gt;outofmemorterror</span><br></pre></td></tr></table></figure>
+
+<p>本地方法栈</p>
+<p>堆</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-Xms   -Xmx</span><br><span class="line">几乎所有的对象都存放在堆中,但是随着逃逸分析技术的强大,栈上分配,标量替换优化手段已经到知一些微妙的变化悄然发生,所以说都分配在堆上不是绝对的.</span><br><span class="line">分配:</span><br><span class="line">物理上不连续但是要求逻辑上是连续的</span><br><span class="line">1 tlab 按照线程分配缓存</span><br><span class="line"></span><br><span class="line">抛错: outofmemoryerror</span><br></pre></td></tr></table></figure>
+
+<p>程序计数器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">线程私有</span><br><span class="line">改变计数器的值,选取下一条需要执行的字节码执行</span><br><span class="line">程序控制流的指示器,分支/循环/跳转/异常处理/线程恢复等功能都需要依赖这个</span><br><span class="line">多线程通过线程轮流切换,分配处理器执行时间来实现,在任何时刻一个处理器只能处理一个执行,</span><br><span class="line">程序计数器来记录这个位置</span><br></pre></td></tr></table></figure>
+
+<p>直接内存</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">jdk1.4加入</span><br><span class="line">虽然不会受java堆大小限制,但是会受到本机总内存的限制</span><br><span class="line">抛错: outofmemoryerror</span><br></pre></td></tr></table></figure>
+
+<p>对象创建</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1,连续空间--&gt;使用指针碰撞(谁先申请算谁的)[serial,parnew带压缩整理,简单高效]</span><br><span class="line">2,不连续--&gt;维护一个列表,那个是空闲的列表,分配后更新列表,分配方式叫(空闲列表(fee list))[cms基于清除算法的收集器,理论上就只能才用较为复杂的空闲列表来分配内存]</span><br><span class="line">3,按照线程分配缓存--&gt;成为本地线程分配(thread local allocation buffer,tlab)</span><br></pre></td></tr></table></figure>
+
+<p>对象的内存布局</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">对象在堆内存的储存布局分为3部分:对象头(header),实例数据(instance data),对齐填充(padding)</span><br><span class="line">对象头包括2类信息</span><br><span class="line">   1,存储对象自身的运行时数据,比如 哈希码,gc分代年龄,锁撞他标识,线程持有的锁,偏向线程id,偏向时间戳等,在32和64位分别是32何64bit,官方称为mark word.</span><br><span class="line">   </span><br><span class="line">   哈希码,分代年龄      01   未锁定</span><br><span class="line">   指向锁记录的指针     00   轻量级锁定</span><br><span class="line">   指向重量级锁的指针    10  膨胀(重量级锁定)</span><br><span class="line">   空,不需要记录信息    11   gc标记</span><br><span class="line">   偏向线程id,偏向时间戳,对象分带年龄   01   可偏向</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">   2,类型指针,对象指向它的类型元数据的指针,jvm通过这个嘞确定对象是哪个类的实例</span><br></pre></td></tr></table></figure>
+
+<p>对象的访问定位</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">方式</span><br><span class="line">1,句柄</span><br><span class="line">   本地变量表-&gt;reference-&gt;堆(句柄池)-&gt;对象实例数据</span><br><span class="line">                                 -&gt;方法区(对象类型数据)</span><br><span class="line">reference中存储的是稳定的句柄,在对象被移动(垃圾收集)时只会改变句柄中的实例数据指针,而reference本身不需要被修改</span><br><span class="line"></span><br><span class="line">2,指针</span><br><span class="line">  北地变量表-&gt;reference-&gt;堆(到对象类型数据的指针)-&gt;方法区(对象类型数据)</span><br><span class="line">                      -&gt;对象实例数据</span><br><span class="line">速度快,节省一次指针定位到时间开销,由于对象访问在java中非常频繁,因此这类开销积少成多也是一项极为可观的执行成本</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">hotspot使用指针进行对象访问,例外使用shenandoah收集器也会有一次额外的转发</span><br></pre></td></tr></table></figure>
+
+<p>实战内存异常</p>
+<p>堆</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-Xms -Xmx</span><br><span class="line">list.add(new object())</span><br><span class="line">outofmemoryerror</span><br></pre></td></tr></table></figure>
+
+<p>栈</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-Xss</span><br><span class="line">方法递归</span><br><span class="line">stackoverflowerror</span><br></pre></td></tr></table></figure>
+
+<p>方法区和运行时常量池溢出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-XX:PermSize  -XX:MaxPerSize  </span><br><span class="line">string.intern</span><br><span class="line">outofmemoryerror</span><br><span class="line"></span><br><span class="line">-XX:MAxMetaspaceSize</span><br></pre></td></tr></table></figure>
+
+<p>直接内存</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-XX:MaxDirectMemorySize</span><br><span class="line">默认和-Xmx一致</span><br><span class="line">unsafe.allcatememory分配内存</span><br></pre></td></tr></table></figure>
+
+
+  </article>
+</div>
+
+
+    
+
+
+
+
+</div>
+
+<div class="footer-wrapper container">
+  <footer class="footer clearfix">
+    <div class="clearfix">
+    <a href="https://king019.github.io" class="footer-logo">
+      <i class="fa fa-github"></i>
+    </a>
+    <ul class="footer-social-link">
+      <li>© 2019 king019</li>
+      <li><a href="https://king019.github.io">Home</a></li>
+      
+      <li><a href="https://github.com/king019">Github</a></li>
+      
+    </ul>
+    <div class="footer-theme-info">
+      Theme <a href="//github.com/sabrinaluo/hexo-theme-replica">Replica</a>
+      by <a href="//github.com/sabrinaluo">Hiitea</a> ❤ Powered by Hexo
+    </div>
+    </div>
+    
+  </footer>
+</div>
+
+
+
+
+<script src="/js/main.js"></script>
+
+</body>
+</html>

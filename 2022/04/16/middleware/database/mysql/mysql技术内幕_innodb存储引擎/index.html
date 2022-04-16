@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>
+    mysql技术内幕 | king019
+  </title>
+  <meta name="description" content>
+  
+  <meta name="keywords" content="
+  mysql
+  ">
+  
+  <meta name="author" content="king019">
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="theme-color" content="#1e2327">
+  <link rel="apple-touch-icon" href="https://github.githubassets.com/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://github.githubassets.com/apple-touch-icon-180x180.png">
+
+  <link rel="icon" type="image/x-icon" href="https://github.githubassets.com/favicon.ico">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.25-csp/vue.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+</head>
+
+<body id="replica-app">
+
+<nav class="navbar-wrapper">
+  <div class="navbar">
+    <div class="container clearfix">
+      <a href="/" class="navbar-logo"><i class="fa fa-github"></i></a>
+
+      <div class="navbar-search float-left desktop-only">
+        <div class="navbar-search-form">
+          <label for="gsc-i-id1">This website</label>
+          <div id="google-search">
+            <gcse:search></gcse:search>
+          </div>
+        </div>
+      </div>
+
+      <ul class="navbar-nav float-left">
+        
+        <li><a href="/archives">Archives</a></li>
+        
+        
+        <li><a href="/categories">Categories</a></li>
+        
+        
+        <li><a href="/tags">Tags</a></li>
+        
+        
+        <li class="desktop-only"><a href="/atom.xml" target="_blank">RSS</a></li>
+        
+      </ul>
+
+      <ul class="navbar-nav user-nav float-right desktop-only">
+        <li class="user-nav-notification">
+          <a><span class="user-nav-unread"></span><i class="fa fa-bell"></i></a>
+        </li>
+        <li>
+          <a><i class="fa fa-plus"></i> <i class="fa fa-caret-down"></i></a>
+        </li>
+        <li class="user-nav-logo">
+          <a><img src="/assets/head.jpg"> <i class="fa fa-caret-down"></i></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="main-container">
+  <header class="header-wrapper desktop-only">
+  <div class="container header-site-detail">
+    <ul class="header-toolbar">
+      <li class="clearfix">
+        <a href="/archives" class="header-toolbar-left"><i
+                  class="fa fa-file-text"></i> Posts </a>
+        <a href="/archives"
+           class="header-toolbar-right"> 218 </a>
+      </li>
+      <li>
+        <a href="/tags" class="header-toolbar-left"><i
+                  class="fa fa-tags"></i> Tags </a>
+        <a href="/tags"
+           class="header-toolbar-right"> 213 </a>
+      </li>
+      <li>
+        <a href="/categories" class="header-toolbar-left"><i
+                  class="fa fa-folder-open"></i> Categories </a>
+        <a href="/categories"
+           class="header-toolbar-right"> 256 </a>
+      </li>
+    </ul>
+    <h2 class="header-title">
+      <i class="fa fa-book text-muted"></i>
+      <a href="/">king019</a>
+      
+      
+    </h2>
+  </div>
+
+  <div class="container">
+    <div class="header-tab-wrapper clearfix">
+      <span class="header-tab header-tab-selected"><i class="fa fa-thumbs-o-up"></i> Like</span>
+      <span class="header-tab"><i class="fa fa-share-alt"></i> Share</span>
+      <span class="header-tab"><i class="fa fa-comments-o"></i> Discussion</span>
+      <span class="header-tab"><i class="fa fa-bookmark-o"></i> Bookmark </span>
+      <span class="header-tab"><i class="fa fa-smile-o"></i> Smile <i class="fa fa-caret-down"></i></span>
+    </div>
+  </div>
+</header>
+
+
+<div class="post-container container">
+  <h3>
+    <i class="fa fa-user-o"></i>
+    king019
+
+    <span class="post-date float-right" title="{{moment(1650088475021).format('MMM DD, YYYY, h:mm:ss A')}}">
+      
+          <i class="fa fa-pencil-square-o"></i>
+      
+      {{moment(1650088475021).fromNow()}}
+    </span>
+  </h3>
+
+  <article class="post-content">
+    <h1>mysql技术内幕</h1>
+    <h2 id="innodb存储引擎"><a href="#innodb存储引擎" class="headerlink" title="innodb存储引擎"></a>innodb存储引擎</h2><h3 id="内存"><a href="#内存" class="headerlink" title="内存"></a>内存</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">                缓存池</span><br><span class="line">            内存页     插入缓冲    锁消息</span><br><span class="line">重做日志缓冲</span><br><span class="line">额外内存池</span><br><span class="line">            索引页     自适应哈希索引     数据字典信息</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">缓存池</span><br><span class="line">    通过lru算法来进行管理的.频繁的在前端,最少使用的在尾端</span><br></pre></td></tr></table></figure>
+
+<h3 id="innodb关键特性"><a href="#innodb关键特性" class="headerlink" title="innodb关键特性"></a>innodb关键特性</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">插入缓存</span><br><span class="line">insert buffer</span><br><span class="line">    索引是辅助索引</span><br><span class="line">    索引不是唯一的,因为不会去超找索引页来判断插入的记录的唯一性,如果去查找肯定会有离散读取到情况,从而导致insert buffer失去意义</span><br><span class="line">change buffer</span><br><span class="line">    insert,delete,purge进行缓冲</span><br><span class="line"></span><br><span class="line">    update过程-&gt;</span><br><span class="line">            记录标记已删除</span><br><span class="line">            真正将记录删除</span><br><span class="line">    delete buffer对应第一个</span><br><span class="line">    purge buffer对应第二个</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">两次写</span><br><span class="line">    重做日志前,用户u赢一个页的副本,当写入失效发生时,先通过页的副本来还原改页,在进行重做,这就是doublewrite.</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">自适应哈希索引</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">异步io</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">刷新邻接页</span><br><span class="line">    当刷新一个脏页时,innodb会检测该页所在区到所有页,如果是脏页,那麽一起进行刷新</span><br></pre></td></tr></table></figure>
+
+<h2 id="innnodb文件"><a href="#innnodb文件" class="headerlink" title="innnodb文件"></a>innnodb文件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">日志文件</span><br><span class="line">    错误</span><br><span class="line">    慢查询</span><br><span class="line">    查询</span><br><span class="line">    二进制</span><br></pre></td></tr></table></figure>
+
+<h2 id="innnodb表"><a href="#innnodb表" class="headerlink" title="innnodb表"></a>innnodb表</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tablespace--&gt;多segment(段)-&gt;多extent(区)-&gt;多page(页)-&gt;多row</span><br></pre></td></tr></table></figure>
+
+<h2 id="索引和算法"><a href="#索引和算法" class="headerlink" title="索引和算法"></a>索引和算法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">b+树索引</span><br><span class="line">全文索引</span><br><span class="line">哈希索引</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">b+树高度一般在2-4层</span><br><span class="line">一般100次/每秒,2-4次只需要20-40ms</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">16*1000*1000****</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">聚集索引</span><br><span class="line">辅助索引</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">联合索引</span><br><span class="line">覆盖索引</span><br><span class="line">优化器选择不使用索引当情况</span><br></pre></td></tr></table></figure>
+
+<h2 id="锁"><a href="#锁" class="headerlink" title="锁"></a>锁</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">锁类型</span><br><span class="line">    共享锁</span><br><span class="line">    排它锁</span><br><span class="line">意向锁</span><br><span class="line">    意向共享锁:一张表中某几行的共享锁</span><br><span class="line">    一项排它锁</span><br><span class="line">一致性非锁定读</span><br><span class="line">    read commit</span><br><span class="line">        最新快照</span><br><span class="line">    repeatable</span><br><span class="line">        开始的时候</span><br><span class="line">一致性锁定读</span><br><span class="line">    select for update</span><br><span class="line">    select lock in share mode</span><br><span class="line">锁定算法</span><br><span class="line">    record lock</span><br><span class="line">    gap lock</span><br><span class="line">    next-key lock  解决幻读</span><br></pre></td></tr></table></figure>
+
+<h2 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">a</span><br><span class="line">c</span><br><span class="line">i</span><br><span class="line">d</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">事务实现</span><br><span class="line"></span><br><span class="line">undo</span><br><span class="line">    记录事务的行为,可以很好的通过其对页进行重做操作,事务需要回滚操作,这时需要undo.</span><br><span class="line">    数据库内部一个特殊段</span><br><span class="line">    帮助事务回滚和mvcc的功能</span><br><span class="line">update</span><br><span class="line">redo</span><br><span class="line">    存放在重做日志缓冲,易失</span><br><span class="line">    重做日志文件,持久</span><br><span class="line">    保证事务的持久性</span><br><span class="line"></span><br><span class="line">purge</span><br><span class="line">    delete和update操作可能并不直接删除原有的数据</span><br><span class="line">    仅记录删除,mvcc需要</span><br><span class="line">    需要purge进行清理</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">事务隔离级别</span><br><span class="line">    read uncommitted</span><br><span class="line">    read committed</span><br><span class="line">    repeatable read</span><br><span class="line">    serializable</span><br><span class="line">        默认会添加一个select   in share lock</span><br></pre></td></tr></table></figure>
+
+<h2 id="性能调优"><a href="#性能调优" class="headerlink" title="性能调优"></a>性能调优</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">innodb一般应用于oltp的应用</span><br><span class="line">    并发量大</span><br><span class="line">    时间段</span><br><span class="line">    语句简单,一般走索引</span><br><span class="line">    复杂查询少</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">cpu</span><br><span class="line">    并发</span><br><span class="line">内存</span><br><span class="line">    buffer pool</span><br><span class="line">硬盘</span><br><span class="line">    机械硬盘</span><br><span class="line">        寻道,转速</span><br><span class="line">    固态硬盘</span><br><span class="line">        低延迟,低功耗,防震性</span><br></pre></td></tr></table></figure>
+
+
+  </article>
+</div>
+
+
+    
+
+
+
+
+</div>
+
+<div class="footer-wrapper container">
+  <footer class="footer clearfix">
+    <div class="clearfix">
+    <a href="https://king019.github.io" class="footer-logo">
+      <i class="fa fa-github"></i>
+    </a>
+    <ul class="footer-social-link">
+      <li>© 2019 king019</li>
+      <li><a href="https://king019.github.io">Home</a></li>
+      
+      <li><a href="https://github.com/king019">Github</a></li>
+      
+    </ul>
+    <div class="footer-theme-info">
+      Theme <a href="//github.com/sabrinaluo/hexo-theme-replica">Replica</a>
+      by <a href="//github.com/sabrinaluo">Hiitea</a> ❤ Powered by Hexo
+    </div>
+    </div>
+    
+  </footer>
+</div>
+
+
+
+
+<script src="/js/main.js"></script>
+
+</body>
+</html>

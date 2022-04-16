@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>
+    log4j2 | king019
+  </title>
+  <meta name="description" content>
+  
+  <meta name="keywords" content="
+  apache,log4j2
+  ">
+  
+  <meta name="author" content="king019">
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="theme-color" content="#1e2327">
+  <link rel="apple-touch-icon" href="https://github.githubassets.com/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://github.githubassets.com/apple-touch-icon-180x180.png">
+
+  <link rel="icon" type="image/x-icon" href="https://github.githubassets.com/favicon.ico">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.25-csp/vue.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+</head>
+
+<body id="replica-app">
+
+<nav class="navbar-wrapper">
+  <div class="navbar">
+    <div class="container clearfix">
+      <a href="/" class="navbar-logo"><i class="fa fa-github"></i></a>
+
+      <div class="navbar-search float-left desktop-only">
+        <div class="navbar-search-form">
+          <label for="gsc-i-id1">This website</label>
+          <div id="google-search">
+            <gcse:search></gcse:search>
+          </div>
+        </div>
+      </div>
+
+      <ul class="navbar-nav float-left">
+        
+        <li><a href="/archives">Archives</a></li>
+        
+        
+        <li><a href="/categories">Categories</a></li>
+        
+        
+        <li><a href="/tags">Tags</a></li>
+        
+        
+        <li class="desktop-only"><a href="/atom.xml" target="_blank">RSS</a></li>
+        
+      </ul>
+
+      <ul class="navbar-nav user-nav float-right desktop-only">
+        <li class="user-nav-notification">
+          <a><span class="user-nav-unread"></span><i class="fa fa-bell"></i></a>
+        </li>
+        <li>
+          <a><i class="fa fa-plus"></i> <i class="fa fa-caret-down"></i></a>
+        </li>
+        <li class="user-nav-logo">
+          <a><img src="/assets/head.jpg"> <i class="fa fa-caret-down"></i></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="main-container">
+  <header class="header-wrapper desktop-only">
+  <div class="container header-site-detail">
+    <ul class="header-toolbar">
+      <li class="clearfix">
+        <a href="/archives" class="header-toolbar-left"><i
+                  class="fa fa-file-text"></i> Posts </a>
+        <a href="/archives"
+           class="header-toolbar-right"> 218 </a>
+      </li>
+      <li>
+        <a href="/tags" class="header-toolbar-left"><i
+                  class="fa fa-tags"></i> Tags </a>
+        <a href="/tags"
+           class="header-toolbar-right"> 213 </a>
+      </li>
+      <li>
+        <a href="/categories" class="header-toolbar-left"><i
+                  class="fa fa-folder-open"></i> Categories </a>
+        <a href="/categories"
+           class="header-toolbar-right"> 256 </a>
+      </li>
+    </ul>
+    <h2 class="header-title">
+      <i class="fa fa-book text-muted"></i>
+      <a href="/">king019</a>
+      
+      
+    </h2>
+  </div>
+
+  <div class="container">
+    <div class="header-tab-wrapper clearfix">
+      <span class="header-tab header-tab-selected"><i class="fa fa-thumbs-o-up"></i> Like</span>
+      <span class="header-tab"><i class="fa fa-share-alt"></i> Share</span>
+      <span class="header-tab"><i class="fa fa-comments-o"></i> Discussion</span>
+      <span class="header-tab"><i class="fa fa-bookmark-o"></i> Bookmark </span>
+      <span class="header-tab"><i class="fa fa-smile-o"></i> Smile <i class="fa fa-caret-down"></i></span>
+    </div>
+  </div>
+</header>
+
+
+<div class="post-container container">
+  <h3>
+    <i class="fa fa-user-o"></i>
+    king019
+
+    <span class="post-date float-right" title="{{moment(1650088475008).format('MMM DD, YYYY, h:mm:ss A')}}">
+      
+          <i class="fa fa-pencil-square-o"></i>
+      
+      {{moment(1650088475008).fromNow()}}
+    </span>
+  </h3>
+
+  <article class="post-content">
+    <h1>log4j2</h1>
+    <p>log4j2<br><img src="https://www.plantuml.com/plantuml/svg/lLXjKzj64FwUNw6F2UFfIoQVEcqd14AR3fGKQ3gTOQPpI6UZ8EayfnCl-UII44m2DGqlJe4qeO70P4hif1b20eO_uvFjVz6LJfPFmYwGISedRc_tsRtTlUTMlcmpH9cfMvg9qkVQ58EaBjsyUEvSMvlIGQoadd8eOZgnF4cRWXYZ-f33iB-4jJQAATDjJ8MWJN7VxFDxJzpSW_B-Rg2aOPk5s_bDVfIlhBwehDpXQqK5_Z2b2QGaTGEd4HjM25KSQWIc9h5qHkWrYs4wYemw2d-nukPttQSPz_5cRMgkKdhXBa-3Gn3Mygy7prUs7WnU220iPEAwdT3bytELhMAmdKRg24fXEmpGZxpwfi0FxmGgjZgCJHJwVZRf_hbcGnvKzXMZ3awuAvCGK5rvs64Q6RE-9MGaD2ajt1mr-TG_jVmEX9Xm7nRu_BFgz7D-Rxkk7pCVq4rC75QNCiISC4HH8fvznBVkyzdbohrTD_EhI6oexqKNkZ_8yFc2a47Qnqt3VNB03tA1CbHmYDXXZjoP1JvNX1fMIoMH30WPp2G72ZQmYIqMHAIqfzFOqZ25TG3IRazOQbqS28zrZspQXvEX4Eeq-RJyRXNvU_nWqjtPR5WC6KGTqQsKfEvLOV2yXfF8CTZWXKJjuMEUpRlxwxpuih8pmm-d6kPD4-pZEiaafltwBImXV_xPnKjDa9UAjUbSmnGwcCHEuBvQTzTcn0b4HaN-4cvskPgP4ZZypIi8ie43Tu0rqXLfNLZfAOjGV7LSnMdlGjhIZgKQZeQxYTguglx6bI1NFpZOmLr8XQiq8GNPJYcQYEX8PvNqEdMREcamZkXA2jzr311YsAssktLh16i355asf5ZUzJZ69WO-JQl4isEW2Rc0TMwHUzit8uP1nYGrQ8Vmklhqf5EiihDd7NWpXMN__J_t3rpj6VobzyS1Fu-H7DOth_RrrS_UXNI3mErxdyEdgMwYI37BU_l1XP7epJSDtDYoylvlWN8sNrtVRdLuYXcTg9DlFrQ9fSLG4dnZfRPq98YtDZrNBIo5WVmVIVG8ErSzaeuh-3d83_1MSCwDbzNNcud6kO4Jj-wNIqULnUr4PVKrpnRXlfRtCkMzvpnN06bO9VrqxHaxiyHAm1lYLVIS-EzKPN-15m_Zt8ErQxqjxFbKrbqy17kXMTxREO6uX91lRF6YT1TKYX73lLOdl6ToVUBTvJt6tykT06ds0nUzbH3i9aJbWnMUNUNxxwHocoRMTF3KPJZsSAkK57Bkt-lyxXzyQhDsk-JzKqzFebowwxsHfPTyOSxDR5LlbmO_-NA8VlfrqWC4Xk5hsyAo_FO-duSkp3q7aIWddv-51oCWW_nkO2cU4I7rKJm7Qzlkp5kWSe7b0ytz0oZLmYRF79JttYMHOUEMbAF4dw9JSuUNuEkOchfj7z_e7RFYnVY64YVTlEMLFY0u2E8z-xHPxpLhgVVl7N5OY0HJgqL3nJcxHGCTotyqtMbYwAfCYJptUsNniN1KXHbnxg_Apd9bQLDI6Q1wAeKfv4-vxfdhM28uxtaoqyJM6JwcAFdnF6si0748T3wVBPSM8YYKM2S0U3EcvXXO5devbrvpVz807dRyClHxOtkZ9vfHeJGgnsueo4E44mA3BuCejRJoCr-0QPO_c1MS0vFNSPyUq1LaO-q4dtfqtAyFXV30h2oAboOQ8e7C8HRBNVNmRMLfDgg8nlkWTudPYQ6JJZoIEpjJcTeI3kCK1zCqU4nDj6XeBmzhHVue8qzHOhBoxwlt7Ylznp34NRa6LtXS5a8D8aiKsLMXHodsYQGRZs8vQmh3PheZsCTQLzEBsEdFFpzHhyl_CpRmwo7O7z9vDqd16AeEwwFW73Fug02ae2U-W9GP85D0KW-iXQa7hhJNoKwveUEn4AJ3iHan_Sms-B0fvaSYx3f3YzvhLrN8nwdO6WmT1eOdANgfIDK7F0MFG-s2ZIwVdCClnoiEjLbNXB0LGowRGgLxv1NSjmW5nEf1J1sMrxfjIg86OKQyA9qJGDMwEZ0ClJ1C32qMmmWE6qq9Fa12LLdf1h0VD95Epn1H3qeVzzO4A8tXxEHio7G4qnYuwGlFWDA7KtWy1a8zMRXoRDo7ndhir1bG-rMgfnk5iwFBKzZ3gAOo1-Q2JiJGHqgWLsEamISWWvuDwwGCdYTKYKiRtm4Vr7spRepUY5FWw2QEGVW_geKhQTvI62ZV8XO-3VvbC0n-cViN"></p>
+
+  </article>
+</div>
+
+
+    
+
+
+
+
+</div>
+
+<div class="footer-wrapper container">
+  <footer class="footer clearfix">
+    <div class="clearfix">
+    <a href="https://king019.github.io" class="footer-logo">
+      <i class="fa fa-github"></i>
+    </a>
+    <ul class="footer-social-link">
+      <li>© 2019 king019</li>
+      <li><a href="https://king019.github.io">Home</a></li>
+      
+      <li><a href="https://github.com/king019">Github</a></li>
+      
+    </ul>
+    <div class="footer-theme-info">
+      Theme <a href="//github.com/sabrinaluo/hexo-theme-replica">Replica</a>
+      by <a href="//github.com/sabrinaluo">Hiitea</a> ❤ Powered by Hexo
+    </div>
+    </div>
+    
+  </footer>
+</div>
+
+
+
+
+<script src="/js/main.js"></script>
+
+</body>
+</html>

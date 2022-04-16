@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>
+    jvm垃圾回收 | king019
+  </title>
+  <meta name="description" content>
+  
+  <meta name="keywords" content="
+  jvm垃圾回收
+  ">
+  
+  <meta name="author" content="king019">
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="theme-color" content="#1e2327">
+  <link rel="apple-touch-icon" href="https://github.githubassets.com/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://github.githubassets.com/apple-touch-icon-180x180.png">
+
+  <link rel="icon" type="image/x-icon" href="https://github.githubassets.com/favicon.ico">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.25-csp/vue.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+</head>
+
+<body id="replica-app">
+
+<nav class="navbar-wrapper">
+  <div class="navbar">
+    <div class="container clearfix">
+      <a href="/" class="navbar-logo"><i class="fa fa-github"></i></a>
+
+      <div class="navbar-search float-left desktop-only">
+        <div class="navbar-search-form">
+          <label for="gsc-i-id1">This website</label>
+          <div id="google-search">
+            <gcse:search></gcse:search>
+          </div>
+        </div>
+      </div>
+
+      <ul class="navbar-nav float-left">
+        
+        <li><a href="/archives">Archives</a></li>
+        
+        
+        <li><a href="/categories">Categories</a></li>
+        
+        
+        <li><a href="/tags">Tags</a></li>
+        
+        
+        <li class="desktop-only"><a href="/atom.xml" target="_blank">RSS</a></li>
+        
+      </ul>
+
+      <ul class="navbar-nav user-nav float-right desktop-only">
+        <li class="user-nav-notification">
+          <a><span class="user-nav-unread"></span><i class="fa fa-bell"></i></a>
+        </li>
+        <li>
+          <a><i class="fa fa-plus"></i> <i class="fa fa-caret-down"></i></a>
+        </li>
+        <li class="user-nav-logo">
+          <a><img src="/assets/head.jpg"> <i class="fa fa-caret-down"></i></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="main-container">
+  <header class="header-wrapper desktop-only">
+  <div class="container header-site-detail">
+    <ul class="header-toolbar">
+      <li class="clearfix">
+        <a href="/archives" class="header-toolbar-left"><i
+                  class="fa fa-file-text"></i> Posts </a>
+        <a href="/archives"
+           class="header-toolbar-right"> 218 </a>
+      </li>
+      <li>
+        <a href="/tags" class="header-toolbar-left"><i
+                  class="fa fa-tags"></i> Tags </a>
+        <a href="/tags"
+           class="header-toolbar-right"> 213 </a>
+      </li>
+      <li>
+        <a href="/categories" class="header-toolbar-left"><i
+                  class="fa fa-folder-open"></i> Categories </a>
+        <a href="/categories"
+           class="header-toolbar-right"> 256 </a>
+      </li>
+    </ul>
+    <h2 class="header-title">
+      <i class="fa fa-book text-muted"></i>
+      <a href="/">king019</a>
+      
+      
+    </h2>
+  </div>
+
+  <div class="container">
+    <div class="header-tab-wrapper clearfix">
+      <span class="header-tab header-tab-selected"><i class="fa fa-thumbs-o-up"></i> Like</span>
+      <span class="header-tab"><i class="fa fa-share-alt"></i> Share</span>
+      <span class="header-tab"><i class="fa fa-comments-o"></i> Discussion</span>
+      <span class="header-tab"><i class="fa fa-bookmark-o"></i> Bookmark </span>
+      <span class="header-tab"><i class="fa fa-smile-o"></i> Smile <i class="fa fa-caret-down"></i></span>
+    </div>
+  </div>
+</header>
+
+
+<div class="post-container container">
+  <h3>
+    <i class="fa fa-user-o"></i>
+    king019
+
+    <span class="post-date float-right" title="{{moment(1650088475018).format('MMM DD, YYYY, h:mm:ss A')}}">
+      
+          <i class="fa fa-pencil-square-o"></i>
+      
+      {{moment(1650088475018).fromNow()}}
+    </span>
+  </h3>
+
+  <article class="post-content">
+    <h1>jvm垃圾回收</h1>
+    <h2 id="判断对象死亡算法"><a href="#判断对象死亡算法" class="headerlink" title="判断对象死亡算法"></a>判断对象死亡算法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">1,引用计数</span><br><span class="line">   每引用一次计数器+1</span><br><span class="line">2,可达行分析算法</span><br><span class="line">   gc roots--&gt;连接的对象</span><br><span class="line"></span><br><span class="line">   gc root对象</span><br><span class="line">     1,虚拟机栈(栈帧中本地变量表)中引用的对象,比如各个线程被调用的方法堆栈中使用到的参数,局部变量,临时变量等</span><br><span class="line">     2,方法区中类静态属性引用的对象,如java类的引用类型静态变量</span><br><span class="line">     3,在方法区中常量引用的对象,譬如字符串常量池离店引用</span><br><span class="line">     4,在本地方法栈中JNI(通常所说的Native方法)引用的对象</span><br><span class="line">     5,java虚拟机内部的引用,如基本数据类型对象的Class对象,一些常驻的异常对象(npe,outofmemoryerror)等,还有系统类加载器</span><br><span class="line">     6,所有被同步锁(synchronized)持有的对象</span><br><span class="line">     7,反映java虚拟机内部情况的jmxbean,jvmti中注册的回调,本地代码缓存等.</span><br></pre></td></tr></table></figure>
+
+<h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">强引用(strongly reference)</span><br><span class="line">   存在就不会回收</span><br><span class="line">软引用(soft)</span><br><span class="line">   内存溢出前,会添加到第二次回收中</span><br><span class="line">弱引用(weak)</span><br><span class="line">   生存到下次回收</span><br><span class="line">虚引用(phantom)</span><br><span class="line">   对象被回收时收到一个系统通知</span><br></pre></td></tr></table></figure>
+
+<h2 id="生存还是死亡"><a href="#生存还是死亡" class="headerlink" title="生存还是死亡"></a>生存还是死亡</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">二次标记</span><br><span class="line"></span><br><span class="line">   对象和gc root不相连接,进行第一次标记,随后进行进行一次筛选</span><br><span class="line">      如果finalize()没有或者已经执行完毕则没有必要在执行.</span><br><span class="line">   若对象有必要执行finalize()方法,则将对象添加到F-Queue队列中,</span><br><span class="line">      并不一定保证执行完毕</span><br><span class="line">    因为太慢或者死循环可能导致后边的等待甚至崩溃</span><br></pre></td></tr></table></figure>
+
+<h2 id="回收方法区"><a href="#回收方法区" class="headerlink" title="回收方法区"></a>回收方法区</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">方法区垃圾回收主要回收两部分:废弃的常量和不再使用的类型.</span><br><span class="line">  废弃常量:</span><br><span class="line">     垃圾回收时,没有使用则可进行清理,其他类(接口),方法,字段的符合引用也和这个相似</span><br><span class="line">  不使用的类型:</span><br><span class="line">     类所有实例被回收,该类和子类的实例</span><br><span class="line">     类加载器已经被回收</span><br><span class="line">     java.lang.Class对象没有被引用</span><br></pre></td></tr></table></figure>
+
+<h2 id="垃圾收集算法"><a href="#垃圾收集算法" class="headerlink" title="垃圾收集算法"></a>垃圾收集算法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">从判断对象消亡的角度</span><br><span class="line">  引用计数式垃圾收集</span><br><span class="line">  追踪式垃圾收集</span><br></pre></td></tr></table></figure>
+
+<h2 id="分代收集理论"><a href="#分代收集理论" class="headerlink" title="分代收集理论"></a>分代收集理论</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">年轻代    老年代</span><br></pre></td></tr></table></figure>
+
+<h2 id="收集定义"><a href="#收集定义" class="headerlink" title="收集定义"></a>收集定义</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">部分收集(partial gc):指目标不是完整收集整个java堆叠垃圾收集,又分为</span><br><span class="line">         新生代收集(minor gc/young gc):指目标只是新生代的垃圾收集.</span><br><span class="line">         老年带收集(major gc/old gc):指目标只是老年代的垃圾收集.目前只有cms收集器会有单独的收集老年带的行为.</span><br><span class="line">         混合收集(mixed gc):指目标是手机整个新生代以及部分老年代的垃圾收集.目前只有g1收集器有这种行为.</span><br><span class="line">整堆收集(full gc):收集整个java堆和方法区的垃圾收集.</span><br></pre></td></tr></table></figure>
+
+<p>标记清除</p>
+<p>标记复制</p>
+<p>标记整理</p>
+<h2 id="hotspot算法细节实现"><a href="#hotspot算法细节实现" class="headerlink" title="hotspot算法细节实现"></a>hotspot算法细节实现</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">根节点枚举</span><br><span class="line">安全点:hotspot没有为每条指令生成oopmap,只是在&quot;特定的位置&quot;记录了这些信息,这些位置被称为安全点(safepoint)</span><br><span class="line">     选定:不能太少以致让收集器等待时间过程,也不能太过频繁以至于过分增大运行时的内存.选取标准是:是否具有让程序长时间执行的特征为标准进行选定的.</span><br><span class="line">     如何跑到最近的安全点然后停顿下来--&gt;有2种可供选择:抢先式中断和主动式中断</span><br><span class="line">          抢先式中断:不需要线程的执行代码主动去配合,在垃圾收集发生时,系统首先把所有用户线程全部中断,如果发现用户线程中断的地方不在安全点,就恢复这条线程执行,让它一会再重新中断,直到跑到安全点.现在几乎没有虚拟机实现才用抢占式中断来暂停线程响应gc事件.</span><br><span class="line">          主动式中断:当垃圾收集需要中断线程的时候,不直接对线程操作,仅仅简单设置一个标志位,各个线程执行过程时会不停的主动轮询这个标志,一旦发现中断标志为真时就自己在最近的安全点上主动中断挂起.</span><br><span class="line">                    轮询标志的地方和安全点是重合的,另外还要加上所有创建对象和其他需要在java堆上分配内存的地方,这事为了检查是否即将要发生垃圾收集,避免没有足够内存分配新对象.</span><br><span class="line">     程序执行时才能进入到安全点.</span><br><span class="line">安全区域:</span><br><span class="line">    程序不执行就是没有分配处理器时间,典型的场景便是用户线程处于sleep或者blocked状态,这时候线程无法响应虚拟机的中断请求,不能再走到安全点地方去中断挂起自己,虚拟机也显然不可能持续等待线程重新被激活分配处理器时间,对于这种情况,就必须引入安全区域(safe region)来解决.</span><br><span class="line">    定义:能够确保在某一段代码片段之中,引用关系不回发生变化,因此,在这个区域中任意地方开始垃圾收集都是安全的.我们也可以把安全区域看作被扩展拉伸的安全点.</span><br><span class="line">    过程:当用户线程处于执行到安全区域里边的代码时,首先会标志自己已经进入了安全区域,那样当这段时间里虚拟机要发起垃圾回收收集就不必去管这些已经声明在安全区域内的线程了.当线程要离开安全区域内时,他要检查虚拟机是否已经完成根枚举(或者垃圾收集过程中其他需要暂停用户线程的阶段),如果完成了,那线程就当作没事发生过,继续执行;否则它就必须一直等待,知道收到可以离开安全区域的信号位置.</span><br></pre></td></tr></table></figure>
+
+<h2 id="经典垃圾收集器"><a href="#经典垃圾收集器" class="headerlink" title="经典垃圾收集器"></a>经典垃圾收集器</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">serial:</span><br><span class="line">     年轻代:复制,单线程,stw</span><br><span class="line">parnew:</span><br><span class="line">     年轻代:复制,多线程,stw</span><br><span class="line">parallel scavenge:</span><br><span class="line">     年轻代:复制,多线程,stw</span><br><span class="line">     吞吐量收集器</span><br><span class="line">     -XX:MaxGCPauseMillis最大停顿时间</span><br><span class="line">     -XX:GCTimeRatio   gc时间占比 比如99     1/1+99</span><br><span class="line">serial old:</span><br><span class="line">     老年代:标记整理,单线程,stw</span><br><span class="line">parallel old:</span><br><span class="line">     老年代:标记整理,多线程,stw</span><br><span class="line">cms:</span><br><span class="line">    初始标记:stw</span><br><span class="line">    并发标记:多线程</span><br><span class="line">    重新标记:stw</span><br><span class="line">    并发清除:多线程</span><br><span class="line"></span><br><span class="line">    缺点:</span><br><span class="line">        1,cms对处理器资源非常敏感.事实上,面向并发设计的程序都对处理器资源比较敏感</span><br><span class="line">           默认回收线程数(核心数+3)/4,也就是说,核心数在4和以上,并发回收时垃圾收集线程只占用不超过25%</span><br><span class="line">                                           核心数在4一下,cms对用户程序的影响就可能比较大.</span><br><span class="line">        2,由于有浮动垃圾,有可能出现&quot;Concurrent Mode Failure&quot;失败进而导致领一次完全&quot;Stop The World&quot;的Full GC的产生.</span><br><span class="line">                 并发标记  (?是否当次)</span><br><span class="line">                 并发清除  产生的垃圾无法档次进行清除</span><br><span class="line">                 需要预留一定的空间,-XX:CMSInitiatingOccu-pancyFraction配置触发百分比(jdk5=62,jdk6=92)</span><br><span class="line">        3,标记清除,会产生大量碎片,-XXCMSFullGCsBefere-Compaction几次后进行fullgc会进行碎片整理</span><br><span class="line">g1:</span><br><span class="line">    将java堆分为多个大小相等的独立区域(region),每个region都会更具需要,扮演新生代的eden,survicor,old空间.收集器更具不同角色的region采用不同的策略去处理,这样无论是新创建的对象还是已经存活了一段时间,熬过几次收集到旧对象都获取很好的手机效果.</span><br><span class="line">    region还有一类特殊的Humongous区域,专门用来存储大对象.超过容量一半的对象即可判断为大对象.-XX:G1HeapRegionSize=1MB---32MB,为2的指数.</span><br><span class="line">    -XX:MaxGCPauseMillis指定停顿时间.</span><br><span class="line">    跨region</span><br><span class="line">    过程:</span><br><span class="line">       初始标记:stw,耗时很短</span><br><span class="line">              仅仅标记gc roots能直接关联的对象,并且修改TAMS指针的值,让下一阶段用户线程并发运行时,能正确在可用的region中分配新对象,耗时很短,而且借用进行minor gc的时候同步完成,所以实际并没有额外的停顿.</span><br><span class="line">       并发标记:这个阶段较长</span><br><span class="line">              从gc root开始对堆中对象进行可达性分析,递归扫描整个堆里的对象图,找出要回收的对象,这个阶段较长,但可与用户程序并发执行.当对象图扫描完成以后,还要重新处理SATB记录下的并发是有引用变动的对象.</span><br><span class="line">       最终标记:stw</span><br><span class="line">              用户处理并发阶段结束后仍遗留下来的最后那韶关亮的SATB记录.</span><br><span class="line">       筛选回收:</span><br><span class="line">              负责更新region的统计数据,对哥哥region的回收价值和成本进行排序,根据用户所期望的停顿时间来指定回收计划,可以自由选择任意多个region构成收集,然后把决定回收的那一部分region的存活对象复制到空的region中,在清理掉整个旧region的全部空间.</span><br><span class="line">              回收阶段本来也设计过和用户程序一起并发执行,但是很复杂,考虑只是回收一部分停顿时间段,放到zgc中完成.</span><br></pre></td></tr></table></figure>
+
+<h2 id="对象分配和回收策略"><a href="#对象分配和回收策略" class="headerlink" title="对象分配和回收策略"></a>对象分配和回收策略</h2><h3 id="对象有现在eden分配"><a href="#对象有现在eden分配" class="headerlink" title="对象有现在eden分配"></a>对象有现在eden分配</h3><h3 id="大对象直接进入老年代"><a href="#大对象直接进入老年代" class="headerlink" title="大对象直接进入老年代"></a>大对象直接进入老年代</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-XX:PretenureSizeThreshold=x(只对serial,parnew有效)  大于该值这直接进入老年代</span><br></pre></td></tr></table></figure>
+
+<h3 id="长期存在的对象进入老年代"><a href="#长期存在的对象进入老年代" class="headerlink" title="长期存在的对象进入老年代"></a>长期存在的对象进入老年代</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-XX:MaxTenuringThreshold=x配置年龄</span><br></pre></td></tr></table></figure>
+
+<h3 id="动态对象年龄判断"><a href="#动态对象年龄判断" class="headerlink" title="动态对象年龄判断"></a>动态对象年龄判断</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">达到配置年龄才能进生老年代,如果在survivor空间中相同年龄所有对象大小的总和大于survivor空间的一半,年龄大于或等于该年龄对象就可以直接进入老年代.</span><br></pre></td></tr></table></figure>
+
+<h3 id="空间分配担保"><a href="#空间分配担保" class="headerlink" title="空间分配担保"></a>空间分配担保</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">发生minor gc之前,虚拟机必须先检查老年代最大可用的连续空间是否大于新生代所有对象总空间,</span><br><span class="line">                成立,那麽这一次minor gc是确保安全的.</span><br><span class="line">                不成立,则-XX:HandlePromotionFailure是否允许</span><br><span class="line">                          允许:检查老年代最大可用的连续空间是否大于历次晋升到老年代的对象的平均大小,若大于,则尝试进行一次minor gc,失败则full gc</span><br><span class="line">                                                                                          若小于,则改为进行一次full gc</span><br></pre></td></tr></table></figure>
+
+<h4 id="full-gc触发"><a href="#full-gc触发" class="headerlink" title="full gc触发"></a>full gc触发</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">https://www.cnblogs.com/jiangxwa/p/10289474.html</span><br><span class="line"></span><br><span class="line">1,system.gc()调用</span><br><span class="line">        -XX:+ DisableExplicitGC来禁止</span><br><span class="line">2,老年带空间不足</span><br><span class="line">3,元数据区不足</span><br><span class="line">4,cms gc出现 promotion failed和concurrent mode failure</span><br><span class="line">      promotion failed:minor gc时,survivor放不下,放老年带,老年带也放不下.</span><br><span class="line">      concurrent mode failure:gc过程中,有新的对象生成,但是还有对象放入老年带,老年带空间不足造成的</span><br><span class="line">     处理方式</span><br><span class="line">        增大survivor,老年带或调低触发gc的占比</span><br><span class="line">5,担保失败</span><br><span class="line">6,堆中分配很大的对象</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cpu 异常</span><br><span class="line">jps</span><br><span class="line">top -H -p2022</span><br><span class="line">jstack pid</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">内存异常</span><br><span class="line"></span><br><span class="line">mat 查看内存结构,查看结构数可以查看到位置</span><br><span class="line"></span><br><span class="line">常见出现问题</span><br><span class="line">静态对象</span><br><span class="line">threadlocal</span><br></pre></td></tr></table></figure>
+
+
+  </article>
+</div>
+
+
+    
+
+
+
+
+</div>
+
+<div class="footer-wrapper container">
+  <footer class="footer clearfix">
+    <div class="clearfix">
+    <a href="https://king019.github.io" class="footer-logo">
+      <i class="fa fa-github"></i>
+    </a>
+    <ul class="footer-social-link">
+      <li>© 2019 king019</li>
+      <li><a href="https://king019.github.io">Home</a></li>
+      
+      <li><a href="https://github.com/king019">Github</a></li>
+      
+    </ul>
+    <div class="footer-theme-info">
+      Theme <a href="//github.com/sabrinaluo/hexo-theme-replica">Replica</a>
+      by <a href="//github.com/sabrinaluo">Hiitea</a> ❤ Powered by Hexo
+    </div>
+    </div>
+    
+  </footer>
+</div>
+
+
+
+
+<script src="/js/main.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>
+    垃圾回收 | king019
+  </title>
+  <meta name="description" content>
+  
+  <meta name="keywords" content="
+  jvm,分布式,java,z05应用,垃圾回收
+  ">
+  
+  <meta name="author" content="king019">
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="theme-color" content="#1e2327">
+  <link rel="apple-touch-icon" href="https://github.githubassets.com/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://github.githubassets.com/apple-touch-icon-180x180.png">
+
+  <link rel="icon" type="image/x-icon" href="https://github.githubassets.com/favicon.ico">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.25-csp/vue.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+</head>
+
+<body id="replica-app">
+
+<nav class="navbar-wrapper">
+  <div class="navbar">
+    <div class="container clearfix">
+      <a href="/" class="navbar-logo"><i class="fa fa-github"></i></a>
+
+      <div class="navbar-search float-left desktop-only">
+        <div class="navbar-search-form">
+          <label for="gsc-i-id1">This website</label>
+          <div id="google-search">
+            <gcse:search></gcse:search>
+          </div>
+        </div>
+      </div>
+
+      <ul class="navbar-nav float-left">
+        
+        <li><a href="/archives">Archives</a></li>
+        
+        
+        <li><a href="/categories">Categories</a></li>
+        
+        
+        <li><a href="/tags">Tags</a></li>
+        
+        
+        <li class="desktop-only"><a href="/atom.xml" target="_blank">RSS</a></li>
+        
+      </ul>
+
+      <ul class="navbar-nav user-nav float-right desktop-only">
+        <li class="user-nav-notification">
+          <a><span class="user-nav-unread"></span><i class="fa fa-bell"></i></a>
+        </li>
+        <li>
+          <a><i class="fa fa-plus"></i> <i class="fa fa-caret-down"></i></a>
+        </li>
+        <li class="user-nav-logo">
+          <a><img src="/assets/head.jpg"> <i class="fa fa-caret-down"></i></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="main-container">
+  <header class="header-wrapper desktop-only">
+  <div class="container header-site-detail">
+    <ul class="header-toolbar">
+      <li class="clearfix">
+        <a href="/archives" class="header-toolbar-left"><i
+                  class="fa fa-file-text"></i> Posts </a>
+        <a href="/archives"
+           class="header-toolbar-right"> 218 </a>
+      </li>
+      <li>
+        <a href="/tags" class="header-toolbar-left"><i
+                  class="fa fa-tags"></i> Tags </a>
+        <a href="/tags"
+           class="header-toolbar-right"> 213 </a>
+      </li>
+      <li>
+        <a href="/categories" class="header-toolbar-left"><i
+                  class="fa fa-folder-open"></i> Categories </a>
+        <a href="/categories"
+           class="header-toolbar-right"> 256 </a>
+      </li>
+    </ul>
+    <h2 class="header-title">
+      <i class="fa fa-book text-muted"></i>
+      <a href="/">king019</a>
+      
+      
+    </h2>
+  </div>
+
+  <div class="container">
+    <div class="header-tab-wrapper clearfix">
+      <span class="header-tab header-tab-selected"><i class="fa fa-thumbs-o-up"></i> Like</span>
+      <span class="header-tab"><i class="fa fa-share-alt"></i> Share</span>
+      <span class="header-tab"><i class="fa fa-comments-o"></i> Discussion</span>
+      <span class="header-tab"><i class="fa fa-bookmark-o"></i> Bookmark </span>
+      <span class="header-tab"><i class="fa fa-smile-o"></i> Smile <i class="fa fa-caret-down"></i></span>
+    </div>
+  </div>
+</header>
+
+
+<div class="post-container container">
+  <h3>
+    <i class="fa fa-user-o"></i>
+    king019
+
+    <span class="post-date float-right" title="{{moment(1650088475017).format('MMM DD, YYYY, h:mm:ss A')}}">
+      
+          <i class="fa fa-pencil-square-o"></i>
+      
+      {{moment(1650088475017).fromNow()}}
+    </span>
+  </h3>
+
+  <article class="post-content">
+    <h1>垃圾回收</h1>
+    <p>垃圾回收<br><img src="https://www.plantuml.com/plantuml/svg/bLXRRnf95dxdL_084nBFI3jQRQIDPiVQZ6QaR6QLtLLU6TnEIBXOW1rbdx0nDtDp4commGOS73kEkSMCtUPY_anNTVClzbIVfgbkS3RpaBYfEdLkTRwlJjKFmP0p4FAwVKjUvuhb6olTwKh3TxGMeuUN5kitLjBBo_bJYnK-NpZNdF31ljQyx0E-bBrzcghGSa_zpUGF8wHyGqg7D7-9OsomTQrqQkJgCstqjK4sEjW1rKgpHdVQShD0BtQukLnBkRcXuHEI04-sZTEyNLfDsE0V4K_a_KrQFYVbDiaLn_6SKZkrIs83ZS0S-g2hO3QsDoNnJEwDvDEKqewW6Dsz1aka6WEbi5mQZhJbkGrmqq4wuN7a52qu9B5B2vVuGsuaEVSqBUaUg90x_V717WslayuX2qXDw5o7M891cisXrvq-EKnfYrKhjvWWeWYJNmgrKP3FFqZYPvIadQgy7TFjy5hL3A9kp018lV2vRJvdoBqcu8JzDaiOWhut91Q5PCsQOGvLUd8j31cbcIQ62QfOQlOtNHvdC8YA8SDXgLTYJd_4j6p0DyxPV2k2u_5gwF7o8y7h3xp-Uo3W3zWTogX8oqdveY_tAsIhgWo7PCyGO38CysGxJHl7u_owBVZQvteUyFlS_nMMx3IzpXRFYOlaChHOdHCTZKH9x7TOyikZfpyAJf_Zb_yy-jVFa3TwSKfYQP9e0nQWkXoOMQd_NgwkouDtf57aIWOCb4-LTc9cFyYWDviysXQLKLaICz9Wtu0q5Hd3rkmABH_jcF81AkcDdA-0z-02xHsHU4zBQpBZ88c2CYgXJYKT8QKk9BIarDBo-RdKIzFpsemzCkZCsTxScH8PCZED8gH04bDigKeDi7fSYe4n8vhdwCYtOFlbKXEIUryIUr8l1ZfPdaPxW5lS8kNe4yyu04VuNxKO1fbnU5-k74-J30xHn3OhaM8Bg4ZgyLiC-KJM8TjPRfX5BeR1VRbH6eUJi8_9PRVFwO62iTbPigB7Ud9GX4_ELXNc7zxzvwgmAj3a2MHINumvma6qO9zPgJcaXagJp3-Q7jATDrpTODmJCk0Tx_InsALUIhf9ZI5tCtkd0WGfXw4GyNBrMUxdM6BDuanaWj95fsU2Klgvngpq-z9m1yb3YQJ7nUvqFut7mWpN9s802woBwIYjnfLccuhHyLvzPaKzGn8pUhGLErt6RL-mWNCskjk6Ue3H1GNezReBNyZsh12squm5E7VjUYZucpGFvMoRDtwjR6t86zVqS5yIR_Yw6XsCzm6jOINUPVm_-YH7Ju0W7Eoe5SzGNXd5uHHYj37Hmq2odT2vI4Dxl0TM4IiaUW6mXc86IC0itMt06K7Ik-mGKqc9YxwP9D5JK6eeTzZlKpB8CQEx3HvvIlD67ZOHGf1KCYf8mum35oZ3fj8wKbh7C0H23iOcMO1RJovN07qEqku0_6Wvh8pUCESdbYLn2nMWEPhUK7w_Cdi81Kmg5PuOL7m5FOAmil2Rn-zwAIpHGfMb_rq6wX1rAQqhsjbWq5UdS8rk60Xi3-R6uD67TLOYhHWlOJG9ZbnVif3OWM_eG7WOx0sLvEU5SVyD-oElj-6FJHAJy4ShGRvS-ChdZg89Sesd4vIXCkn39Thu4hVpcnCK0cwdPph2LcLsi8lXvNvr1luXl3BArVTHpePHsatoJez7y5YVk9nhWk-PO5nwVGaqnU_C13EyZiL7Jmohs1bxLkU6L2GUa9CK9egVOQ65NfbaLJVdokAKKNnyj4dgcu1-avPS2mi5TlKMaN4SyDF-GqwfnFJ_d9gmXL43Jsq6uN6XEJugcinbAwHKDHbw7Wgj1EylBBnwzUhU2xVJ5to-Ui_bzowiBBYSt_tsxTAVlllspwxlJLPpsoGJ9_MEqZsshGJyNd_8xVTPbvrk3xG-vaXchSAe5_gaa3zWVUPIeOxidxy1CEdbuD2_O8AHbfYo0IwLqQ7SRyWVU-D2TyQMkY5uX9ajtdtwzFw_Wm8KrgBVk-9qXVuMUhZgyIpweLHTglzC0gRPw4-BFmhB_e2WYSBiNx-VjtTQ3XRzFjTg823uGjP7_YN1-X0oiHeGlYuLBcyGqg3JDciBj8v49PTfFcYZ3idIVsCA837AvSKVoCCTZF9doByREd7ViySkr-gAq-Tw_J20eV8uVA9oXFMnPya6YRD_5LaW-679Lr86p4NFIRJ3g_dfkw-4FnnJ208RmCkSS0qUS112onAzKDRpSABeRP19M0aNs1ti9Y5N6bzD7j0Nmiw11GTDVgAv79x4SEdJRaMt6r9k8kETaGbOvR3SJzmU3-uhxyvS6y0LQlk8vy8yHKgtedJVqr8Nk2eWF8DDPtrRlu9NQBX9cUJlFc3jcdhBrSLHkzI_8k41UPk6TXWk9jZZq-nRqilDw80qiKjQ_fGchjI64Yu_9QPflJokZTZHMkZIWsEQZfEcTXq1XqZYxOmc9NucvpiG8arzX7QHRkQWl7JdwE4cU8CAk4vmwiVM5ebTw3OOcM-yXoQ5tSSJiMc0ZQBIFT5U7DH35Ae7K0TJA0DedSrJB0DqpD2NJMfjMU5agZ9wokwnAdAD1TxAGq6Oga7D0zG4gP_mAJB3GFCOxs54Z91EsAme2OqYYxIq1NqJUmCmDkGpJI-9vqZx3MgKZx9oCcxJtYlKF3YqjnrLbWVoCd0daDaCqy7XzpeO4hptdhaCry_o6GQ9f4R43woG9jqq2xkTSm2Of84e3pv2zD2uIhqJc6Q6ZBfq5MP6PFGImQgUdSAjeAaezDP8vdDryeVEh1B6uEPZSC4rFHEyx4nOnZE1kqBsDw4jjvYvzWwGi-t5qik_aDmklKpOPmMcd6mnDsbt-Bv97pIHE6hlLSWWOhTyeMsxSnlvpv6rtk69tsgPn-Im4LYYYTWuce6Trk3Ns9LtZldJ0AyfWoA99k168Ym9Fbp2ozGrOCh0OTbZhG-V37A2mB70C-o1ejlNoT9qiXhkiIey4FFNtV7D9adKeK0DDLCIuLQdpMhim2gLXliGr8FWQc3DlUOFW3NW59BPiXW90jVLJwHUbYPsvGRSghDm2y9ntKLs-u5kit_C1pYtLRxx02eIBoLu6kb-yvSnOwbRvhPYqdMAVqr1fjMVHz-7QMNgWKPBkHO-t_40eSKMsVwWHJW1CxjBueCPzdhXlfa5LMO-g4dzIo1l-LFgxWFDCxdM19TnS9uukx9gAp1epO7ekj8KRuCsoAhpeCGO64QY1QQw-81aO_IyHlTIhEk51aBlm62phY_8GHptNtVOQcGczJq8dKdiWXoa1VAg7fGgN-hYxCqy2ZTyxPY_EYRHA_tszs8bEFqEXfoXwI-tRza__SLUtpai3TYpd8gxgSXpVJMpMJcMowdvWc37zPAZBBM1ezM4nMBvGV0jQO_z_mC0"></p>
+
+  </article>
+</div>
+
+
+    
+
+
+
+
+</div>
+
+<div class="footer-wrapper container">
+  <footer class="footer clearfix">
+    <div class="clearfix">
+    <a href="https://king019.github.io" class="footer-logo">
+      <i class="fa fa-github"></i>
+    </a>
+    <ul class="footer-social-link">
+      <li>© 2019 king019</li>
+      <li><a href="https://king019.github.io">Home</a></li>
+      
+      <li><a href="https://github.com/king019">Github</a></li>
+      
+    </ul>
+    <div class="footer-theme-info">
+      Theme <a href="//github.com/sabrinaluo/hexo-theme-replica">Replica</a>
+      by <a href="//github.com/sabrinaluo">Hiitea</a> ❤ Powered by Hexo
+    </div>
+    </div>
+    
+  </footer>
+</div>
+
+
+
+
+<script src="/js/main.js"></script>
+
+</body>
+</html>

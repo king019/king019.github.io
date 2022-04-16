@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>
+    mybatis_创建_mapper | king019
+  </title>
+  <meta name="description" content>
+  
+  <meta name="keywords" content="
+  mybatis,mysql,db,mybatis_创建_mapper
+  ">
+  
+  <meta name="author" content="king019">
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="theme-color" content="#1e2327">
+  <link rel="apple-touch-icon" href="https://github.githubassets.com/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://github.githubassets.com/apple-touch-icon-180x180.png">
+
+  <link rel="icon" type="image/x-icon" href="https://github.githubassets.com/favicon.ico">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.25-csp/vue.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+</head>
+
+<body id="replica-app">
+
+<nav class="navbar-wrapper">
+  <div class="navbar">
+    <div class="container clearfix">
+      <a href="/" class="navbar-logo"><i class="fa fa-github"></i></a>
+
+      <div class="navbar-search float-left desktop-only">
+        <div class="navbar-search-form">
+          <label for="gsc-i-id1">This website</label>
+          <div id="google-search">
+            <gcse:search></gcse:search>
+          </div>
+        </div>
+      </div>
+
+      <ul class="navbar-nav float-left">
+        
+        <li><a href="/archives">Archives</a></li>
+        
+        
+        <li><a href="/categories">Categories</a></li>
+        
+        
+        <li><a href="/tags">Tags</a></li>
+        
+        
+        <li class="desktop-only"><a href="/atom.xml" target="_blank">RSS</a></li>
+        
+      </ul>
+
+      <ul class="navbar-nav user-nav float-right desktop-only">
+        <li class="user-nav-notification">
+          <a><span class="user-nav-unread"></span><i class="fa fa-bell"></i></a>
+        </li>
+        <li>
+          <a><i class="fa fa-plus"></i> <i class="fa fa-caret-down"></i></a>
+        </li>
+        <li class="user-nav-logo">
+          <a><img src="/assets/head.jpg"> <i class="fa fa-caret-down"></i></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="main-container">
+  <header class="header-wrapper desktop-only">
+  <div class="container header-site-detail">
+    <ul class="header-toolbar">
+      <li class="clearfix">
+        <a href="/archives" class="header-toolbar-left"><i
+                  class="fa fa-file-text"></i> Posts </a>
+        <a href="/archives"
+           class="header-toolbar-right"> 218 </a>
+      </li>
+      <li>
+        <a href="/tags" class="header-toolbar-left"><i
+                  class="fa fa-tags"></i> Tags </a>
+        <a href="/tags"
+           class="header-toolbar-right"> 213 </a>
+      </li>
+      <li>
+        <a href="/categories" class="header-toolbar-left"><i
+                  class="fa fa-folder-open"></i> Categories </a>
+        <a href="/categories"
+           class="header-toolbar-right"> 256 </a>
+      </li>
+    </ul>
+    <h2 class="header-title">
+      <i class="fa fa-book text-muted"></i>
+      <a href="/">king019</a>
+      
+      
+    </h2>
+  </div>
+
+  <div class="container">
+    <div class="header-tab-wrapper clearfix">
+      <span class="header-tab header-tab-selected"><i class="fa fa-thumbs-o-up"></i> Like</span>
+      <span class="header-tab"><i class="fa fa-share-alt"></i> Share</span>
+      <span class="header-tab"><i class="fa fa-comments-o"></i> Discussion</span>
+      <span class="header-tab"><i class="fa fa-bookmark-o"></i> Bookmark </span>
+      <span class="header-tab"><i class="fa fa-smile-o"></i> Smile <i class="fa fa-caret-down"></i></span>
+    </div>
+  </div>
+</header>
+
+
+<div class="post-container container">
+  <h3>
+    <i class="fa fa-user-o"></i>
+    king019
+
+    <span class="post-date float-right" title="{{moment(1650088475008).format('MMM DD, YYYY, h:mm:ss A')}}">
+      
+          <i class="fa fa-pencil-square-o"></i>
+      
+      {{moment(1650088475008).fromNow()}}
+    </span>
+  </h3>
+
+  <article class="post-content">
+    <h1>mybatis_创建_mapper</h1>
+    <p>mybatis_创建_mapper<br><img src="https://www.plantuml.com/plantuml/svg/pLTVRnj547_tfx32IoBLxRkjH6tSHaGa1M9KyRhnZPs3zUrbTo-D8KW8qL2WK13Y1OHe1QYyjAH2GfGGFWrdXs_1xAtllFTdBtSn3_Z1Fi_E_7vxCxCpizU595m68zfONGq_UNH-TjOC_tm_VFBfwcg3KDdKiaOJFxrzsWCXNEPjaBvaVDnQoudM0vSwmDkxwhVOQgRIMdjpUwlBl84xZ8rymWL4HX7pZnzElpZ-vzvdqxDdaJ2hRqFGee0JYQIHfHMo8YnbnEa6GhBHdO5O5Y2bwmt5IkTo65jik3dowILnvDY76zGb0iGj2YFmv39dJ5w50q9lCmUMbmoDfPLwu3uDXgvdmTMBjJ7PxblGbxFWMw1JElyx0Wu32igod2EhLfScpeSO_dBv0Tw1ovcd46m9OghKtQH39Dd5rDfqNkFim4MHXIIlM9TAvV7Bn7EebSFGgFqY8-BxLc2zcCPC5n6jaIabfVJRaKM-rjKqx9lLRRRz70xkCoUhYa_wUx03WzWpo2VXq7HEfD72RC-vfoxD1HoBuAD_oGWaS1JRQCJoqZKTnskc-YAq74H0vPnJb94coeimYdrQuVrGQn6Ig9tt994HqGPdewxcAk8KeChW4ROAuF8eyB4Im963GbapeWbXwj0aKaNNqQVnS4J3NrwSFtzy9NpnMtXox3gJNtyEZn-4zq_q4VtxzwSvNl2Sonp0NTTpj6I3yTkODS8dVUXCJxyCdtqp-VodyE4Fq-UdLcQJDNwEVs_2W616L1cqsXxSjUet560opqrFlvfyzptESoYv_sru-aTJQEtvf6SdjgsqcGzUBC9yk8dbliS2tWSrDfO0fgOpzHQt3g4Vu5gdaQrSATNMsYPc6kBxgDlT8wxNxhauHa5iNzciYxK5-sfjEpt_tA0qYLaDjwatxSHnIKV1Y8y-hSsPWZqyHGH3a3ej6zg71KPftyyDvcxF-42lxy3G5H9ZRbgOeKghnMROzm_7HhfkUdZNyFfnrqlrgBn5QotwfmoZXunr-kYeR-tRj0VphjN5wLKFcfEFdvm_VZ1tih65r1kqNU-0lGqphnPeROFSOquRedm2mvdcibKvxyVOm8Xjiki2tvLdXRRSmi0qYeU3IhbrbnE_owY2mhyTzELLFv3OfXFPqfMcdh5NEiracIAjiP382UTaR2oKRoTpNjlx0M29imyx1H2HO-SDJ2NoEWiy1tKQvNDJ0HW-gzRJHamwdZMWoQEFfa__gcIhgsIgfQL0cY-z-rwZh4zLYbYV0xwiSXsy0kFwzbadL_JDEaxyra2fZwbGf1xt4dLrg6xgiDSBk8gcu3H8hXabAJAxLbISh3DbSuS5wkQM1LC41SQsOTs2eWeZODeO-LoENpJdrErsvNWbaV7rNfEjLdHe2IAUNToxfyjE3NUc8T_Wn1Ea7pV2KiIixNpMkT2qsFVfmQKae3FlTNGxyuLS22o-uxZlG4SFf-733oPVdzIEi9MYwCJR8c83iH-VOlJ_yW3P6CfsQmKpU_p5MP6NPINf_qNtY0l7ejpqamn8rr4l6D5_0G00"></p>
+
+  </article>
+</div>
+
+
+    
+
+
+
+
+</div>
+
+<div class="footer-wrapper container">
+  <footer class="footer clearfix">
+    <div class="clearfix">
+    <a href="https://king019.github.io" class="footer-logo">
+      <i class="fa fa-github"></i>
+    </a>
+    <ul class="footer-social-link">
+      <li>© 2019 king019</li>
+      <li><a href="https://king019.github.io">Home</a></li>
+      
+      <li><a href="https://github.com/king019">Github</a></li>
+      
+    </ul>
+    <div class="footer-theme-info">
+      Theme <a href="//github.com/sabrinaluo/hexo-theme-replica">Replica</a>
+      by <a href="//github.com/sabrinaluo">Hiitea</a> ❤ Powered by Hexo
+    </div>
+    </div>
+    
+  </footer>
+</div>
+
+
+
+
+<script src="/js/main.js"></script>
+
+</body>
+</html>

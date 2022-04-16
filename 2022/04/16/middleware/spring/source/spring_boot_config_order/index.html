@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>
+    spring boot加载配置文件顺序 | king019
+  </title>
+  <meta name="description" content>
+  
+  <meta name="keywords" content="
+  spring,springConfigOrder
+  ">
+  
+  <meta name="author" content="king019">
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="theme-color" content="#1e2327">
+  <link rel="apple-touch-icon" href="https://github.githubassets.com/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://github.githubassets.com/apple-touch-icon-180x180.png">
+
+  <link rel="icon" type="image/x-icon" href="https://github.githubassets.com/favicon.ico">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.25-csp/vue.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+</head>
+
+<body id="replica-app">
+
+<nav class="navbar-wrapper">
+  <div class="navbar">
+    <div class="container clearfix">
+      <a href="/" class="navbar-logo"><i class="fa fa-github"></i></a>
+
+      <div class="navbar-search float-left desktop-only">
+        <div class="navbar-search-form">
+          <label for="gsc-i-id1">This website</label>
+          <div id="google-search">
+            <gcse:search></gcse:search>
+          </div>
+        </div>
+      </div>
+
+      <ul class="navbar-nav float-left">
+        
+        <li><a href="/archives">Archives</a></li>
+        
+        
+        <li><a href="/categories">Categories</a></li>
+        
+        
+        <li><a href="/tags">Tags</a></li>
+        
+        
+        <li class="desktop-only"><a href="/atom.xml" target="_blank">RSS</a></li>
+        
+      </ul>
+
+      <ul class="navbar-nav user-nav float-right desktop-only">
+        <li class="user-nav-notification">
+          <a><span class="user-nav-unread"></span><i class="fa fa-bell"></i></a>
+        </li>
+        <li>
+          <a><i class="fa fa-plus"></i> <i class="fa fa-caret-down"></i></a>
+        </li>
+        <li class="user-nav-logo">
+          <a><img src="/assets/head.jpg"> <i class="fa fa-caret-down"></i></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="main-container">
+  <header class="header-wrapper desktop-only">
+  <div class="container header-site-detail">
+    <ul class="header-toolbar">
+      <li class="clearfix">
+        <a href="/archives" class="header-toolbar-left"><i
+                  class="fa fa-file-text"></i> Posts </a>
+        <a href="/archives"
+           class="header-toolbar-right"> 218 </a>
+      </li>
+      <li>
+        <a href="/tags" class="header-toolbar-left"><i
+                  class="fa fa-tags"></i> Tags </a>
+        <a href="/tags"
+           class="header-toolbar-right"> 213 </a>
+      </li>
+      <li>
+        <a href="/categories" class="header-toolbar-left"><i
+                  class="fa fa-folder-open"></i> Categories </a>
+        <a href="/categories"
+           class="header-toolbar-right"> 256 </a>
+      </li>
+    </ul>
+    <h2 class="header-title">
+      <i class="fa fa-book text-muted"></i>
+      <a href="/">king019</a>
+      
+      
+    </h2>
+  </div>
+
+  <div class="container">
+    <div class="header-tab-wrapper clearfix">
+      <span class="header-tab header-tab-selected"><i class="fa fa-thumbs-o-up"></i> Like</span>
+      <span class="header-tab"><i class="fa fa-share-alt"></i> Share</span>
+      <span class="header-tab"><i class="fa fa-comments-o"></i> Discussion</span>
+      <span class="header-tab"><i class="fa fa-bookmark-o"></i> Bookmark </span>
+      <span class="header-tab"><i class="fa fa-smile-o"></i> Smile <i class="fa fa-caret-down"></i></span>
+    </div>
+  </div>
+</header>
+
+
+<div class="post-container container">
+  <h3>
+    <i class="fa fa-user-o"></i>
+    king019
+
+    <span class="post-date float-right" title="{{moment(1650088475022).format('MMM DD, YYYY, h:mm:ss A')}}">
+      
+          <i class="fa fa-pencil-square-o"></i>
+      
+      {{moment(1650088475022).fromNow()}}
+    </span>
+  </h3>
+
+  <article class="post-content">
+    <h1>spring boot加载配置文件顺序</h1>
+    <p><a href="http://www.cnblogs.com/tanliwei/p/9304072.html" target="_blank" rel="noopener">从SpringBoot源码分析 配置文件的加载原理和优先级</a><br>数据创建<br><img src="https://www.plantuml.com/plantuml/svg/nPJBJW8n58RtynGyW2pOpWI2CPgOO2Jo18KUIUFGJZeTZ3iJJL2ye34O4-DrWt61kl06yZPqnBUmJ0413Q8nSJLdpkd__N-xE75N82wyd6r4eo6_VEllLEN6iQpNGl9bLLQsGj6eaN8ueTb9nx591Wd2Q3ZsgMLES8zQQSQ4tBkHnQlnH0u71t6Ofdd26Sq15TRhxesyNDCPne94p2o8UJx50OaVa28A9H35YECKyBmDeazhKbYsj59JMer6it7mDMMuj-3H1745KE2k2H_GfBuixWOh7RqLIh9uhjZ6ICZ_U_o5XN8WESU6lkbqNl7cF5keVtM8cxbk7KnC-VmWI_kQhNsCRndZs12QPqlGkvpSAJUVhl_U1hFPGID_izAwsFwTNT-mnsDqMDAn26hZ2qauDiNe8idEa06x4KHB1_KF2ytwWp5I7Oub6CAAOglFe4uFnZ-0C0ugdEJC0IvMKipZ6N2jLlLMDigj-tM_jgUbRZ3f0UOyWT8s3Ea2e7f9ondejvFxZtMLHDwT-gkL3cju5RxM3_oJi_OgZ0F5Qbc-0m00"><br>value/autowire(string)获取<br><img src="https://www.plantuml.com/plantuml/svg/hPCxJm914CVx_HHNQa7iZnm1HMDXGI2nNsu7F5rsSH-OwooCCI4-4X-TcXYZnjXOMO0Vv-xu6Ex1yJ30ITHoT-R_c__EpkIbmaBf1aMEOxKmrR22jU87de0bgOJ7wikziu_W_COAkeV1Szjo75H84aY1CQwmyZXR1SnANAgIu2v8oKKcjqYMxR5TS5KsR3-59wyBWejGmvggBSzOhrA8CpQmgxZmRG6IqnOKeGcC07FzRF1u55qS1zthwEe5pLUcKWal_vvRg9esciCCc-kDAX02P3jk-xyu_Hkuql_llYXvi1WI9q9szDu9xje3AfgXoUJMEAjvTItY2kRZcY2KFoAYjEYuNrEwn4aPzdKy8YMANTZXb82GQ9ue1PUY6TvCbDW4Qgxi9XRoMo_smEzzleMd3sYkQCohS2tC44zPgSF8H7QmR3ykOzIv36_lusNCcuaqw_i5"><br>数据获取顺序<br><img src="https://www.plantuml.com/plantuml/svg/SoWkIImgAStDuRArLNWsTSEptdKl-hO_xP_sSk6kfxlw5PxkQNYwl5l1rfRBEJylBJEzj2Yn93C_Bw0elo2rgAGoEB-qA3cr69KRd9bRa9Fgd9-RcvYNufEPbueghMj7DQEi3BbG1UA3IqgJqAqZg0HeZ6zY0Res326Wik3AufBKNDUyiioY_BpSrBmIL1N84ld584cWZuhpY-BzYpBJC_CSonEBKWaOeMj7Upk07Wa2XcT-RbXYJYb6xE2K0cg3s15Ib9YSdPg29SpmonCVpjWJu_FTav_DdGzAZ5mEgNafm5GB0000"></p>
+
+  </article>
+</div>
+
+
+    
+
+
+
+
+</div>
+
+<div class="footer-wrapper container">
+  <footer class="footer clearfix">
+    <div class="clearfix">
+    <a href="https://king019.github.io" class="footer-logo">
+      <i class="fa fa-github"></i>
+    </a>
+    <ul class="footer-social-link">
+      <li>© 2019 king019</li>
+      <li><a href="https://king019.github.io">Home</a></li>
+      
+      <li><a href="https://github.com/king019">Github</a></li>
+      
+    </ul>
+    <div class="footer-theme-info">
+      Theme <a href="//github.com/sabrinaluo/hexo-theme-replica">Replica</a>
+      by <a href="//github.com/sabrinaluo">Hiitea</a> ❤ Powered by Hexo
+    </div>
+    </div>
+    
+  </footer>
+</div>
+
+
+
+
+<script src="/js/main.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>
+    redis设计和实现 | king019
+  </title>
+  <meta name="description" content>
+  
+  <meta name="keywords" content="
+  redis
+  ">
+  
+  <meta name="author" content="king019">
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="theme-color" content="#1e2327">
+  <link rel="apple-touch-icon" href="https://github.githubassets.com/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://github.githubassets.com/apple-touch-icon-180x180.png">
+
+  <link rel="icon" type="image/x-icon" href="https://github.githubassets.com/favicon.ico">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.25-csp/vue.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+</head>
+
+<body id="replica-app">
+
+<nav class="navbar-wrapper">
+  <div class="navbar">
+    <div class="container clearfix">
+      <a href="/" class="navbar-logo"><i class="fa fa-github"></i></a>
+
+      <div class="navbar-search float-left desktop-only">
+        <div class="navbar-search-form">
+          <label for="gsc-i-id1">This website</label>
+          <div id="google-search">
+            <gcse:search></gcse:search>
+          </div>
+        </div>
+      </div>
+
+      <ul class="navbar-nav float-left">
+        
+        <li><a href="/archives">Archives</a></li>
+        
+        
+        <li><a href="/categories">Categories</a></li>
+        
+        
+        <li><a href="/tags">Tags</a></li>
+        
+        
+        <li class="desktop-only"><a href="/atom.xml" target="_blank">RSS</a></li>
+        
+      </ul>
+
+      <ul class="navbar-nav user-nav float-right desktop-only">
+        <li class="user-nav-notification">
+          <a><span class="user-nav-unread"></span><i class="fa fa-bell"></i></a>
+        </li>
+        <li>
+          <a><i class="fa fa-plus"></i> <i class="fa fa-caret-down"></i></a>
+        </li>
+        <li class="user-nav-logo">
+          <a><img src="/assets/head.jpg"> <i class="fa fa-caret-down"></i></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="main-container">
+  <header class="header-wrapper desktop-only">
+  <div class="container header-site-detail">
+    <ul class="header-toolbar">
+      <li class="clearfix">
+        <a href="/archives" class="header-toolbar-left"><i
+                  class="fa fa-file-text"></i> Posts </a>
+        <a href="/archives"
+           class="header-toolbar-right"> 218 </a>
+      </li>
+      <li>
+        <a href="/tags" class="header-toolbar-left"><i
+                  class="fa fa-tags"></i> Tags </a>
+        <a href="/tags"
+           class="header-toolbar-right"> 213 </a>
+      </li>
+      <li>
+        <a href="/categories" class="header-toolbar-left"><i
+                  class="fa fa-folder-open"></i> Categories </a>
+        <a href="/categories"
+           class="header-toolbar-right"> 256 </a>
+      </li>
+    </ul>
+    <h2 class="header-title">
+      <i class="fa fa-book text-muted"></i>
+      <a href="/">king019</a>
+      
+      
+    </h2>
+  </div>
+
+  <div class="container">
+    <div class="header-tab-wrapper clearfix">
+      <span class="header-tab header-tab-selected"><i class="fa fa-thumbs-o-up"></i> Like</span>
+      <span class="header-tab"><i class="fa fa-share-alt"></i> Share</span>
+      <span class="header-tab"><i class="fa fa-comments-o"></i> Discussion</span>
+      <span class="header-tab"><i class="fa fa-bookmark-o"></i> Bookmark </span>
+      <span class="header-tab"><i class="fa fa-smile-o"></i> Smile <i class="fa fa-caret-down"></i></span>
+    </div>
+  </div>
+</header>
+
+
+<div class="post-container container">
+  <h3>
+    <i class="fa fa-user-o"></i>
+    king019
+
+    <span class="post-date float-right" title="{{moment(1650088475022).format('MMM DD, YYYY, h:mm:ss A')}}">
+      
+          <i class="fa fa-pencil-square-o"></i>
+      
+      {{moment(1650088475022).fromNow()}}
+    </span>
+  </h3>
+
+  <article class="post-content">
+    <h1>redis设计和实现</h1>
+    <h3 id="简单动态字符串"><a href="#简单动态字符串" class="headerlink" title="简单动态字符串"></a>简单动态字符串</h3><h4 id="sds定义"><a href="#sds定义" class="headerlink" title="sds定义"></a>sds定义</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">struct sdshdr&#123;</span><br><span class="line">    int len;已经使用的长度,等于sds所保存字符串的长度</span><br><span class="line">    int free;未使用字节的数量</span><br><span class="line">    char buf[]保存字符串</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="sds和c字符串的区别"><a href="#sds和c字符串的区别" class="headerlink" title="sds和c字符串的区别"></a>sds和c字符串的区别</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1,常数复杂度获取字符串长度</span><br><span class="line">2,杜绝缓冲区溢出</span><br><span class="line">3,减少修改字符串时带来的内存重分配次数</span><br><span class="line">4,二进制安全</span><br><span class="line">5,兼容部分c字符串函数</span><br></pre></td></tr></table></figure>
+
+<h3 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">struct listNode&#123;</span><br><span class="line">    listNode prev;前节点</span><br><span class="line">    listNode next;后节点</span><br><span class="line">    void * value;值</span><br><span class="line">&#125;</span><br><span class="line">struct list&#123;</span><br><span class="line">    listNode head;头</span><br><span class="line">    listNode tail;尾</span><br><span class="line">    long len;数量</span><br><span class="line">    free    释放函数</span><br><span class="line">    match   值对比函数</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="字段"><a href="#字段" class="headerlink" title="字段"></a>字段</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">哈希表</span><br><span class="line">struct dictht&#123;</span><br><span class="line">    dictEntry table;hash数组</span><br><span class="line">    long size;大小</span><br><span class="line">    long sizemask;掩码(size-1)</span><br><span class="line">    long used   使用数量</span><br><span class="line">&#125;</span><br><span class="line">哈希表节点</span><br><span class="line">struct dictEntry&#123;</span><br><span class="line">    void key;</span><br><span class="line">    union&#123;</span><br><span class="line">        val</span><br><span class="line">        uint64_tu64</span><br><span class="line">        int64_ts64</span><br><span class="line">        &#125; </span><br><span class="line">    dictEntry   next;</span><br><span class="line">&#125;</span><br><span class="line">字典</span><br><span class="line">struct dict&#123;</span><br><span class="line">    dictType type;  类型特定函数</span><br><span class="line">    void privdata   私有数据</span><br><span class="line">    dictht ht[2]    哈希表</span><br><span class="line">    in trahashidx   rehash索引.当rehash不在进行时,值为-1</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">keyhash=dict-&gt;type-&gt;hashRunction(key)</span><br><span class="line">index=hash&amp;dict-&gt;ht[x].sizemask</span><br><span class="line">解决健冲突</span><br><span class="line">hash相同后续链表</span><br><span class="line"></span><br><span class="line">rehash</span><br><span class="line">    扩展和收缩</span><br><span class="line">        负载因子=已保存节点数量/哈希表数量</span><br><span class="line">            负载因子需要维持在一个合理的范围</span><br><span class="line">            扩展/收缩(&gt;=1   &lt;0.1)</span><br><span class="line">渐进式rehash</span><br><span class="line">    每次添加,删除,查找或者更新时,都会操作一部分.(rehahsidx-1)每次进行减一</span><br><span class="line">    防止因为太多数据导致复制时耗时太久</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">https://blog.csdn.net/nwpu_geeker/article/details/79695625</span><br><span class="line">redis</span><br><span class="line">单线程渐进式</span><br><span class="line">增删改查   reshahidx-1 操作</span><br><span class="line">逐渐进行操作</span><br><span class="line">concurrenthashmap</span><br><span class="line">多线程渐进式</span><br><span class="line">读-&gt;老-&gt;新</span><br><span class="line">写/删-&gt;旧-&gt;操作</span><br><span class="line">       新-&gt;扩容-&gt;操作</span><br></pre></td></tr></table></figure>
+
+<h3 id="跳跃表"><a href="#跳跃表" class="headerlink" title="跳跃表"></a>跳跃表</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">skiplist 是一种有序结构</span><br><span class="line">支持平均   logn,最坏 n复杂度的节点查找</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">struct zskiplistNode&#123;</span><br><span class="line">    //层</span><br><span class="line">    zskiplistLevel&#123;</span><br><span class="line">        zskiplistNode forward: 前进指针</span><br><span class="line">        int span    </span><br><span class="line">    &#125;</span><br><span class="line">    zskiplistNode backward: 后退指针</span><br><span class="line">    double score</span><br><span class="line">    robj obj</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="整数集合-intset"><a href="#整数集合-intset" class="headerlink" title="整数集合(intset)"></a>整数集合(intset)</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">struct intset&#123;</span><br><span class="line">    uint32_t encoding: 编码方式</span><br><span class="line">    uint32_t length;元素个数</span><br><span class="line">    int8_t  contents[];保存原始的数组</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">升级</span><br><span class="line">    分配新空间</span><br><span class="line">    转换升级后类型</span><br><span class="line">    将新元素添加到底层数组里边</span><br><span class="line"> 好处</span><br><span class="line">    提升灵活性</span><br><span class="line">    尽可能节约内存   </span><br><span class="line">降级</span><br><span class="line">    不支持降级</span><br></pre></td></tr></table></figure>
+
+<h3 id="压缩列表"><a href="#压缩列表" class="headerlink" title="压缩列表"></a>压缩列表</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zlbytes zltail  entry1  entry2  ... entryN  zlend</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">连锁更新</span><br><span class="line">    前边修改长度后,后边需要修改长度引起级联反应重新分配空间</span><br></pre></td></tr></table></figure>
+
+<h3 id="对象"><a href="#对象" class="headerlink" title="对象"></a>对象</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">字符串对象</span><br><span class="line">    编码:int raw   embstr</span><br><span class="line">    实现:数字/sds</span><br><span class="line">列表对象</span><br><span class="line">    ziplist/linkedlist</span><br><span class="line">    1,key/val&lt;64字节</span><br><span class="line">    2,size&lt;512   </span><br><span class="line">    1+2=ziplist,其他linkedlist</span><br><span class="line">哈希对象</span><br><span class="line">    ziplist/hashtable</span><br><span class="line">    1,key/val&lt;64字节</span><br><span class="line">    2,size&lt;512   </span><br><span class="line">    1+2=ziplist,hashtable</span><br><span class="line">集合对象</span><br><span class="line">    intset/hashtable</span><br><span class="line">    1,key都是整数</span><br><span class="line">    2,size&lt;512   </span><br><span class="line">    1+2=ziplist,hashtable</span><br><span class="line">有序集合对象</span><br><span class="line">    ziplist/skiplist</span><br><span class="line">    1,size&lt;128</span><br><span class="line">    2,所有成员长度&lt;64   </span><br><span class="line">    1+2=ziplist,skiplist</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">内存回收</span><br><span class="line">struct redisObject&#123;</span><br><span class="line">    int refcount</span><br><span class="line">&#125;</span><br><span class="line">创建,引用+1</span><br><span class="line">被新程序使用+1</span><br><span class="line">不再使用-1</span><br><span class="line">引用=0,对象释放</span><br><span class="line"></span><br><span class="line">对象共享</span><br><span class="line">共享计数+1</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">对象空转时长</span><br><span class="line">struct redisObject&#123;</span><br><span class="line">    int lru:22      对象最后被使用的时间</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h3><h4 id="过期健删除策略"><a href="#过期健删除策略" class="headerlink" title="过期健删除策略"></a>过期健删除策略</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">定时</span><br><span class="line">    对内存友好,对cpu不友好</span><br><span class="line">    大量过期健,删除需要很多一部分cpu时间,在内存充足,cpu时间浪费在删除上边,会对服务器响应时间和吞吐量造成影响.</span><br><span class="line">惰性</span><br><span class="line">    对内存不友好,对cpu友好</span><br><span class="line">    取出才会检查,当大量过期但不回收,会造成不可用,内存泄露.</span><br><span class="line">定期</span><br><span class="line">    是定时和惰性的整合和折中.</span><br><span class="line">    定期删除策略每隔一段时间执行执行一次删除健操作,并通过限制删除操作执行的时长和频率来减少删除操作对cpu时间打影响</span><br><span class="line">    除此之外,通过定期删除过期健,定期删除策略有效的减少了因为过期健而带来的内存浪费</span><br><span class="line">    难点:确定操作执行的试产和频率</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">惰性+定期</span><br></pre></td></tr></table></figure>
+
+<h4 id="aof-rdb-复制"><a href="#aof-rdb-复制" class="headerlink" title="aof rdb 复制"></a>aof rdb 复制</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">rdb(频率写入)</span><br><span class="line">    生成(save,bgsave)</span><br><span class="line">        save:同步阻塞服务</span><br><span class="line">        bgsave:异步,生成新的线程创建</span><br><span class="line">        过期不会保存rdb内</span><br><span class="line">    载入</span><br><span class="line">        载入期间会一直处于阻塞</span><br><span class="line">        主</span><br><span class="line">            只载入未过期</span><br><span class="line">        从</span><br><span class="line">            全部载入,主从同步时会进行清理</span><br><span class="line">aof(有命令写入)</span><br><span class="line">    生成</span><br><span class="line">        过期会生成删除记录</span><br><span class="line">    重写</span><br><span class="line">        只会重写有效的</span><br><span class="line">    复制</span><br><span class="line">        主</span><br><span class="line">            删除key后会主动向从发送del</span><br><span class="line">        从</span><br><span class="line">            及时碰到过期也不会删除,继续像未过期的健一样处理</span><br><span class="line">            从服务器收到主动del命令后才会删除过期健</span><br></pre></td></tr></table></figure>
+
+<h3 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">redis服务器是一个事件驱动程序,服务器需要处理下面两类时间&quot;</span><br><span class="line">    文件时间:服务器对套接字操作的抽象</span><br><span class="line">    时间事件:在给定的时间点执行</span><br></pre></td></tr></table></figure>
+
+<h4 id="文件事件"><a href="#文件事件" class="headerlink" title="文件事件"></a>文件事件</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">io多路复用</span><br></pre></td></tr></table></figure>
+
+<h4 id="时间事件"><a href="#时间事件" class="headerlink" title="时间事件"></a>时间事件</h4><h3 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h3><h3 id="服务端"><a href="#服务端" class="headerlink" title="服务端"></a>服务端</h3><h3 id="复制"><a href="#复制" class="headerlink" title="复制"></a>复制</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">旧版:</span><br><span class="line">    同步(sync):将从服务器的数据库状态更新至主服务器当前所处的数据库状态</span><br><span class="line">    命令传播(command propagate):主服务器的数据库状态被修改,导致主从服务器的数据库状态不一致时,让从服务器的数据库重新回到一致状态</span><br><span class="line">  缺陷:</span><br><span class="line">    初次复制:全部复制</span><br><span class="line">    短线后重复制:全部复制</span><br><span class="line">新版:</span><br><span class="line">    完整重同步:全部</span><br><span class="line">    部分重同步:没有发送的才发送</span><br></pre></td></tr></table></figure>
+
+<h3 id="sentinel"><a href="#sentinel" class="headerlink" title="sentinel"></a>sentinel</h3><h3 id="集群"><a href="#集群" class="headerlink" title="集群"></a>集群</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">16384</span><br><span class="line">计算属于哪个槽</span><br><span class="line">crc16(key)&amp;16384</span><br><span class="line"></span><br><span class="line">重新分片</span><br><span class="line"></span><br><span class="line">在迁移过程中,有一部分键值保存在目标节点</span><br><span class="line">ask错误</span><br><span class="line">源节点不存在,则指向新节点</span><br><span class="line"></span><br><span class="line">确定move的情景</span><br><span class="line">ask  移动过程中</span><br><span class="line">move 已经移动完毕</span><br></pre></td></tr></table></figure>
+
+
+  </article>
+</div>
+
+
+    
+
+
+
+
+</div>
+
+<div class="footer-wrapper container">
+  <footer class="footer clearfix">
+    <div class="clearfix">
+    <a href="https://king019.github.io" class="footer-logo">
+      <i class="fa fa-github"></i>
+    </a>
+    <ul class="footer-social-link">
+      <li>© 2019 king019</li>
+      <li><a href="https://king019.github.io">Home</a></li>
+      
+      <li><a href="https://github.com/king019">Github</a></li>
+      
+    </ul>
+    <div class="footer-theme-info">
+      Theme <a href="//github.com/sabrinaluo/hexo-theme-replica">Replica</a>
+      by <a href="//github.com/sabrinaluo">Hiitea</a> ❤ Powered by Hexo
+    </div>
+    </div>
+    
+  </footer>
+</div>
+
+
+
+
+<script src="/js/main.js"></script>
+
+</body>
+</html>

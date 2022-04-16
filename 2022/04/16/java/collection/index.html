@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>
+    collection | king019
+  </title>
+  <meta name="description" content>
+  
+  <meta name="keywords" content="
+  collection
+  ">
+  
+  <meta name="author" content="king019">
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="theme-color" content="#1e2327">
+  <link rel="apple-touch-icon" href="https://github.githubassets.com/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://github.githubassets.com/apple-touch-icon-180x180.png">
+
+  <link rel="icon" type="image/x-icon" href="https://github.githubassets.com/favicon.ico">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.25-csp/vue.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+</head>
+
+<body id="replica-app">
+
+<nav class="navbar-wrapper">
+  <div class="navbar">
+    <div class="container clearfix">
+      <a href="/" class="navbar-logo"><i class="fa fa-github"></i></a>
+
+      <div class="navbar-search float-left desktop-only">
+        <div class="navbar-search-form">
+          <label for="gsc-i-id1">This website</label>
+          <div id="google-search">
+            <gcse:search></gcse:search>
+          </div>
+        </div>
+      </div>
+
+      <ul class="navbar-nav float-left">
+        
+        <li><a href="/archives">Archives</a></li>
+        
+        
+        <li><a href="/categories">Categories</a></li>
+        
+        
+        <li><a href="/tags">Tags</a></li>
+        
+        
+        <li class="desktop-only"><a href="/atom.xml" target="_blank">RSS</a></li>
+        
+      </ul>
+
+      <ul class="navbar-nav user-nav float-right desktop-only">
+        <li class="user-nav-notification">
+          <a><span class="user-nav-unread"></span><i class="fa fa-bell"></i></a>
+        </li>
+        <li>
+          <a><i class="fa fa-plus"></i> <i class="fa fa-caret-down"></i></a>
+        </li>
+        <li class="user-nav-logo">
+          <a><img src="/assets/head.jpg"> <i class="fa fa-caret-down"></i></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="main-container">
+  <header class="header-wrapper desktop-only">
+  <div class="container header-site-detail">
+    <ul class="header-toolbar">
+      <li class="clearfix">
+        <a href="/archives" class="header-toolbar-left"><i
+                  class="fa fa-file-text"></i> Posts </a>
+        <a href="/archives"
+           class="header-toolbar-right"> 218 </a>
+      </li>
+      <li>
+        <a href="/tags" class="header-toolbar-left"><i
+                  class="fa fa-tags"></i> Tags </a>
+        <a href="/tags"
+           class="header-toolbar-right"> 213 </a>
+      </li>
+      <li>
+        <a href="/categories" class="header-toolbar-left"><i
+                  class="fa fa-folder-open"></i> Categories </a>
+        <a href="/categories"
+           class="header-toolbar-right"> 256 </a>
+      </li>
+    </ul>
+    <h2 class="header-title">
+      <i class="fa fa-book text-muted"></i>
+      <a href="/">king019</a>
+      
+      
+    </h2>
+  </div>
+
+  <div class="container">
+    <div class="header-tab-wrapper clearfix">
+      <span class="header-tab header-tab-selected"><i class="fa fa-thumbs-o-up"></i> Like</span>
+      <span class="header-tab"><i class="fa fa-share-alt"></i> Share</span>
+      <span class="header-tab"><i class="fa fa-comments-o"></i> Discussion</span>
+      <span class="header-tab"><i class="fa fa-bookmark-o"></i> Bookmark </span>
+      <span class="header-tab"><i class="fa fa-smile-o"></i> Smile <i class="fa fa-caret-down"></i></span>
+    </div>
+  </div>
+</header>
+
+
+<div class="post-container container">
+  <h3>
+    <i class="fa fa-user-o"></i>
+    king019
+
+    <span class="post-date float-right" title="{{moment(1650088475020).format('MMM DD, YYYY, h:mm:ss A')}}">
+      
+          <i class="fa fa-pencil-square-o"></i>
+      
+      {{moment(1650088475020).fromNow()}}
+    </span>
+  </h3>
+
+  <article class="post-content">
+    <h1>collection</h1>
+    <p>set</p>
+<table>
+<thead>
+<tr>
+<th align="center">类</th>
+<th align="center">LinkedHashSet</th>
+<th align="center">HashSet</th>
+<th align="center">TreeSet</th>
+<th align="center">ConcurrentSkipListSet</th>
+<th align="center">CopyOnWriteArraySet</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">构造参数</td>
+<td align="center">16,0.75</td>
+<td align="center">16,0.75</td>
+<td align="center"></td>
+<td align="center">ddd</td>
+<td align="center">eee</td>
+</tr>
+<tr>
+<td align="center">构造参数</td>
+<td align="center">(1)collection(Math.max(2*c.size(), 11),0.75)</td>
+<td align="center">(1)Math.max((int) (c.size()/.75f) + 1, 16),0.75</td>
+<td align="center">ccc</td>
+<td align="center">参见ConcurrentSkipListMap</td>
+<td align="center">eee</td>
+</tr>
+<tr>
+<td align="center">实现原理</td>
+<td align="center">内部使用LinkedHashMap实现,key为参数,val为固定值</td>
+<td align="center">内部使用HashMap实现,key为参数,val为固定值</td>
+<td align="center">内部实现TreeMap,key为参数,val为固定值</td>
+<td align="center">内部实现ConcurrentSkipListMap,key为参数,val为固定值</td>
+<td align="center">内部实现CopyOnWriteArrayList,key为参数,val为固定值</td>
+</tr>
+<tr>
+<td align="center">扩大</td>
+<td align="center">参见LinkedHashMap</td>
+<td align="center">参见HashMap</td>
+<td align="center">参见TreeMap</td>
+<td align="center">参见ConcurrentSkipListMap</td>
+<td align="center">参见CopyOnWriteArrayList</td>
+</tr>
+<tr>
+<td align="center">有序</td>
+<td align="center">是</td>
+<td align="center">否</td>
+<td align="center">是</td>
+<td align="center">是</td>
+<td align="center">是</td>
+</tr>
+<tr>
+<td align="center">添加</td>
+<td align="center">同上</td>
+<td align="center">同上</td>
+<td align="center">同上</td>
+<td align="center">同上</td>
+<td align="center">addIfAbsent</td>
+</tr>
+<tr>
+<td align="center">删除</td>
+<td align="center">同上</td>
+<td align="center">同上</td>
+<td align="center">同上</td>
+<td align="center">同上</td>
+<td align="center">remove</td>
+</tr>
+<tr>
+<td align="center">遍历</td>
+<td align="center">map.keySet().iterator()</td>
+<td align="center">map.keySet().iterator()</td>
+<td align="center">同上</td>
+<td align="center">同上</td>
+<td align="center">同上</td>
+</tr>
+<tr>
+<td align="center">遍历顺序</td>
+<td align="center">插入顺序</td>
+<td align="center">map.keySet().iterator()</td>
+<td align="center">同上</td>
+<td align="center">同上</td>
+<td align="center">同上</td>
+</tr>
+<tr>
+<td align="center">遍历原理</td>
+<td align="center">在hashmap结构下,使用一条链表链接插入数据</td>
+<td align="center">map.keySet().iterator()</td>
+<td align="center">同上</td>
+<td align="center">同上</td>
+<td align="center">同上</td>
+</tr>
+</tbody></table>
+<p>list</p>
+<p>for in 使用iterator进行遍历</p>
+<table>
+<thead>
+<tr>
+<th align="center">类</th>
+<th align="center">CopyOnWriteArrayList</th>
+<th align="center">ArrayList</th>
+<th align="center">Stack</th>
+<th align="center">Vector</th>
+<th align="center">LinkedList</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">构造参数</td>
+<td align="center">空(0数组),Collection(Arrays.copyOf入参大小),数组(Arrays.copyOf入参大小)</td>
+<td align="center">空(0数组),Collection(Arrays.copyOf入参大小)</td>
+<td align="center">Vector子类</td>
+<td align="center">空(10数组),Collection(Arrays.copyOf入参大小)</td>
+<td align="center">无</td>
+</tr>
+<tr>
+<td align="center">实现原理</td>
+<td align="center">volatile修饰数组</td>
+<td align="center">数组</td>
+<td align="center">参见Vector</td>
+<td align="center">数组</td>
+<td align="center">链表</td>
+</tr>
+<tr>
+<td align="center">首次初始化容量</td>
+<td align="center">否</td>
+<td align="center">DEFAULT_CAPACITY=10</td>
+<td align="center">参见Vector</td>
+<td align="center">10</td>
+<td align="center">否</td>
+</tr>
+<tr>
+<td align="center">扩容多个</td>
+<td align="center">否</td>
+<td align="center">是(size&gt;length+1)</td>
+<td align="center">参见Vector</td>
+<td align="center">是(size&gt;length+1)</td>
+<td align="center">否</td>
+</tr>
+<tr>
+<td align="center">添加</td>
+<td align="center">重入锁,数组拷贝个数增一</td>
+<td align="center">当前数量小于size+1,扩容到1.5倍</td>
+<td align="center">添加到第一个</td>
+<td align="center">配置增加值-&gt;增加值,无增加值-&gt;扩容到2倍</td>
+<td align="center">链表添加到最后</td>
+</tr>
+<tr>
+<td align="center">不存在添加</td>
+<td align="center">重入锁,查询不存在进行添加</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+</tr>
+<tr>
+<td align="center">删除</td>
+<td align="center">重入锁,数组拷贝个数减一</td>
+<td align="center">删除指定值,然后后边向前挪</td>
+<td align="center">最后一个</td>
+<td align="center">删除指定值,然后后边向前挪</td>
+<td align="center">遍历找到指定位置,然后删除</td>
+</tr>
+<tr>
+<td align="center">获取指定位置</td>
+<td align="center">数组指定位置</td>
+<td align="center">数组指定位置</td>
+<td align="center">无</td>
+<td align="center">数组指定位置</td>
+<td align="center">遍历找到指定位置</td>
+</tr>
+<tr>
+<td align="center">遍历</td>
+<td align="center">forEach/for循环(遍按照数字循环)</td>
+<td align="center">forEach/for循环(按照数字循环)</td>
+<td align="center">参见Vector</td>
+<td align="center">forEach/for循环(按照数字循环)</td>
+<td align="center">for循环(按照数字循环)</td>
+</tr>
+<tr>
+<td align="center">遍历</td>
+<td align="center">for in/iterator(new COWIterator然后按照数组遍历)</td>
+<td align="center">for in/iterator(new Itr然后按照数组遍历)</td>
+<td align="center">参见Vector</td>
+<td align="center">for in/iterator(new Itr然后按照数组遍历)</td>
+<td align="center">forEach/for in/iterator(new ListItr然后按照链表遍历)</td>
+</tr>
+</tbody></table>
+<p>deque</p>
+<table>
+<thead>
+<tr>
+<th align="center">类</th>
+<th align="center">CopyOnWriteArrayList</th>
+<th align="center">ArrayDeque</th>
+<th align="center">LinkedBlockingDeque</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+</tr>
+<tr>
+<td align="center">queue</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+<p>通用方法</p>
+<table>
+<thead>
+<tr>
+<th align="center">方法</th>
+<th align="center">抛出异常</th>
+<th align="center">特殊值</th>
+<th align="center">阻塞</th>
+<th align="center">超时</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">插入</td>
+<td align="center">add(e)</td>
+<td align="center">offer(e)</td>
+<td align="center">put(e)</td>
+<td align="center">offer(e,time,unit)</td>
+</tr>
+<tr>
+<td align="center">移除</td>
+<td align="center">remove()</td>
+<td align="center">poll()</td>
+<td align="center">take()</td>
+<td align="center">poll(time,unit)</td>
+</tr>
+<tr>
+<td align="center">检查</td>
+<td align="center">element()</td>
+<td align="center">peek()</td>
+<td align="center">不可用</td>
+<td align="center">不可用</td>
+</tr>
+</tbody></table>
+<p>参考:<a href="https://blog.csdn.net/tayanxunhua/article/details/20962307" target="_blank" rel="noopener">https://blog.csdn.net/tayanxunhua/article/details/20962307</a></p>
+<table>
+<thead>
+<tr>
+<th align="center">类</th>
+<th align="center">LinkedTransferQueue</th>
+<th align="center">DelayQueue</th>
+<th align="center">PriorityQueue</th>
+<th align="center">ArrayBlockingQueue</th>
+<th align="center">PriorityBlockingQueue</th>
+<th align="center">LinkedBlockingQueue</th>
+<th align="center">SynchronousQueue</th>
+<th align="center">ConcurrentLinkedQueue</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">实现原理</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">使用takeLock(notEmpty),putLock(notFull)保证安全的链表</td>
+<td align="center">无</td>
+<td align="center">无</td>
+</tr>
+<tr>
+<td align="center">指定容量</td>
+<td align="center">是</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">是</td>
+<td align="center">无</td>
+<td align="center">无</td>
+</tr>
+<tr>
+<td align="center">构造参数</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">默认(max)/指定容量/Collection(max)</td>
+<td align="center">无</td>
+<td align="center">无</td>
+</tr>
+<tr>
+<td align="center">add</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">if(offer)true(else)IllegalStateException</td>
+<td align="center">无</td>
+<td align="center">无</td>
+</tr>
+<tr>
+<td align="center">offer</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center"></td>
+<td align="center">无</td>
+<td align="center">无</td>
+</tr>
+<tr>
+<td align="center">offer(time)</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">if(null)npe;if(容量满)false;(putLock.lock;if(容量满)false;添加值;if(当前值+1小于最大容量)notFull.signal;putLock.unlock)(if(容量空)(takeLock.lock;notEmpty.signal;takeLock.unlock))</td>
+<td align="center">无</td>
+<td align="center">无</td>
+</tr>
+<tr>
+<td align="center">remove</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+</tr>
+<tr>
+<td align="center">poll</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+</tr>
+<tr>
+<td align="center">poll(time)</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+</tr>
+<tr>
+<td align="center">take</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+</tr>
+<tr>
+<td align="center">element</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+</tr>
+<tr>
+<td align="center">peek</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">无</td>
+</tr>
+</tbody></table>
+
+  </article>
+</div>
+
+
+    
+
+
+
+
+</div>
+
+<div class="footer-wrapper container">
+  <footer class="footer clearfix">
+    <div class="clearfix">
+    <a href="https://king019.github.io" class="footer-logo">
+      <i class="fa fa-github"></i>
+    </a>
+    <ul class="footer-social-link">
+      <li>© 2019 king019</li>
+      <li><a href="https://king019.github.io">Home</a></li>
+      
+      <li><a href="https://github.com/king019">Github</a></li>
+      
+    </ul>
+    <div class="footer-theme-info">
+      Theme <a href="//github.com/sabrinaluo/hexo-theme-replica">Replica</a>
+      by <a href="//github.com/sabrinaluo">Hiitea</a> ❤ Powered by Hexo
+    </div>
+    </div>
+    
+  </footer>
+</div>
+
+
+
+
+<script src="/js/main.js"></script>
+
+</body>
+</html>

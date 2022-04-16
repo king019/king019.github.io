@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>
+    并发编程的艺术 | king019
+  </title>
+  <meta name="description" content>
+  
+  <meta name="keywords" content="
+  并发
+  ">
+  
+  <meta name="author" content="king019">
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="theme-color" content="#1e2327">
+  <link rel="apple-touch-icon" href="https://github.githubassets.com/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://github.githubassets.com/apple-touch-icon-180x180.png">
+
+  <link rel="icon" type="image/x-icon" href="https://github.githubassets.com/favicon.ico">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.25-csp/vue.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+</head>
+
+<body id="replica-app">
+
+<nav class="navbar-wrapper">
+  <div class="navbar">
+    <div class="container clearfix">
+      <a href="/" class="navbar-logo"><i class="fa fa-github"></i></a>
+
+      <div class="navbar-search float-left desktop-only">
+        <div class="navbar-search-form">
+          <label for="gsc-i-id1">This website</label>
+          <div id="google-search">
+            <gcse:search></gcse:search>
+          </div>
+        </div>
+      </div>
+
+      <ul class="navbar-nav float-left">
+        
+        <li><a href="/archives">Archives</a></li>
+        
+        
+        <li><a href="/categories">Categories</a></li>
+        
+        
+        <li><a href="/tags">Tags</a></li>
+        
+        
+        <li class="desktop-only"><a href="/atom.xml" target="_blank">RSS</a></li>
+        
+      </ul>
+
+      <ul class="navbar-nav user-nav float-right desktop-only">
+        <li class="user-nav-notification">
+          <a><span class="user-nav-unread"></span><i class="fa fa-bell"></i></a>
+        </li>
+        <li>
+          <a><i class="fa fa-plus"></i> <i class="fa fa-caret-down"></i></a>
+        </li>
+        <li class="user-nav-logo">
+          <a><img src="/assets/head.jpg"> <i class="fa fa-caret-down"></i></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="main-container">
+  <header class="header-wrapper desktop-only">
+  <div class="container header-site-detail">
+    <ul class="header-toolbar">
+      <li class="clearfix">
+        <a href="/archives" class="header-toolbar-left"><i
+                  class="fa fa-file-text"></i> Posts </a>
+        <a href="/archives"
+           class="header-toolbar-right"> 218 </a>
+      </li>
+      <li>
+        <a href="/tags" class="header-toolbar-left"><i
+                  class="fa fa-tags"></i> Tags </a>
+        <a href="/tags"
+           class="header-toolbar-right"> 213 </a>
+      </li>
+      <li>
+        <a href="/categories" class="header-toolbar-left"><i
+                  class="fa fa-folder-open"></i> Categories </a>
+        <a href="/categories"
+           class="header-toolbar-right"> 256 </a>
+      </li>
+    </ul>
+    <h2 class="header-title">
+      <i class="fa fa-book text-muted"></i>
+      <a href="/">king019</a>
+      
+      
+    </h2>
+  </div>
+
+  <div class="container">
+    <div class="header-tab-wrapper clearfix">
+      <span class="header-tab header-tab-selected"><i class="fa fa-thumbs-o-up"></i> Like</span>
+      <span class="header-tab"><i class="fa fa-share-alt"></i> Share</span>
+      <span class="header-tab"><i class="fa fa-comments-o"></i> Discussion</span>
+      <span class="header-tab"><i class="fa fa-bookmark-o"></i> Bookmark </span>
+      <span class="header-tab"><i class="fa fa-smile-o"></i> Smile <i class="fa fa-caret-down"></i></span>
+    </div>
+  </div>
+</header>
+
+
+<div class="post-container container">
+  <h3>
+    <i class="fa fa-user-o"></i>
+    king019
+
+    <span class="post-date float-right" title="{{moment(1650088475018).format('MMM DD, YYYY, h:mm:ss A')}}">
+      
+          <i class="fa fa-pencil-square-o"></i>
+      
+      {{moment(1650088475018).fromNow()}}
+    </span>
+  </h3>
+
+  <article class="post-content">
+    <h1>并发编程的艺术</h1>
+    <h2 id="并发编程的挑战"><a href="#并发编程的挑战" class="headerlink" title="并发编程的挑战"></a>并发编程的挑战</h2><h3 id="上下文切换"><a href="#上下文切换" class="headerlink" title="上下文切换"></a>上下文切换</h3><h3 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a>死锁</h3><h2 id="java并发底层原理"><a href="#java并发底层原理" class="headerlink" title="java并发底层原理"></a>java并发底层原理</h2><h3 id="volatile"><a href="#volatile" class="headerlink" title="volatile"></a>volatile</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">修改变量后,其他线程里面可见</span><br><span class="line"></span><br><span class="line">可见,有序</span><br></pre></td></tr></table></figure>
+
+<h3 id="synchronized"><a href="#synchronized" class="headerlink" title="synchronized"></a>synchronized</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">对象头</span><br><span class="line">无锁     hash,       年龄,是否偏向</span><br><span class="line">偏向锁   线程id,epoch,年龄,是否偏向</span><br><span class="line">轻量级锁  线程id     </span><br><span class="line">重量级锁  线程id</span><br><span class="line">gc       空</span><br></pre></td></tr></table></figure>
+
+<h4 id="锁定升级"><a href="#锁定升级" class="headerlink" title="锁定升级"></a>锁定升级</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">偏向锁(可关闭)</span><br><span class="line">添加</span><br><span class="line">   1,锁记录当前线程</span><br><span class="line">   2,使用cas竞争锁</span><br><span class="line">   3,成功</span><br><span class="line">撤销</span><br><span class="line">   1,有竞争才会尝试释放锁</span><br><span class="line">   2,撤销,只有等待安全点(没有正在执行的字节码)</span><br><span class="line">   3,暂停持有偏向锁线程,不活动-&gt;无锁</span><br><span class="line">                      活动--&gt;偏向其他线程,无锁,标记对象不适合作为偏向锁</span><br><span class="line">轻量级锁</span><br><span class="line">添加</span><br><span class="line">   1,当前栈桢创建存储锁记录的空间,并复制mark word到锁记录(displaced mark word)</span><br><span class="line">   2,尝试cas将对象头中的记录替换为锁记录的指针</span><br><span class="line">   3,成功,则获取锁.失败,则有竞争,尝试使用自旋获取锁.</span><br><span class="line">撤销</span><br><span class="line">   1,cas操作dispalaced mark word替换到对象头</span><br><span class="line">   2,成功,没有竞争.失败存在竞争,膨胀成重量级锁.</span><br></pre></td></tr></table></figure>
+
+<h3 id="原子操作的实现原理"><a href="#原子操作的实现原理" class="headerlink" title="原子操作的实现原理"></a>原子操作的实现原理</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cpu术语定义</span><br><span class="line">缓存行      cache line</span><br><span class="line">比较并替换   compare and swap</span><br><span class="line">cp流水线    cpu pipiline</span><br><span class="line">内存顺序冲突  memory order violation</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cas的问题</span><br><span class="line">1,aba  -&gt;版本解决</span><br><span class="line">2,循环时间长开销大   --&gt;jvm支持pause</span><br><span class="line">3,只能保证一个共享变量的原子操作</span><br></pre></td></tr></table></figure>
+
+<h2 id="内存模型"><a href="#内存模型" class="headerlink" title="内存模型"></a>内存模型</h2><h4 id="内存模型的基础"><a href="#内存模型的基础" class="headerlink" title="内存模型的基础"></a>内存模型的基础</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">并发编程的两个关键问题:线程之间如何通信和线程之间如何同步.</span><br><span class="line">通信指线程之间何种机制来交换信息.</span><br><span class="line">命令式编程中,线程之间的通信机制由2种:共享内存和消息传递.</span><br><span class="line"></span><br><span class="line">在共享内存的并发模型里.线程之间共享程序的公共状态,通过写-读内存中的公共状态进行隐式通信.在消息传递的并发模型里,线程之间没有公共状态,线程之间必须通过发送消息来显式进行通信.</span><br><span class="line">同步指程序中用户控制不同线程间操作发生相对顺序的机制.在共享内存并发模型里,同步是显示进行的.程序员必须显示指定某个方法或某段代码需要在线程之间互斥执行.在消息传递并发模型里,由于消息的发送必须在消息的接收之前,因此同步是隐式进行的.</span><br><span class="line">java都并发才用的是共享内存模型,java线程之间的通信总是隐式进行,整个通信过程对程序员完全透明.</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">主内存</span><br><span class="line">工作内存</span><br></pre></td></tr></table></figure>
+
+<h4 id="重排序"><a href="#重排序" class="headerlink" title="重排序"></a>重排序</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1,编译器优化的重排序</span><br><span class="line">2,指令集并发的重排序</span><br><span class="line">3,内存系统重排序</span><br></pre></td></tr></table></figure>
+
+<h4 id="happens-before"><a href="#happens-before" class="headerlink" title="happens before"></a>happens before</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">程序顺序规则:一个线程前边代码比之后的先执行</span><br><span class="line">监视器锁规则:先加锁厚解锁</span><br><span class="line">volatile规则:写在之后读</span><br><span class="line">传递性:a-&gt;b,b-&gt;c    a&gt;c</span><br><span class="line">start规则:a执行b.start(),那么a多任何操作比b.start()之前</span><br><span class="line">join规则:a执行b.join()并成功返回,那麽b的操作在a.join()之前.</span><br></pre></td></tr></table></figure>
+
+<h4 id="双重检查"><a href="#双重检查" class="headerlink" title="双重检查"></a>双重检查</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">重排序</span><br><span class="line"></span><br><span class="line">解决办法</span><br><span class="line">volatile</span><br><span class="line">类初始化</span><br></pre></td></tr></table></figure>
+
+<h3 id="java并发编程基础"><a href="#java并发编程基础" class="headerlink" title="java并发编程基础"></a>java并发编程基础</h3><h4 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">线程优先级</span><br><span class="line">线程状态</span><br><span class="line">    new  runnable blocked waiting time_waiting terminated</span><br><span class="line"></span><br><span class="line">中断</span><br><span class="line">中断可以理解为线程的一个标识位属性.</span><br><span class="line"></span><br><span class="line">线程间通信</span><br><span class="line">1,volatile和synchronized</span><br><span class="line">2.等待/通知机制</span><br><span class="line">3,等待/通知的经典范式</span><br><span class="line">     synchronized(对象)&#123;</span><br><span class="line">         whild(条件不满足)&#123;</span><br><span class="line">             对象.wait()     </span><br><span class="line"> &#125;    </span><br><span class="line">dohandle()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">synchronized(对象)&#123;</span><br><span class="line">    改变条件</span><br><span class="line">    对象.notifyAll();</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">      </span><br><span class="line">4,管道输入/输出流</span><br><span class="line">    PipedOutputStream,PipedInputStream     PipedReader,PipedWriter</span><br><span class="line">5,thread.join()的使用</span><br><span class="line">6,threadlocal的使用</span><br></pre></td></tr></table></figure>
+
+<h4 id="锁"><a href="#锁" class="headerlink" title="锁"></a>锁</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">Lock</span><br><span class="line">尝试非阻塞地获取锁</span><br><span class="line">能被中断获取锁</span><br><span class="line">超时获取锁</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">队列同步器aqs</span><br><span class="line">AbstractQueuedSynchronizer</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">重入锁</span><br><span class="line">公平锁/非公平锁</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">读写锁</span><br><span class="line">公平性</span><br><span class="line">重入</span><br><span class="line">锁降级</span><br><span class="line">状态(读16位写16位)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">LockSupport工具</span><br><span class="line">park()</span><br><span class="line">parkNanos(nanos)</span><br><span class="line">parkUnit</span><br><span class="line">unpark(thread)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">condition</span><br><span class="line">获取锁后.才可使用condition</span><br><span class="line">后端使用fifo队列</span><br><span class="line">await()/notify()</span><br><span class="line"></span><br><span class="line">await等待</span><br><span class="line">会使当前线程进入等待队列并释放锁,同时线程状态变为等待状态.当从await()方法返回时,当前线程一定获取了conditon相关联动锁.</span><br><span class="line">signal()通知</span><br><span class="line">将会唤醒在等待队列中等待时间最长的节点(首节点),在唤醒节点之前,会将节点移到同步队列中.</span><br><span class="line">signalAll()</span><br><span class="line">看下</span><br></pre></td></tr></table></figure>
+
+<h4 id="并发容器"><a href="#并发容器" class="headerlink" title="并发容器"></a>并发容器</h4><h5 id="concurrenthashmap"><a href="#concurrenthashmap" class="headerlink" title="concurrenthashmap"></a>concurrenthashmap</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">jdk8</span><br><span class="line">array+多个linkednode</span><br><span class="line">单个使用cas</span><br><span class="line">多个使用synchronized</span><br><span class="line"></span><br><span class="line">添加然后统计</span><br><span class="line">删除linkednode缩容</span><br><span class="line"></span><br><span class="line">basecount+countsell</span><br><span class="line">获取</span><br><span class="line">https://www.cnblogs.com/keeya/p/9632958.html</span><br><span class="line">    //读取首节点的Node元素</span><br><span class="line">    </span><br><span class="line">    /hash值为负值表示正在扩容，这个时候查的是ForwardingNode的find方法来定位到nextTable来</span><br><span class="line">    //eh=-1，说明该节点是一个ForwardingNode，正在迁移，此时调用ForwardingNode的find方法去nextTable里找。</span><br><span class="line">    //eh=-2，说明该节点是一个TreeBin，此时调用TreeBin的find方法遍历红黑树，由于红黑树有可能正在旋转变色，所以find里会有读写锁。</span><br><span class="line">    //eh&gt;=0，说明该节点下挂的是一个链表，直接遍历该链表即可。</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    //既不是首节点也不是ForwardingNode，那就往下遍历</span><br></pre></td></tr></table></figure>
+
+<h5 id="concurrentlinkedqueue"><a href="#concurrentlinkedqueue" class="headerlink" title="concurrentlinkedqueue"></a>concurrentlinkedqueue</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">线程一个线程安全的队列有两种方式:一种是使用阻塞算法,另一种是使用非阻塞算法算法.</span><br><span class="line">使用阻塞算法的队列可以用一个锁(出入一个锁)或两个锁(出入不同锁)等方式来实现.非阻塞的实现方式则可以使用循环cas的方式来实现.</span><br><span class="line"></span><br><span class="line">是一个基于连接节点的无界线程安全队列,它采用先进先出的规则对节点进行排序,添加到队列的尾部,从头部获取.</span><br></pre></td></tr></table></figure>
+
+<h5 id="阻塞队列"><a href="#阻塞队列" class="headerlink" title="阻塞队列"></a>阻塞队列</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">阻塞队列是一个支持两个附加操作的队列.</span><br><span class="line">这两个附加的操作支持阻塞地超如和移除方法.</span><br><span class="line">1)支持阻塞地插入方法</span><br><span class="line">    队列满,队列阻塞插入元素的线程,直到队列不满</span><br><span class="line">2)支持阻塞地移除方法</span><br><span class="line">    队列为空时,获取元素的线程会等待队列变为非空.</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">ArrayBlockingQueue</span><br><span class="line">    数组/有界</span><br><span class="line">    公平/非公平</span><br><span class="line">    单锁</span><br><span class="line">LinkedBlockingQueue</span><br><span class="line">    链表/有界</span><br><span class="line">    非公平单锁</span><br><span class="line">PriorityBlockingQueue</span><br><span class="line">    支持优先级/无界</span><br><span class="line">    非公平单锁</span><br><span class="line">    PriorityQueue</span><br><span class="line">DelayQueue</span><br><span class="line">    使用优先级队列实现的无界阻塞</span><br><span class="line">    非公平单锁</span><br><span class="line">    PriorityQueue</span><br><span class="line">    实现Delayed接口</span><br><span class="line">SynchronousQueue</span><br><span class="line">    不存储元素的阻塞</span><br><span class="line">    公平/非公平</span><br><span class="line">    单锁</span><br><span class="line">LinkedTransferQueue</span><br><span class="line">    链表/无界</span><br><span class="line">LinkedBlockingDeque</span><br><span class="line">    链表/双向</span><br></pre></td></tr></table></figure>
+
+<h4 id="原子操作类"><a href="#原子操作类" class="headerlink" title="原子操作类"></a>原子操作类</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">原子基本类型</span><br><span class="line">原子更新数组</span><br><span class="line">原子更新引用类型</span><br><span class="line">原子更新字段类</span><br></pre></td></tr></table></figure>
+
+<h4 id="并发工具类"><a href="#并发工具类" class="headerlink" title="并发工具类"></a>并发工具类</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">CountDownLatch</span><br><span class="line">CyclicBarrier</span><br><span class="line">Semaphore</span><br><span class="line">Exchanger</span><br></pre></td></tr></table></figure>
+
+<h4 id="线程池"><a href="#线程池" class="headerlink" title="线程池"></a>线程池</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">min</span><br><span class="line">max</span><br><span class="line">休眠时间</span><br><span class="line">时间单位</span><br><span class="line">blockqueue</span><br><span class="line">线程工厂</span><br><span class="line">拒绝策略</span><br><span class="line">    AbortPolicy:直接抛出异常</span><br><span class="line">    CallerRunsPolicy:调用者线程运行</span><br><span class="line">    DiscardOldestPolicy:丢弃最近的一个任务,并执行当前任务</span><br><span class="line">    DiscardPolic:不处理丢弃掉</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">调用方法比较</span><br><span class="line">feature</span><br><span class="line">submit(runnable)</span><br><span class="line">submit(runnable,result)</span><br><span class="line">submit(callable)</span><br><span class="line">void</span><br><span class="line">execute(runnable)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">关闭</span><br><span class="line">无法中断的任务永远无法终止</span><br><span class="line">shutdown</span><br><span class="line">    置为shutdown状态</span><br><span class="line">    中断空闲worker</span><br><span class="line">    不能中断的任务回继续执行</span><br><span class="line">shutdownNow</span><br><span class="line">    置为stop状态</span><br><span class="line">    中断workers</span><br><span class="line">    清理未执行task</span><br><span class="line">    不能中断的任务,正在执行的任务继续执行</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">合理配置线程池</span><br><span class="line">任务性质:cpu密集,io密集,混合型</span><br><span class="line">cpu:n+1</span><br><span class="line">内存=2n</span><br><span class="line"></span><br><span class="line">需要根据实际情况来进行确定线程的数量和队列的大小</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">线程池监控</span><br><span class="line">taskCount</span><br><span class="line">completedTaskCount</span><br><span class="line">largestPoolSize</span><br><span class="line">getPolSize</span><br><span class="line">getActiveCount</span><br></pre></td></tr></table></figure>
+
+<h4 id="executor框架"><a href="#executor框架" class="headerlink" title="executor框架"></a>executor框架</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ThreadPoolExecutor</span><br><span class="line"></span><br><span class="line">    FixedThreadPool</span><br><span class="line">    SingleThreadExecutor</span><br><span class="line">    CachedThreadPool</span><br></pre></td></tr></table></figure>
+
+<h4 id="lock-synchronize区别"><a href="#lock-synchronize区别" class="headerlink" title="lock/synchronize区别"></a>lock/synchronize区别</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://www.manongjc.com/article/47515.html</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>lock</th>
+<th>synchronize</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>所处层面</td>
+<td>java接口</td>
+<td>java关键字   entry set(acquire)/wait set(release)</td>
+</tr>
+<tr>
+<td>获锁方式</td>
+<td>使用aqs,加锁当前线程,原子类统计加锁次数</td>
+<td>实例方法/静态方法/代码块 获取监视器</td>
+</tr>
+<tr>
+<td>获锁失败</td>
+<td>加入aqs等待自旋,然后阻塞</td>
+<td>加入虚拟等待队列中阻塞直到释放</td>
+</tr>
+<tr>
+<td>偏向/重入</td>
+<td>重入,原子数量变化</td>
+<td>偏向,获取锁厚,再次不需要获取锁</td>
+</tr>
+<tr>
+<td>lock独有队列</td>
+<td>特有condition队列</td>
+<td></td>
+</tr>
+<tr>
+<td>解锁操作</td>
+<td>使用unlock</td>
+<td>自动解锁</td>
+</tr>
+</tbody></table>
+<h6 id="并发demo"><a href="#并发demo" class="headerlink" title="并发demo"></a>并发demo</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">并发的问题</span><br><span class="line">    通信</span><br><span class="line">        volitate/syshorized</span><br><span class="line">        通知/等待</span><br><span class="line">        经典的通知等待</span><br><span class="line">        管道输入/输出流</span><br><span class="line">        thread.join</span><br><span class="line">        threadlocal</span><br><span class="line">    同步</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">乱序</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">public class Printer&#123;</span><br><span class="line">private string code;</span><br><span class="line">private int num;</span><br><span class="line">private LockObj lock;</span><br><span class="line">public void run()&#123;</span><br><span class="line">    if(num&lt;10)&#123;</span><br><span class="line">        while(true)&#123;</span><br><span class="line">            if(!stringutil.equal(code,lock.lock))&#123;</span><br><span class="line">                lock.wait();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        dosomething();</span><br><span class="line">        lock.notifyAll();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">publi class LockObj&#123;</span><br><span class="line">    private volatie string code;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+  </article>
+</div>
+
+
+    
+
+
+
+
+</div>
+
+<div class="footer-wrapper container">
+  <footer class="footer clearfix">
+    <div class="clearfix">
+    <a href="https://king019.github.io" class="footer-logo">
+      <i class="fa fa-github"></i>
+    </a>
+    <ul class="footer-social-link">
+      <li>© 2019 king019</li>
+      <li><a href="https://king019.github.io">Home</a></li>
+      
+      <li><a href="https://github.com/king019">Github</a></li>
+      
+    </ul>
+    <div class="footer-theme-info">
+      Theme <a href="//github.com/sabrinaluo/hexo-theme-replica">Replica</a>
+      by <a href="//github.com/sabrinaluo">Hiitea</a> ❤ Powered by Hexo
+    </div>
+    </div>
+    
+  </footer>
+</div>
+
+
+
+
+<script src="/js/main.js"></script>
+
+</body>
+</html>

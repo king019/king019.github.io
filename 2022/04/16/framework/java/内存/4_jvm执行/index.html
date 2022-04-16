@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>
+    jvm执行 | king019
+  </title>
+  <meta name="description" content>
+  
+  <meta name="keywords" content="
+  jvm执行
+  ">
+  
+  <meta name="author" content="king019">
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="theme-color" content="#1e2327">
+  <link rel="apple-touch-icon" href="https://github.githubassets.com/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://github.githubassets.com/apple-touch-icon-180x180.png">
+
+  <link rel="icon" type="image/x-icon" href="https://github.githubassets.com/favicon.ico">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.25-csp/vue.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+</head>
+
+<body id="replica-app">
+
+<nav class="navbar-wrapper">
+  <div class="navbar">
+    <div class="container clearfix">
+      <a href="/" class="navbar-logo"><i class="fa fa-github"></i></a>
+
+      <div class="navbar-search float-left desktop-only">
+        <div class="navbar-search-form">
+          <label for="gsc-i-id1">This website</label>
+          <div id="google-search">
+            <gcse:search></gcse:search>
+          </div>
+        </div>
+      </div>
+
+      <ul class="navbar-nav float-left">
+        
+        <li><a href="/archives">Archives</a></li>
+        
+        
+        <li><a href="/categories">Categories</a></li>
+        
+        
+        <li><a href="/tags">Tags</a></li>
+        
+        
+        <li class="desktop-only"><a href="/atom.xml" target="_blank">RSS</a></li>
+        
+      </ul>
+
+      <ul class="navbar-nav user-nav float-right desktop-only">
+        <li class="user-nav-notification">
+          <a><span class="user-nav-unread"></span><i class="fa fa-bell"></i></a>
+        </li>
+        <li>
+          <a><i class="fa fa-plus"></i> <i class="fa fa-caret-down"></i></a>
+        </li>
+        <li class="user-nav-logo">
+          <a><img src="/assets/head.jpg"> <i class="fa fa-caret-down"></i></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="main-container">
+  <header class="header-wrapper desktop-only">
+  <div class="container header-site-detail">
+    <ul class="header-toolbar">
+      <li class="clearfix">
+        <a href="/archives" class="header-toolbar-left"><i
+                  class="fa fa-file-text"></i> Posts </a>
+        <a href="/archives"
+           class="header-toolbar-right"> 218 </a>
+      </li>
+      <li>
+        <a href="/tags" class="header-toolbar-left"><i
+                  class="fa fa-tags"></i> Tags </a>
+        <a href="/tags"
+           class="header-toolbar-right"> 213 </a>
+      </li>
+      <li>
+        <a href="/categories" class="header-toolbar-left"><i
+                  class="fa fa-folder-open"></i> Categories </a>
+        <a href="/categories"
+           class="header-toolbar-right"> 256 </a>
+      </li>
+    </ul>
+    <h2 class="header-title">
+      <i class="fa fa-book text-muted"></i>
+      <a href="/">king019</a>
+      
+      
+    </h2>
+  </div>
+
+  <div class="container">
+    <div class="header-tab-wrapper clearfix">
+      <span class="header-tab header-tab-selected"><i class="fa fa-thumbs-o-up"></i> Like</span>
+      <span class="header-tab"><i class="fa fa-share-alt"></i> Share</span>
+      <span class="header-tab"><i class="fa fa-comments-o"></i> Discussion</span>
+      <span class="header-tab"><i class="fa fa-bookmark-o"></i> Bookmark </span>
+      <span class="header-tab"><i class="fa fa-smile-o"></i> Smile <i class="fa fa-caret-down"></i></span>
+    </div>
+  </div>
+</header>
+
+
+<div class="post-container container">
+  <h3>
+    <i class="fa fa-user-o"></i>
+    king019
+
+    <span class="post-date float-right" title="{{moment(1650088475018).format('MMM DD, YYYY, h:mm:ss A')}}">
+      
+          <i class="fa fa-pencil-square-o"></i>
+      
+      {{moment(1650088475018).fromNow()}}
+    </span>
+  </h3>
+
+  <article class="post-content">
+    <h1>jvm执行</h1>
+    <h2 id="加载"><a href="#加载" class="headerlink" title="加载"></a>加载</h2><h3 id="加载时机"><a href="#加载时机" class="headerlink" title="加载时机"></a>加载时机</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">加载--&gt;[验证--&gt;准备--&gt;解析](连接过程)--&gt;初始化--&gt;使用--&gt;卸载</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1,遇到new,getstatic,putstaic,invokestatic这四条字节码指令,如果类型没有进行初始化,则需要先触发其初始化阶段.</span><br><span class="line">    能够生成这四条指令单典型场景:</span><br><span class="line">             使用new关键字实例化对象的时候</span><br><span class="line">             读取或设置一个类型的静态字段(被final修饰,已在编译器把结果放入常量池的静态字段除外)的时候</span><br><span class="line">             调用一个类型的静态方法大时候.</span><br><span class="line">2,使用java.lang.reflect包的方法对类型进行反射调用的时候,如果类型没有进行过初始化,则需要先触发其初始化</span><br><span class="line">3,当初始化类的时候,如果发现其父类没有进行过初始化,则需要先触发其父类的初始化</span><br><span class="line">4,当虚拟机启动时,用户需要制定一个要执行的主类(包含main()方法的那个类),虚拟机会先初始化这个主类.</span><br><span class="line">5,当时用jdk7新加入的动态语言支持时,如果一个java.lang.invoke.MethodHandle实例最后的解析结果为REF_getStatic,REF_putStatic,REF_</span><br><span class="line">invokeStatic,REF_newInvokeSpecial四中类型的方法句柄,并且这个方法句柄对应的类没有进行过初始化,则需要先触发其初始化.</span><br><span class="line">6,当一个接口中定义了jdk8新加入的默认方法(被default关键字修饰的接口方法)时,如果有这个接口的实现类发生了初始化,那该接口要在其之前被初始化.</span><br></pre></td></tr></table></figure>
+
+<h3 id="加载过程"><a href="#加载过程" class="headerlink" title="加载过程"></a>加载过程</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">完成3件事.</span><br><span class="line">1,通过一个类的全限定名来获取定义此类的二进制字节流.</span><br><span class="line">2,将这个字节流所代表的静态存储结构转化为方法区的运行时数据结构.</span><br><span class="line">3,在内存中生成一个代表这个类的java.lang.Class对象,作为方法区这个类的各种数据的访问入口.</span><br></pre></td></tr></table></figure>
+
+<h3 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">1,文件格式验证</span><br><span class="line">  验证字节流是否符合Class文件格式的规范</span><br><span class="line">  </span><br><span class="line">  是否以魔数开头</span><br><span class="line">  主,次版本号是否在jvm接受范围内</span><br><span class="line">  常量池的常量中是否有不被支持的常量类型(检查常量tag标志)</span><br><span class="line">  指向常量的各种索引值中是否有指向不存在的常量或不符合类型的常量</span><br><span class="line">  CONSTANT_Utf8_info类型的常量中是否有不符合UTF-8编码的数据</span><br><span class="line">  Class文件中各个部分及文件本省是否有被删除的或附加的其他信息</span><br><span class="line">2,元数据验证</span><br><span class="line">  字节码描述的信息进行语义分析</span><br><span class="line">  </span><br><span class="line">  是否有父类(除object外,所有类都应该有父类)</span><br><span class="line">  这个类的父类是否继承了不允许被集成的类(被final修饰的类)</span><br><span class="line">  若不是抽象类,是否实现类其父类或接口实现的所有方法</span><br><span class="line">  类中的字段,方法是否与父类产生矛盾</span><br><span class="line">3,字节码验证</span><br><span class="line">  通过数据流分析和控制流分析,确定程序语义是合法的符合逻辑的</span><br><span class="line">4,符号引用验证</span><br><span class="line">  发生在虚拟机将符号引用转换为直接引用的时候,这个转换动作将在连接的第三阶段--解析阶段中发生</span><br></pre></td></tr></table></figure>
+
+<h3 id="准备阶段"><a href="#准备阶段" class="headerlink" title="准备阶段"></a>准备阶段</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">正式为类中定义的变量(静态变量,static修饰的变量)分配内存并设置类变量初始值的阶段</span><br></pre></td></tr></table></figure>
+
+<h3 id="解析过程"><a href="#解析过程" class="headerlink" title="解析过程"></a>解析过程</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">虚拟机将常量池内的符号引用替换为直接引用的过程</span><br><span class="line"></span><br><span class="line">符号引用:符合引用以一组符号来描述索引用的目标,符号可以是任何形式的字面量,只要使用时能无歧义的定位到目标即可.</span><br><span class="line">        符号引用与虚拟机实现的内存布局无关,引用的目标并不一定是已经加载到虚拟机内存中的内容.各个虚拟机实现的内存布局可以各不相同,但是他们能接受的符号引用必须都是一致的.因为符号引用的字面量形式已经明确在&lt;&lt;java虚拟机规范&gt;&gt;的class文件格式中.</span><br><span class="line">直接引用:直接引用是可以直接执行目标的指针,相对偏移量或者是一个能间接定位到目标的句柄.</span><br><span class="line">        直接引用是和虚拟机实现的内存布局直接相关,同一个符号引用在不同虚拟机实例上翻译出来的直接引用一般不会相同,如果有了直接引用,那引用的目标必定已经在虚拟机的内存中存在.</span><br><span class="line"></span><br><span class="line">解析内容</span><br><span class="line">1,类或接口的解析</span><br><span class="line">2,字段解析</span><br><span class="line">3,方法解析</span><br><span class="line">4,接口方法解析</span><br></pre></td></tr></table></figure>
+
+<h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">进行准备阶段时,变量已经赋过一次系统要求的初始零值,而在初始化阶段,则会根据程序员通过程序编码指定的主观计划去初始化类变量和其他资源.</span><br><span class="line">我们也可以从另外一种更直接的形式来表达:初始化阶段就是执行类构造器&lt;clinit&gt;()方法的过程.</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">父                子</span><br><span class="line">------------------------------首次</span><br><span class="line">static&#123;&#125;          </span><br><span class="line">                  static&#123;&#125;</span><br><span class="line">code&#123;&#125;</span><br><span class="line">构造&#123;&#125;</span><br><span class="line">                  code&#123;&#125;</span><br><span class="line">                  构造&#123;&#125;</span><br><span class="line">-------------------------------</span><br><span class="line">code&#123;&#125;</span><br><span class="line">构造&#123;&#125;</span><br><span class="line">                  code&#123;&#125;</span><br><span class="line">                  构造&#123;&#125;</span><br><span class="line">------------------------------</span><br><span class="line">code&#123;&#125;</span><br><span class="line">构造&#123;&#125;</span><br><span class="line">                  code&#123;&#125;</span><br><span class="line">                  构造&#123;&#125;</span><br><span class="line">------------------------------</span><br></pre></td></tr></table></figure>
+
+<h2 id="类加载器"><a href="#类加载器" class="headerlink" title="类加载器"></a>类加载器</h2><h3 id="双亲委派模型"><a href="#双亲委派模型" class="headerlink" title="双亲委派模型"></a>双亲委派模型</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">启动类加载器(bootstrap)--&gt;扩展类加载器(extension)--&gt;应用加载器(application)--&gt;自定义1加载器</span><br><span class="line">     findclass:父加载器没有才会调用该方法</span><br><span class="line">     loadclass:直接进行加载类                                                              --&gt;自定义2加载器</span><br></pre></td></tr></table></figure>
+
+<h3 id="破坏双亲委派"><a href="#破坏双亲委派" class="headerlink" title="破坏双亲委派"></a>破坏双亲委派</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1,jdk1.2之前,双亲委派之前</span><br><span class="line">2,基础类是父加载器,实现类是其他类提供.</span><br><span class="line">     比如spi(jndi,jdbc,jce,jaxb,jbi),它的代码是启动类来加载,</span><br><span class="line">         配置一个线程上下文类加载器,如果创建线程时还未设置,它将会从父线程急成一个,如果在应用程序的全局范围内都没有设置过,那这个类加载器默认就是应用程序类加载器.</span><br><span class="line">3,由于用户对程序动态性的追求导致的.代码热替换,模块热部署等</span><br></pre></td></tr></table></figure>
+
+
+  </article>
+</div>
+
+
+    
+
+
+
+
+</div>
+
+<div class="footer-wrapper container">
+  <footer class="footer clearfix">
+    <div class="clearfix">
+    <a href="https://king019.github.io" class="footer-logo">
+      <i class="fa fa-github"></i>
+    </a>
+    <ul class="footer-social-link">
+      <li>© 2019 king019</li>
+      <li><a href="https://king019.github.io">Home</a></li>
+      
+      <li><a href="https://github.com/king019">Github</a></li>
+      
+    </ul>
+    <div class="footer-theme-info">
+      Theme <a href="//github.com/sabrinaluo/hexo-theme-replica">Replica</a>
+      by <a href="//github.com/sabrinaluo">Hiitea</a> ❤ Powered by Hexo
+    </div>
+    </div>
+    
+  </footer>
+</div>
+
+
+
+
+<script src="/js/main.js"></script>
+
+</body>
+</html>
